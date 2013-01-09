@@ -31,12 +31,14 @@ Closure Library スターターキット は、Closure Library に不慣れな�
 作業の流れ
 ----------
 1. Closure Tools をダウンロード、配置する
+
     ターミナルを開き、以下のコマンドを実行します。
 
         (`closure-starter-kit` ディレクトリに移動してから)
         $ ./tools/setup.sh
 
 2. `debug/` ディレクトリで開発する
+
     `debug/js_dev` ディレクトリ下の既存のコードを修正したり、新たに追加したり
     してください。
 
@@ -46,6 +48,7 @@ Closure Library スターターキット は、Closure Library に不慣れな�
         $ ./tools/update_deps.sh
 
 3. コンパイルする
+
     コンパイルすると、パフォーマンス向上や、ソースコードが難読化されるなどの
     利点があります。
     コンパイルするには、以下のコマンドを実行してください。
