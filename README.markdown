@@ -30,25 +30,25 @@ Install them if not installed yet.
 Getting Started
 ---------------
 1. Setup Closure Tools
-Enter following commands in the terminal:
+    Enter following commands in the terminal:
 
-    (in `closure-starter-kit` directory)
-    $ ./tools/setup.sh
+        (in `closure-starter-kit` directory)
+        $ ./tools/setup.sh
 
 2. Develop Your Web App in `debug/`
-Modify existing scripts, or add awesome scripts to `debug/js_dev`.
+    Modify existing scripts, or add awesome scripts to `debug/js_dev`.
 
-After adding/removing scripts, you need to update dependency information:
+    After adding/removing scripts, you need to update dependency information:
  
-    $ ./tools/update_deps.sh
+        $ ./tools/update_deps.sh
 
 3. Compile Scripts
-Compiling scripts improves performance and makes them unreadable.
-To compile your scripts, enter following command:
+    Compiling scripts improves performance and makes them unreadable.
+    To compile your scripts, enter following command:
 
-    $ ./tools/compile.sh
+        $ ./tools/compile.sh
 
-If it succeed, output files will be stored in `release/`.
+    If it succeed, output files will be stored in `release/`.
 
 
 Tips
