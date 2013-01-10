@@ -13,11 +13,8 @@ You can easily setup, develop, and compile using convenient tools.
 Following programs are required to use this starter kit.
 Install them if not installed yet.
 
-- bash ...... Executes tools
-- curl ...... Downloads Closure Compiler
 - git/svn ... Downloads Closure Library
 - python .... Executes Closure Tools
-- sed ....... Executes tools
 
 
 ### Directory Structure
@@ -34,7 +31,7 @@ Getting Started
     Enter following commands in the terminal:
 
         (in `closure-starter-kit` directory)
-        $ ./tools/setup.sh
+        $ python tools/setup.py
 
 2. Develop Your Web App in `debug/`
 
@@ -42,14 +39,14 @@ Getting Started
 
     After adding/removing scripts, you need to update dependency information:
  
-        $ ./tools/update_deps.sh
+        $ python tools/update_deps.py
 
 3. Compile Scripts
 
     Compiling scripts improves performance and makes them unreadable.
     To compile your scripts, enter following command:
 
-        $ ./tools/compile.sh
+        $ python tools/compile.py
 
     If it succeed, output files will be stored in `release/`.
 
@@ -62,15 +59,15 @@ replace all namespaces in following files:
 
 - debug/index.html
 - debug/js_dev/main.js
-- tools/compile.sh
+- tools/compile.py
 
 After changing, don't forget to update dependency information.
 
-    $ ./tools/update_deps.sh
+    $ python tools/update_deps.py
 
 
 ### Rename a Compiled Script
-Edit `COMPILED_JS` in `tools/compile.sh`.
+Edit `COMPILED_JS` in `tools/compile.py`.
 
 
 ### Preventing Some Scripts from Compiling

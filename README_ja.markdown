@@ -14,11 +14,8 @@ Closure Library スターターキット は、Closure Library に不慣れな�
 以下のプログラムが必要です。
 お手元の環境にない場合は、あらかじめインストールしておいてください。
 
-- bash ...... ツールを実行する
-- curl ...... Closure Compiler をダウンロードする
 - git/svn ... Closure Library をダウンロードする
 - python .... Closure Tools を実行する
-- sed ....... ツールを実行する
 
 
 ### ディレクトリ構成
@@ -35,7 +32,7 @@ Closure Library スターターキット は、Closure Library に不慣れな�
     ターミナルを開き、以下のコマンドを実行します。
 
         (`closure-starter-kit` ディレクトリに移動してから)
-        $ ./tools/setup.sh
+        $ python tools/setup.py
 
 2. `debug/` ディレクトリで開発する
 
@@ -45,7 +42,7 @@ Closure Library スターターキット は、Closure Library に不慣れな�
     スクリプトを追加/削除したあとは、依存情報の更新が必要です。
     以下のコマンドを実行してください。
 
-        $ ./tools/update_deps.sh
+        $ python tools/update_deps.py
 
 3. コンパイルする
 
@@ -53,7 +50,7 @@ Closure Library スターターキット は、Closure Library に不慣れな�
     利点があります。
     コンパイルするには、以下のコマンドを実行してください。
 
-        $ ./tools/compile.sh
+        $ python tools/compile.py
 
     コンパイルに成功すると、 `release/` ディレクトリに出力されます。
 
@@ -66,15 +63,15 @@ Mainクラスの名前空間(初期値はcom.mycompany)を変更するには、�
 
 - debug/index.html
 - debug/js_dev/main.js
-- tools/compile.sh
+- tools/compile.py
 
 変更後は、依存情報を更新することをお忘れなく。
 
-    $ ./tools/update_deps.sh
+    $ python tools/update_deps.py
 
 
 ### コンパイル後のファイル名を変更する
-`tools/compile.sh` の `COMPILED_JS` を修正してください。
+`tools/compile.py` の `COMPILED_JS` を修正してください。
 
 
 ### コンパイルしたくないスクリプトがある
