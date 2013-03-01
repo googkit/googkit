@@ -37,3 +37,6 @@ class CskConfig(object):
 
     def production_dir(self):
         return self.parser.get('path', 'production')
+
+    def compilation_level(self):
+        return self.parser.get('compiler', 'compilation_level')

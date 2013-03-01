@@ -45,7 +45,7 @@ def compile_scripts(config):
             '-n ' + NAMESPACE_MAIN,
             '-o compiled',
             '-c ' + config.compiler(),
-            '--compiler_flags=' + COMPILER_FLAGS,
+            '--compiler_flags=--compilation_level=' + config.compilation_level(),
             '--output_file=' + prod_compiled_js]
     os.system('python %s %s' % (config.closurebuilder(), ' '.join(args)))
     rmtree_silent(js_dev_dir)
