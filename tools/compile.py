@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-CLOSURE_BUILDER = 'closure/library/closure/bin/build/closurebuilder.py'
+CONFIG = 'config.cfg'
 COMPILER_FLAGS = '--compilation_level=ADVANCED_OPTIMIZATIONS'
 COMPILED_JS = 'script.min.js'
 NAMESPACE_MAIN = 'com.mycompany.Main'
@@ -9,6 +9,7 @@ NAMESPACE_MAIN = 'com.mycompany.Main'
 
 import os
 import shutil
+import cskconfig
 
 
 def rmtree_silent(path):
@@ -25,18 +26,18 @@ def setup_release_files():
     os.system('python tools/sub/compile_index.py release/index.html ' + COMPILED_JS)
 
 
-def compile_scripts():
+def compile_scripts(config):
     os.remove('release/js_dev/deps.js')
 
     args = [
-            '--root=closure/library',
+            '--root=' + config.library_dir(),
             '--root=release/js_dev',
             '-n ' + NAMESPACE_MAIN,
             '-o compiled',
-            '-c closure/compiler/compiler.jar',
+            '-c ' + config.compiler(),
             '--compiler_flags=' + COMPILER_FLAGS,
             '--output_file=release/' + COMPILED_JS]
-    os.system('python %s %s' % (CLOSURE_BUILDER, ' '.join(args)))
+    os.system('python %s %s' % (config.closurebuilder(), ' '.join(args)))
     rmtree_silent('release/js_dev')
 
 
@@ -44,5 +45,8 @@ if __name__ == '__main__':
     basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     os.chdir(basedir)
 
+    config = cskconfig.CskConfig()
+    config.load(CONFIG)
+
     setup_release_files()
-    compile_scripts()
+    compile_scripts(config)
