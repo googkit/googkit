@@ -18,10 +18,10 @@ Install them if not installed yet.
 
 
 ### Directory Structure
-- closure/ ... Stores Closure Tools
-- debug/ ..... For development
-- release/ ... For production
-- tools/ ..... Contains convenient tools
+- closure/ ....... Stores Closure Tools
+- development/ ... For development
+- production/ .... For production
+- tools/ ......... Contains convenient tools
 
 
 Getting Started
@@ -33,9 +33,9 @@ Getting Started
         (in `closure-starter-kit` directory)
         $ python tools/setup.py
 
-2. Develop Your Web App in `debug/`
+2. Develop Your Web App in `development/`
 
-    Modify existing scripts, or add awesome scripts to `debug/js_dev`.
+    Modify existing scripts, or add awesome scripts to `development/js_dev`.
 
     After adding/removing scripts, you need to update dependency information:
  
@@ -48,7 +48,7 @@ Getting Started
 
         $ python tools/compile.py
 
-    If it succeed, output files will be stored in `release/`.
+    If it succeed, output files will be stored in `production/`.
 
 
 Tips
@@ -57,8 +57,8 @@ Tips
 If you want to change the default namespace of Main class (com.mycompany.Main),
 replace all namespaces in following files:
 
-- debug/index.html
-- debug/js_dev/main.js
+- development/index.html
+- development/js_dev/main.js
 - tools/compile.py
 
 After changing, don't forget to update dependency information.
@@ -71,7 +71,7 @@ Edit `COMPILED_JS` in `tools/compile.py`.
 
 
 ### Preventing Some Scripts from Compiling
-Place them outside `debug/js_dev`.
+Place them outside `development/js_dev`.
 Scripts that are in it will be compiled and removed in production.
 
 

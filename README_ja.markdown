@@ -19,10 +19,10 @@ Closure Library スターターキット は、Closure Library に不慣れな�
 
 
 ### ディレクトリ構成
-- closure/ ... ダウンロードした Closure Tools を格納する
-- debug/ ..... 開発用のディレクトリ
-- release/ ... 本番用のディレクトリ
-- tools/ ..... 便利なツール群
+- closure/ ....... ダウンロードした Closure Tools を格納する
+- development/ ... 開発用のディレクトリ
+- production/ .... 本番用のディレクトリ
+- tools/ ......... 便利なツール群
 
 
 作業の流れ
@@ -34,10 +34,10 @@ Closure Library スターターキット は、Closure Library に不慣れな�
         (`closure-starter-kit` ディレクトリに移動してから)
         $ python tools/setup.py
 
-2. `debug/` ディレクトリで開発する
+2. `development/` ディレクトリで開発する
 
-    `debug/js_dev` ディレクトリ下の既存のコードを修正したり、新たに追加したり
-    してください。
+    `development/js_dev` ディレクトリ下の既存のコードを修正したり、新たに
+    追加したりしてください。
 
     スクリプトを追加/削除したあとは、依存情報の更新が必要です。
     以下のコマンドを実行してください。
@@ -52,7 +52,7 @@ Closure Library スターターキット は、Closure Library に不慣れな�
 
         $ python tools/compile.py
 
-    コンパイルに成功すると、 `release/` ディレクトリに出力されます。
+    コンパイルに成功すると、 `production/` ディレクトリに出力されます。
 
 
 小技
@@ -61,8 +61,8 @@ Closure Library スターターキット は、Closure Library に不慣れな�
 Mainクラスの名前空間(初期値はcom.mycompany)を変更するには、以下のファイルに
 含まれる名前空間をすべて置換してください。
 
-- debug/index.html
-- debug/js_dev/main.js
+- development/index.html
+- development/js_dev/main.js
 - tools/compile.py
 
 変更後は、依存情報を更新することをお忘れなく。
@@ -75,7 +75,7 @@ Mainクラスの名前空間(初期値はcom.mycompany)を変更するには、�
 
 
 ### コンパイルしたくないスクリプトがある
-`debug/js_dev` ディレクトリ以外の場所に配置してください。
+`development/js_dev` ディレクトリ以外の場所に配置してください。
 本番用では、このディレクトリ内のファイルはすべてコンパイル・統合されたのち、
 削除されてしまいます。
 
