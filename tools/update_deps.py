@@ -15,4 +15,5 @@ if __name__ == '__main__':
     config = cskconfig.CskConfig()
     config.load(CONFIG)
 
-    os.system('python %s --root_with_prefix="debug/js_dev ../../../../debug/js_dev" --output_file="debug/js_dev/deps.js"' % config.depswriter())
+    devel_dir = config.development_dir()
+    os.system('python %s --root_with_prefix="%s/js_dev ../../../../%s/js_dev" --output_file="%s/js_dev/deps.js"' % (config.depswriter(), devel_dir, devel_dir, devel_dir))

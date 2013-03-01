@@ -19,26 +19,35 @@ def rmtree_silent(path):
         pass
 
 
-def setup_release_files():
-    rmtree_silent('release')
+def setup_production_files(config):
+    devel_dir = config.development_dir()
+    prod_dir = config.production_dir()
 
-    shutil.copytree('debug', 'release')
-    os.system('python tools/sub/compile_index.py release/index.html ' + COMPILED_JS)
+    rmtree_silent(prod_dir)
+
+    shutil.copytree(devel_dir, prod_dir)
+
+    prod_index = os.path.join(prod_dir, 'index.html')
+    os.system('python tools/sub/compile_index.py %s %s' % (prod_index, COMPILED_JS))
 
 
 def compile_scripts(config):
-    os.remove('release/js_dev/deps.js')
+    prod_dir = config.production_dir()
+    js_dev_dir = os.path.join(prod_dir, 'js_dev')
+    prod_compiled_js = os.path.join(prod_dir, COMPILED_JS)
+
+    os.remove(os.path.join(js_dev_dir, 'deps.js'))
 
     args = [
             '--root=' + config.library_dir(),
-            '--root=release/js_dev',
+            '--root=' + js_dev_dir,
             '-n ' + NAMESPACE_MAIN,
             '-o compiled',
             '-c ' + config.compiler(),
             '--compiler_flags=' + COMPILER_FLAGS,
-            '--output_file=release/' + COMPILED_JS]
+            '--output_file=' + prod_compiled_js]
     os.system('python %s %s' % (config.closurebuilder(), ' '.join(args)))
-    rmtree_silent('release/js_dev')
+    rmtree_silent(js_dev_dir)
 
 
 if __name__ == '__main__':
@@ -48,5 +57,5 @@ if __name__ == '__main__':
     config = cskconfig.CskConfig()
     config.load(CONFIG)
 
-    setup_release_files()
+    setup_production_files(config)
     compile_scripts(config)

@@ -31,3 +31,9 @@ class CskConfig(object):
     def compiler(self):
         dir = self.compiler_dir()
         return os.path.join(dir, 'compiler.jar')
+
+    def development_dir(self):
+        return self.parser.get('path', 'development')
+
+    def production_dir(self):
+        return self.parser.get('path', 'production')
