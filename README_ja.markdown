@@ -4,18 +4,18 @@ Closure Library スターターキット
 
 概要
 ----
-Closure Library スターターキット は、Closure Library に不慣れな方向けの
-スターターキットです。
-このキットを使うことで、初期設定、開発、コンパイルという一連の流れを、
-より手軽に行うことができます。
+Closure Library スターターキット は、環境構築が面倒な Closure Library を手軽に
+使いはじめるためのキットです。
+コマンドをひとつ実行するだけで初期設定が終わるので、すぐに開発がはじめられます。
+リリース用のコンパイルも、コマンドひとつでOKです。
 
 
 ### 動作環境
 以下のプログラムが必要です。
 お手元の環境にない場合は、あらかじめインストールしておいてください。
 
-- git/svn ... Closure Library をダウンロードする
-- python .... Closure Tools を実行する
+- Git or Subversion ... Closure Library をダウンロードする
+- Python .............. Closure Tools を実行する
 
 
 ### ディレクトリ構成
