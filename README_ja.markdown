@@ -85,5 +85,6 @@ Mainクラスの名前空間(初期値はcom.mycompany)を変更するには、�
 ### 作者
 cocopon (cocopon@me.com)
 
+
 ### ライセンス
 MIT License です。詳細については、 `LICENSE.txt` を参照してください。
