@@ -27,8 +27,9 @@ def setup_production_files(config):
 
     shutil.copytree(devel_dir, prod_dir)
 
-    prod_index = os.path.join(prod_dir, 'index.html')
-    os.system('python tools/sub/compile_index.py %s %s' % (prod_index, COMPILED_JS))
+    subtool_compile_index = os.path.join('tools', 'sub', 'compile_index.py')
+    prod_index_html = os.path.join(prod_dir, 'index.html')
+    os.system('python %s %s %s' % (subtool_compile_index, prod_index_html, COMPILED_JS))
 
 
 def compile_scripts(config):

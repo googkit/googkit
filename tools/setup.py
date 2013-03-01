@@ -33,10 +33,15 @@ def setup_closure_library(config):
 def setup_closure_compiler(config):
     os.makedirs('tmp')
 
-    os.system('python tools/sub/download.py %s tmp/compiler.zip' % COMPILER_SVN_REPOS)
+    subtool_download = os.path.join('tools', 'sub', 'download.py')
+    compiler_zip = os.path.join('tmp', 'compiler.zip')
+    os.system('python %s %s %s' % (subtool_download, COMPILER_SVN_REPOS, compiler_zip))
 
-    os.makedirs('closure/compiler')
-    os.system('python tools/sub/unzip.py tmp/compiler.zip ' + config.compiler_dir())
+    compiler_dir = config.compiler_dir()
+    os.makedirs(compiler_dir)
+
+    subtool_unzip = os.path.join('tools', 'sub', 'unzip.py')
+    os.system('python %s %s %s' % (subtool_unzip, compiler_zip, compiler_dir))
 
     shutil.rmtree('tmp')
 

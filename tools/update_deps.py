@@ -16,4 +16,8 @@ if __name__ == '__main__':
     config.load(CONFIG)
 
     devel_dir = config.development_dir()
-    os.system('python %s --root_with_prefix="%s/js_dev ../../../../%s/js_dev" --output_file="%s/js_dev/deps.js"' % (config.depswriter(), devel_dir, devel_dir, devel_dir))
+    js_dev_dir = os.path.join(devel_dir, 'js_dev')
+    js_dev_dir_rel = os.path.join('..', '..', '..', '..', js_dev_dir)
+    deps_js = os.path.join(js_dev_dir, 'deps.js')
+
+    os.system('python %s --root_with_prefix="%s %s" --output_file="%s"' % (config.depswriter(), js_dev_dir, js_dev_dir_rel, deps_js))
