@@ -28,6 +28,10 @@ class CskConfig(object):
         dir = self.library_dir()
         return os.path.join(dir, 'closure', 'bin', 'build', 'depswriter.py')
 
+    def base_js(self):
+        dir = self.library_dir()
+        return os.path.join(dir, 'closure', 'goog', 'base.js')
+
     def compiler(self):
         dir = self.compiler_dir()
         return os.path.join(dir, 'compiler.jar')
