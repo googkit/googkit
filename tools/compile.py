@@ -2,7 +2,6 @@
 
 
 CONFIG = 'config.cfg'
-COMPILER_FLAGS = '--compilation_level=ADVANCED_OPTIMIZATIONS'
 COMPILED_JS = 'script.min.js'
 NAMESPACE_MAIN = 'com.mycompany.Main'
 
