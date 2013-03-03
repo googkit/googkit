@@ -87,4 +87,5 @@ cocopon (cocopon@me.com)
 
 
 ### ライセンス
-MIT License です。詳細については、 `LICENSE.txt` を参照してください。
+含まれるツールについては、 MIT License で配布しています。
+詳細は `LICENSE.txt` を参照してください。
