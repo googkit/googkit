@@ -5,18 +5,30 @@ import re
 import sys
 
 
+def line_indent(line):
+    indent = ''
+    m = re.search(r'^(\s*)', line)
+    if len(m.groups()) >= 1:
+        indent = m.group(1)
+
+    return indent
+
+
 def compile_index_html(path, compiled_js_path):
     lines = []
 
     for line in open(path):
         # Remove lines that requires unneeded scripts
-        if re.search(r'closure/goog/base\.js', line) is not None:
+        if line.find('<!--@base_js@-->') >= 0:
             continue
-        if re.search(r'goog\.require', line) is not None:
+        if line.find('/*@require_main@*/') >= 0:
             continue
 
         # Replace deps.js by a compiled script
-        line = re.sub(r'js_dev/deps\.js', compiled_js_path, line)
+        if line.find('<!--@deps_js@-->') >= 0:
+            indent = line_indent(line)
+            line = '%s<script type="text/javascript" src="%s"></script>\n' % (indent, compiled_js_path)
+
         lines.append(line)
 
     with open(path, 'w') as f:
