@@ -54,7 +54,7 @@ Getting Started
 Tips
 ----
 ### Changing Namespace of Main Class
-If you want to change the default namespace of Main class (com.mycompany.Main),
+If you want to change the default namespace of Main class (`foo.Main`),
 change `main_namespace=` in the config file.
 
 After changing, don't forget to apply changes and update dependency information.

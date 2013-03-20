@@ -1,4 +1,4 @@
-goog.provide('com.mycompany.Example');
+goog.provide('foo.Example');
 
 goog.require('goog.array');
 goog.require('goog.dom');
@@ -7,14 +7,14 @@ goog.require('goog.dom');
 /**
  * An example class of the starter kit.
  */
-com.mycompany.Example = function() {
+foo.Example = function() {
 };
 
 
 /**
  * Does something.
  */
-com.mycompany.Example.prototype.doSomething = function() {
+foo.Example.prototype.doSomething = function() {
   var nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   var expr = nums.join(' + ');
   var total = 0;
