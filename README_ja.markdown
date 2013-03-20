@@ -58,15 +58,12 @@ Closure Library スターターキット は、環境構築が面倒な Closure 
 小技
 ----
 ### Mainクラスの名前空間を変更する
-Mainクラスの名前空間(初期値はcom.mycompany)を変更するには、以下のファイルに
-含まれる名前空間をすべて置換してください。
+Mainクラスの名前空間(初期値はcom.mycompany)を変更するには、設定ファイルの
+`main_namespace` を変更してください。
 
-- development/index.html
-- development/js_dev/main.js
-- tools/compile.py
+変更後は、設定の反映と依存情報の更新をお忘れなく。
 
-変更後は、依存情報を更新することをお忘れなく。
-
+    $ python tools/apply_config.py
     $ python tools/update_deps.py
 
 

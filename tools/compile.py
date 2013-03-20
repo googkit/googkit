@@ -3,7 +3,6 @@
 
 CONFIG = 'config.cfg'
 COMPILED_JS = 'script.min.js'
-NAMESPACE_MAIN = 'com.mycompany.Main'
 
 
 import os
@@ -39,9 +38,9 @@ def compile_scripts(config):
     os.remove(os.path.join(js_dev_dir, 'deps.js'))
 
     args = [
-            '--root=' + config.library_dir(),
+            '--root=' + config.library_local_root(),
             '--root=' + js_dev_dir,
-            '-n ' + NAMESPACE_MAIN,
+            '-n ' + config.main_namespace(),
             '-o compiled',
             '-c ' + config.compiler(),
             '--compiler_flags=--compilation_level=' + config.compilation_level(),

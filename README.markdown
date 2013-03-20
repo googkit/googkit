@@ -55,14 +55,11 @@ Tips
 ----
 ### Changing Namespace of Main Class
 If you want to change the default namespace of Main class (com.mycompany.Main),
-replace all namespaces in following files:
+change `main_namespace=` in the config file.
 
-- development/index.html
-- development/js_dev/main.js
-- tools/compile.py
+After changing, don't forget to apply changes and update dependency information.
 
-After changing, don't forget to update dependency information.
-
+    $ python tools/apply_config.py
     $ python tools/update_deps.py
 
 
@@ -82,5 +79,5 @@ cocopon (cocopon@me.com)
 
 
 ### License
-The tools are licensed under MIT License.
+These tools are licensed under MIT License.
 See `LICENSE.txt` for more information.

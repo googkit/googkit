@@ -14,33 +14,38 @@ class CskConfig(object):
 
         self.parser = parser
 
-    def library_dir(self):
-        return self.parser.get('path', 'library')
+    def main_namespace(self):
+        return self.parser.get('project', 'main_namespace')
 
-    def compiler_dir(self):
-        return self.parser.get('path', 'compiler')
+    def development_dir(self):
+        return self.parser.get('project', 'development')
+
+    def production_dir(self):
+        return self.parser.get('project', 'production')
+
+    def library_local_root(self):
+        return self.parser.get('library', 'local_root')
+
+    def library_global_root(self):
+        return self.parser.get('library', 'global_root')
+
+    def compiler_root(self):
+        return self.parser.get('compiler', 'root')
 
     def closurebuilder(self):
-        dir = self.library_dir()
+        dir = self.library_local_root()
         return os.path.join(dir, 'closure', 'bin', 'build', 'closurebuilder.py')
 
     def depswriter(self):
-        dir = self.library_dir()
+        dir = self.library_local_root()
         return os.path.join(dir, 'closure', 'bin', 'build', 'depswriter.py')
-
-    def base_js(self):
-        dir = self.library_dir()
+    def local_base_js(self):
+        dir = self.library_local_root()
         return os.path.join(dir, 'closure', 'goog', 'base.js')
 
     def compiler(self):
-        dir = self.compiler_dir()
+        dir = self.compiler_root()
         return os.path.join(dir, 'compiler.jar')
-
-    def development_dir(self):
-        return self.parser.get('path', 'development')
-
-    def production_dir(self):
-        return self.parser.get('path', 'production')
 
     def compilation_level(self):
         return self.parser.get('compiler', 'compilation_level')
