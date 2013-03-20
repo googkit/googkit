@@ -5,7 +5,7 @@ import os
 import cskconfig
 
 
-CONFIG = os.path.join('tools', 'config.cfg')
+CONFIG = os.path.join('tools', 'tools.cfg')
 
 
 if __name__ == '__main__':

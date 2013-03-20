@@ -6,7 +6,7 @@ import shutil
 import cskconfig
 
 
-CONFIG = os.path.join('tools', 'config.cfg')
+CONFIG = os.path.join('tools', 'tools.cfg')
 
 
 def rmtree_silent(path):
