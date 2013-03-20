@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 
-CONFIG = 'config.cfg'
-COMPILED_JS = 'script.min.js'
-
-
 import os
 import shutil
 import cskconfig
+
+
+CONFIG = os.path.join('tools', 'config.cfg')
+COMPILED_JS = 'script.min.js'
 
 
 def rmtree_silent(path):

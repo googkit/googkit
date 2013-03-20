@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
 
-CONFIG = 'config.cfg'
-LIBRARY_SVN_REPOS = 'http://closure-library.googlecode.com/svn/trunk'
-LIBRARY_GIT_REPOS = 'https://github.com/jarib/google-closure-library'
-COMPILER_SVN_REPOS = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
-
-
 import os
 import os.path
 import shutil
 import cskconfig
+
+
+CONFIG = os.path.join('tools', 'config.cfg')
+LIBRARY_SVN_REPOS = 'http://closure-library.googlecode.com/svn/trunk'
+LIBRARY_GIT_REPOS = 'https://github.com/jarib/google-closure-library'
+COMPILER_SVN_REPOS = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
 
 
 def command_exists(command):

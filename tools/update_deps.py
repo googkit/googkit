@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 
-CONFIG = 'config.cfg'
-
-
 import os
 import cskconfig
+
+
+CONFIG = os.path.join('tools', 'config.cfg')
 
 
 if __name__ == '__main__':

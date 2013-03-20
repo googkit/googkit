@@ -7,7 +7,7 @@ import re
 import cskconfig
 
 
-CONFIG = 'config.cfg'
+CONFIG = os.path.join('tools', 'config.cfg')
 
 
 def line_indent(line):
