@@ -7,7 +7,6 @@ import cskconfig
 
 
 CONFIG = os.path.join('tools', 'config.cfg')
-COMPILED_JS = 'script.min.js'
 
 
 def rmtree_silent(path):
@@ -27,13 +26,15 @@ def setup_production_files(config):
 
     subtool_compile_index = os.path.join('tools', 'sub', 'compile_index.py')
     prod_index_html = os.path.join(prod_dir, 'index.html')
-    os.system('python %s %s %s' % (subtool_compile_index, prod_index_html, COMPILED_JS))
+    compiled_js = config.compiled_js()
+    os.system('python %s %s %s' % (subtool_compile_index, prod_index_html, compiled_js))
 
 
 def compile_scripts(config):
     prod_dir = config.production_dir()
     js_dev_dir = os.path.join(prod_dir, 'js_dev')
-    prod_compiled_js = os.path.join(prod_dir, COMPILED_JS)
+    compiled_js = config.compiled_js()
+    prod_compiled_js = os.path.join(prod_dir, compiled_js)
 
     os.remove(os.path.join(js_dev_dir, 'deps.js'))
 

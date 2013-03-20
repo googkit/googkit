@@ -55,7 +55,7 @@ Tips
 ----
 ### Changing Namespace of Main Class
 If you want to change the default namespace of Main class (`foo.Main`),
-change `main_namespace=` in the config file.
+change `main_namespace` in `tools/config.cfg`.
 
 After changing, don't forget to apply changes and update dependency information.
 
@@ -64,7 +64,7 @@ After changing, don't forget to apply changes and update dependency information.
 
 
 ### Rename a Compiled Script
-Edit `COMPILED_JS` in `tools/compile.py`.
+Edit `compiled_js` in `tools/config.cfg`.
 
 
 ### Preventing Some Scripts from Compiling

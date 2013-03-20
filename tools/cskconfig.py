@@ -23,6 +23,9 @@ class CskConfig(object):
     def production_dir(self):
         return self.parser.get('project', 'production')
 
+    def compiled_js(self):
+        return self.parser.get('project', 'compiled_js')
+
     def library_local_root(self):
         return self.parser.get('library', 'local_root')
 
@@ -39,6 +42,7 @@ class CskConfig(object):
     def depswriter(self):
         dir = self.library_local_root()
         return os.path.join(dir, 'closure', 'bin', 'build', 'depswriter.py')
+
     def local_base_js(self):
         dir = self.library_local_root()
         return os.path.join(dir, 'closure', 'goog', 'base.js')

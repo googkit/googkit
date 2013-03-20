@@ -58,7 +58,7 @@ Closure Library スターターキット は、環境構築が面倒な Closure 
 小技
 ----
 ### Mainクラスの名前空間を変更する
-Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、設定ファイルの
+Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`tools/config.cfg` の
 `main_namespace` を変更してください。
 
 変更後は、設定の反映と依存情報の更新をお忘れなく。
@@ -68,7 +68,7 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、設�
 
 
 ### コンパイル後のファイル名を変更する
-`tools/compile.py` の `COMPILED_JS` を修正してください。
+`tools/config.cfg` の `compiled_js` を修正してください。
 
 
 ### コンパイルしたくないスクリプトがある
