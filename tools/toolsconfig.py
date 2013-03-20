@@ -2,7 +2,7 @@ import ConfigParser
 import os
 
 
-class CskConfig(object):
+class ToolsConfig(object):
     def __init__(self):
         pass
 

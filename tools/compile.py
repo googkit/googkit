@@ -3,7 +3,7 @@
 
 import os
 import shutil
-import cskconfig
+import toolsconfig
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     os.chdir(basedir)
 
-    config = cskconfig.CskConfig()
+    config = toolsconfig.ToolsConfig()
     config.load(CONFIG)
 
     setup_production_files(config)
