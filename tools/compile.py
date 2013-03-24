@@ -2,11 +2,13 @@
 
 
 import os
+import re
 import shutil
 import toolsconfig
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
+COMPILE_TARGET_PATTERN = r'\.(html|xhtml)$'
 
 
 def rmtree_silent(path):
@@ -16,18 +18,52 @@ def rmtree_silent(path):
         pass
 
 
+def line_indent(line):
+    indent = ''
+    m = re.search(r'^(\s*)', line)
+    if len(m.groups()) >= 1:
+        indent = m.group(1)
+
+    return indent
+
+
+def compile_resource(path, compiled_js_path):
+    lines = []
+
+    for line in open(path):
+        # Remove lines that requires unneeded scripts
+        if line.find('<!--@base_js@-->') >= 0:
+            continue
+        if line.find('/*@require_main@*/') >= 0:
+            continue
+
+        # Replace deps.js by a compiled script
+        if line.find('<!--@deps_js@-->') >= 0:
+            indent = line_indent(line)
+            line = '%s<script type="text/javascript" src="%s"></script>\n' % (indent, compiled_js_path)
+
+        lines.append(line)
+
+    with open(path, 'w') as f:
+        for line in lines:
+            f.write(line)
+
+
 def setup_production_files(config):
     devel_dir = config.development_dir()
     prod_dir = config.production_dir()
+    compiled_js = config.compiled_js()
 
     rmtree_silent(prod_dir)
-
     shutil.copytree(devel_dir, prod_dir)
 
-    subtool_compile_index = os.path.join('tools', 'sub', 'compile_index.py')
-    prod_index_html = os.path.join(prod_dir, 'index.html')
-    compiled_js = config.compiled_js()
-    os.system('python %s %s %s' % (subtool_compile_index, prod_index_html, compiled_js))
+    for root, dirs, files in os.walk(prod_dir):
+        for file in files:
+            path = os.path.join(root, file)
+            if re.search(COMPILE_TARGET_PATTERN, path) is None:
+                continue
+
+            compile_resource(path, compiled_js)
 
 
 def compile_scripts(config):
