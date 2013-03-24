@@ -1,10 +1,10 @@
-Closure Library Starter Kit
-===========================
+goog-starter-kit
+================
 
 
 Overview
 --------
-Closure Library Starter Kit is a starter kit for Closure Library newbies
+goog-starter-kit is a starter kit for Google Closure Library newbies
 (including me!).
 You can easily setup, develop, and compile using convenient tools.
 
@@ -30,7 +30,7 @@ Getting Started
 
     Enter following commands in the terminal:
 
-        (in `closure-starter-kit` directory)
+        (in `goog-starter-kit` directory)
         $ python tools/setup.py
 
 2. Develop Your Web App in `development/`

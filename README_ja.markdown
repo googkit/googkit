@@ -1,11 +1,11 @@
-Closure Library スターターキット
-================================
+goog-starter-kit
+================
 
 
 概要
 ----
-Closure Library スターターキット は、環境構築が面倒な Closure Library を手軽に
-使いはじめるためのキットです。
+goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
+使いはじめるためのツールセットです。
 コマンドをひとつ実行するだけで初期設定が終わるので、すぐに開発がはじめられます。
 リリース用のコンパイルも、コマンドひとつでOKです。
 
@@ -31,7 +31,7 @@ Closure Library スターターキット は、環境構築が面倒な Closure 
 
     ターミナルを開き、以下のコマンドを実行します。
 
-        (`closure-starter-kit` ディレクトリに移動してから)
+        (`goog-starter-kit` ディレクトリに移動してから)
         $ python tools/setup.py
 
 2. `development/` ディレクトリで開発する
