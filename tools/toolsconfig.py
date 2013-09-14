@@ -20,11 +20,17 @@ class ToolsConfig(object):
     def development_dir(self):
         return self.parser.get('project', 'development')
 
+    def debug_dir(self):
+        return self.parser.get('project', 'debug')
+
     def production_dir(self):
         return self.parser.get('project', 'production')
 
     def compiled_js(self):
         return self.parser.get('project', 'compiled_js')
+
+    def is_debug_enabled(self):
+        return self.parser.getboolean('project', 'is_debug_enabled')
 
     def library_local_root(self):
         return self.parser.get('library', 'local_root')
