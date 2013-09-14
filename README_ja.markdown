@@ -21,6 +21,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 ### ディレクトリ構成
 - closure/ ....... ダウンロードした Closure Tools を格納する
 - development/ ... 開発用のディレクトリ
+- debug/ ......... デバッグ用のディレクトリ(`tools/tools.cfg`の`is_debug_enabled`が`yes`のときのみ存在)
 - production/ .... 本番用のディレクトリ
 - tools/ ......... 便利なツール群
 
@@ -77,8 +78,15 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`too
 削除されてしまいます。
 
 
-### SourceMap を使う
-goog-starter-kitは SourceMap をサポートしており、[SourceMap V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1) に対応しているブラウザをお使いであれば SourceMap を使うことができます。
+### コンパイル後のスクリプトをデバッグする
+もし、コンパイル後のスクリプトをデバッグしたければ `tools/tools.cfg` の `is_debug_enabled` を `yes` にしてください。
+デバッグが有効だと Source Map や Closure Library のデバッグ機能が動作する `debug/` ディレクトリが作成されます。しかし、コンパイルに時間がかかります。
+
+
+#### Source Map を使う
+goog-starter-kitは Source Map をサポートしており、[Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1) に対応しているブラウザをお使いであれば Source Map を使うことができます。Source Map ファイルは `debug/` ディレクトリに `script.min.js.map` のように保存されます。
+
+ちなみに `production/` ディレクトリに Source Map は **保存されません** 。これは、難読性を保つための措置です。
 
 
 その他

@@ -20,6 +20,7 @@ Install them if not installed yet.
 ### Directory Structure
 - closure/ ....... Stores Closure Tools
 - development/ ... For development
+- debug/ ......... For debug (it exists when `is_debug_enabled` in `tools/tools.cfg` is `yes`)
 - production/ .... For production
 - tools/ ......... Contains convenient tools
 
@@ -72,9 +73,15 @@ Place them outside `development/js_dev`.
 Scripts that are in it will be compiled and removed in production.
 
 
-### Using source map
-This kit support compilation with a source map (the source map file will be stored in `production/` as `script.min.js.map`).
-You can use [SourceMap V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1), if your browser was support it.
+### Debug the Compiled Source
+If you want to debug compiled script, change `is_debug_enabled` to `yes` in `tools/tools.cfg`.
+If debug is enabled, you can use source map and debugging features by Closure Library in `debug/`, but it makes compilation slow.
+
+
+#### Using Source Map
+This kit support compilation with a source map (the source map file will be stored in `debug/` as `script.min.js.map`). You can use [Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1), if your browser was support it.
+
+Additionaly, source map will be **NOT** stored in `production/` for obfuscation.
 
 
 Misc
