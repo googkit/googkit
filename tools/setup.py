@@ -10,7 +10,7 @@ import toolsconfig
 CONFIG = os.path.join('tools', 'tools.cfg')
 LIBRARY_GIT_REPOS = 'https://code.google.com/p/closure-library/'
 LIBRARY_SVN_REPOS = 'http://closure-library.googlecode.com/svn/trunk'
-COMPILER_SVN_REPOS = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
+COMPILER_LATEST_ZIP = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
 
 
 def command_exists(command):
@@ -35,7 +35,7 @@ def setup_closure_compiler(config):
 
     subtool_download = os.path.join('tools', 'sub', 'download.py')
     compiler_zip = os.path.join('tmp', 'compiler.zip')
-    os.system('python %s %s %s' % (subtool_download, COMPILER_SVN_REPOS, compiler_zip))
+    os.system('python %s %s %s' % (subtool_download, COMPILER_LATEST_ZIP, compiler_zip))
 
     compiler_root = config.compiler_root()
     os.makedirs(compiler_root)
