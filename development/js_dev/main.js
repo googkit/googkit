@@ -1,3 +1,8 @@
+/**
+ * @fileoverview An entry point for the web app.
+ */
+
+
 goog.provide('foo.main');/*@provide_main@*/
 
 goog.require('foo.Example');
@@ -14,4 +19,4 @@ foo.main = function() {/*@main_fn@*/
 
 
 // Start the web app.
-foo.main();
+foo.main();/*@exec_main@*/
