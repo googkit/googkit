@@ -77,11 +77,17 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`too
 削除されてしまいます。
 
 
+### SourceMap を使う
+goog-starter-kitは SourceMap をサポートしており、[SourceMap V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1) に対応しているブラウザをお使いであれば SourceMap を使うことができます。
+
+
 その他
 ------
 ### 作者
 cocopon (cocopon@me.com)
 
+### 共同開発者
+OrgaChem (orga.chem.job@gmail.com)
 
 ### ライセンス
 含まれるツールについては、 MIT License で配布しています。

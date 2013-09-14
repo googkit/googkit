@@ -72,11 +72,18 @@ Place them outside `development/js_dev`.
 Scripts that are in it will be compiled and removed in production.
 
 
+### Using source map
+This kit support compilation with a source map (the source map file will be stored in `production/` as `script.min.js.map`).
+You can use [SourceMap V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1), if your browser was support it.
+
+
 Misc
 ----
 ### Author
 cocopon (cocopon@me.com)
 
+### Contributors
+OrgaChem (orga.chem.job@gmail.com)
 
 ### License
 These tools are licensed under MIT License.
