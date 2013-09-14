@@ -5,6 +5,7 @@ import os
 import re
 import shutil
 import toolsconfig
+import json
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
@@ -67,23 +68,49 @@ def setup_production_files(config):
 
 
 def compile_scripts(config):
+    devel_dir = config.development_dir()
     prod_dir = config.production_dir()
-    js_dev_dir = os.path.join(prod_dir, 'js_dev')
+    js_dev_dir = os.path.join(devel_dir, 'js_dev')
     compiled_js = config.compiled_js()
     prod_compiled_js = os.path.join(prod_dir, compiled_js)
 
-    os.remove(os.path.join(js_dev_dir, 'deps.js'))
+    source_map = compiled_js + '.map'
+    prod_source_map = os.path.join(prod_dir, source_map)
+    rmtree_silent(os.path.join(prod_dir, 'js_dev'))
 
     args = [
             '--root=' + config.library_local_root(),
             '--root=' + js_dev_dir,
-            '-n ' + config.main_namespace(),
-            '-o compiled',
-            '-c ' + config.compiler(),
+            '--namespace=' + config.main_namespace(),
+            '--output_mode=compiled',
+            '--compiler_jar=' + config.compiler(),
             '--compiler_flags=--compilation_level=' + config.compilation_level(),
+            '--compiler_flags=--source_map_format=V3',
+            '--compiler_flags=--create_source_map=' + prod_source_map,
+            '--compiler_flags=--output_wrapper="%output%//# sourceMappingURL=' + source_map + '"',
             '--output_file=' + prod_compiled_js]
     os.system('python %s %s' % (config.closurebuilder(), ' '.join(args)))
-    rmtree_silent(js_dev_dir)
+
+    # In default, the source map file marks original sources to the same directory as "production".
+    # But the original sources are in "closure" or "development/js_dev", so we should set a source
+    # map attribute as "sourceRoot" to fix the original source paths.
+    # But cannot set the "sourceRoot" by Closure Compiler yet, so "modify_source_map" does it
+    # until Closure Compiler support "sourceRoot".
+    modify_source_map(config)
+
+
+def modify_source_map(config):
+    prod_dir = config.production_dir()
+    source_map = config.compiled_js() + '.map'
+    prod_source_map = os.path.join(prod_dir, source_map)
+
+    with open(prod_source_map, 'r+') as source_map_file:
+        source_map_content = json.load(source_map_file)
+        source_map_content['sourceRoot'] = '../'
+
+        source_map_file.seek(0)
+        json.dump(source_map_content, source_map_file)
+        source_map_file.truncate()
 
 
 if __name__ == '__main__':
