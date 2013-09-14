@@ -34,11 +34,11 @@ def compile_resource(path, compiled_js_path):
         # Remove lines that requires unneeded scripts
         if line.find('<!--@base_js@-->') >= 0:
             continue
-        if line.find('/*@require_main@*/') >= 0:
+        if line.find('<!--@deps_js@-->') >= 0:
             continue
 
         # Replace deps.js by a compiled script
-        if line.find('<!--@deps_js@-->') >= 0:
+        if line.find('<!--@require_main@-->') >= 0:
             indent = line_indent(line)
             line = '%s<script type="text/javascript" src="%s"></script>\n' % (indent, compiled_js_path)
 

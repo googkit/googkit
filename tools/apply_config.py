@@ -26,7 +26,7 @@ def update_base_js(line, config):
 
 def update_require_main(line, config):
     namespace = config.main_namespace()
-    return 'goog.require(\'%s\');' % namespace
+    return '<script type="text/javascript"> goog.require(\'%s\'); </script>' % namespace
 
 
 def update_exec_main(line, config):
@@ -44,20 +44,14 @@ def update_main_fn(line, config):
     return '%s = function() {' % namespace
 
 
-def update_export_main(line, config):
-    namespace = config.main_namespace()
-    return 'goog.exportSymbol(\'%s\', %s);' % (namespace, namespace)
-
-
 def apply_config(path, config):
     lines = []
     updaters = {
             '<!--@base_js@-->': update_base_js,
             '/*@exec_main@*/': update_exec_main,
-            '/*@export_main@*/': update_export_main,
             '/*@main_fn@*/': update_main_fn,
             '/*@provide_main@*/': update_provide_main,
-            '/*@require_main@*/': update_require_main}
+            '<!--@require_main@-->': update_require_main}
     markers = updaters.keys()
 
     for line in open(path):
