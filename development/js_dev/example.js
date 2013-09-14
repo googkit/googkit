@@ -6,6 +6,7 @@ goog.require('goog.dom');
 
 /**
  * An example class of the starter kit.
+ * @constructor
  */
 foo.Example = function() {
 };
