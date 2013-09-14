@@ -8,8 +8,8 @@ import toolsconfig
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
+LIBRARY_GIT_REPOS = 'https://code.google.com/p/closure-library/'
 LIBRARY_SVN_REPOS = 'http://closure-library.googlecode.com/svn/trunk'
-LIBRARY_GIT_REPOS = 'https://github.com/jarib/google-closure-library'
 COMPILER_SVN_REPOS = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
 
 
@@ -20,10 +20,10 @@ def command_exists(command):
 
 
 def setup_closure_library(config):
-    if command_exists('svn'):
-        os.system('svn checkout %s %s' % (LIBRARY_SVN_REPOS, config.library_local_root()))
-    elif command_exists('git'):
+    if command_exists('git'):
         os.system('git clone %s %s' % (LIBRARY_GIT_REPOS, config.library_local_root()))
+    elif command_exists('svn'):
+        os.system('svn checkout %s %s' % (LIBRARY_SVN_REPOS, config.library_local_root()))
     else:
         print '[Error] Git or Subversion not found.'
         print 'Please install one of them to download Closure Library.'
