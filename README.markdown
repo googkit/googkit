@@ -20,7 +20,7 @@ Install them if not installed yet.
 ### Directory Structure
 - closure/ ....... Stores Closure Tools
 - development/ ... For development
-- debug/ ......... For debug (it exists when `is_debug_enabled` in `tools/tools.cfg` is `yes`)
+- debug/ ......... For debug (it will be created when `is_debug_enabled` is `yes` in `tools/tools.cfg`)
 - production/ .... For production
 - tools/ ......... Contains convenient tools
 
@@ -64,7 +64,7 @@ After changing, don't forget to apply changes and update dependency information.
     $ python tools/update_deps.py
 
 
-### Rename a Compiled Script
+### Renaming a Compiled Script
 Edit `compiled_js` in `tools/tools.cfg`.
 
 
@@ -73,15 +73,16 @@ Place them outside `development/js_dev`.
 Scripts that are in it will be compiled and removed in production.
 
 
-### Debug the Compiled Source
-If you want to debug compiled script, change `is_debug_enabled` to `yes` in `tools/tools.cfg`.
-If debug is enabled, you can use source map and debugging features by Closure Library in `debug/`, but it makes compilation slow.
+### Debugging a Compiled Source
+If you want to debug a compiled script, change `is_debug_enabled` to `yes` in `tools/tools.cfg`.
+Then you can use a source map and debugging features by Closure Library in `debug/`.
+This option makes compilation slow.
 
 
 #### Using Source Map
-This kit support compilation with a source map (the source map file will be stored in `debug/` as `script.min.js.map`). You can use [Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1), if your browser was support it.
+This kit generates a source map file `script.min.js.map` within `debug/`, so you can use [Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1) if your browser supports it.
 
-Additionaly, source map will be **NOT** stored in `production/` for obfuscation.
+For reason of obfuscation, source map file will **NOT** be stored in `production/`.
 
 
 Misc
