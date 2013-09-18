@@ -26,6 +26,9 @@ class ToolsConfig(object):
     def production_dir(self):
         return self.parser.get('project', 'production')
 
+    def test_file_pattern(self):
+        return self.parser.get('project', 'test_file_pattern')
+
     def compiled_js(self):
         return self.parser.get('project', 'compiled_js')
 

@@ -44,6 +44,11 @@ def update_main_fn(line, config):
     return '%s = function() {' % namespace
 
 
+def update_test_runner_css(line, config):
+    path = '/'.join([config.library_global_root(), 'closure', 'goog', 'css', 'multitestrunner.css'])
+    return '<link rel="stylesheet" type="text/css" href="%s">' % path
+
+
 def apply_config(path, config):
     lines = []
     updaters = {
@@ -51,7 +56,8 @@ def apply_config(path, config):
             '/*@exec_main@*/': update_exec_main,
             '/*@main_fn@*/': update_main_fn,
             '/*@provide_main@*/': update_provide_main,
-            '<!--@require_main@-->': update_require_main}
+            '<!--@require_main@-->': update_require_main,
+            '<!--@test_runner_css@-->'}: update_test_runner_css
     markers = updaters.keys()
 
     for line in open(path):
