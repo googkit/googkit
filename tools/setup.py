@@ -21,9 +21,9 @@ def command_exists(command):
 
 def setup_closure_library(config):
     if command_exists('git'):
-        os.system('git clone %s %s' % (LIBRARY_GIT_REPOS, config.library_local_root()))
+        os.system('git clone %s %s' % (LIBRARY_GIT_REPOS, config.library_root()))
     elif command_exists('svn'):
-        os.system('svn checkout %s %s' % (LIBRARY_SVN_REPOS, config.library_local_root()))
+        os.system('svn checkout %s %s' % (LIBRARY_SVN_REPOS, config.library_root()))
     else:
         print '[Error] Git or Subversion not found.'
         print 'Please install one of them to download Closure Library.'
