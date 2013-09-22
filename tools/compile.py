@@ -10,6 +10,7 @@ import json
 
 CONFIG = os.path.join('tools', 'tools.cfg')
 COMPILE_TARGET_PATTERN = r'\.(html|xhtml)$'
+JS_DEVELOPMENT_DIR = 'js_dev'
 
 
 def rmtree_silent(path):
@@ -56,7 +57,7 @@ def setup_files(config, target_dir):
 
     rmtree_silent(target_dir)
     shutil.copytree(devel_dir, target_dir)
-    rmtree_silent(os.path.join(target_dir, 'js_dev'))
+    rmtree_silent(os.path.join(target_dir, JS_DEVELOPMENT_DIR))
 
     for root, dirs, files in os.walk(target_dir):
         for file in files:
@@ -69,7 +70,7 @@ def setup_files(config, target_dir):
 
 def compile_scripts(config):
     devel_dir = config.development_dir()
-    js_dev_dir = os.path.join(devel_dir, 'js_dev')
+    js_dev_dir = os.path.join(devel_dir, JS_DEVELOPMENT_DIR)
     compiled_js = config.compiled_js()
 
     if config.is_debug_enabled():
