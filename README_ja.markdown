@@ -72,6 +72,35 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`too
 `tools/tools.cfg` の `compiled_js` を修正してください。
 
 
+### ユニットテストする
+goog-starter-kit は Closure Library のテストツールを利用したユニットテストをサポートしています。
+簡単に [jsunit の形式](http://www.infoq.com/jp/articles/javascript-tdd)でユニットテストを実行できます。
+
+1. [example_test.html](https://github.com/cocopon/goog-starter-kit/blob/master/development/js_dev/example_test.html) をユニットテスト対象と同じディレクトリにコピーする
+    
+    コピー後、このファイルを `{target_name}_test.html` となるようにリネームします。
+    テストファイルの名前は慣例的に `{target_name}_test.html` ですが、 `tool/tools.cfg` の `test_file_pattern` によって変更できます。
+
+2. テストファイルの設定を更新する
+
+    ターミナルを開き、以下のコマンドを実行します。
+
+        (`goog-starter-kit` ディレクトリに移動してから)
+        $ python tools/apply_config.py
+
+3. ユニットテストのコードを書く
+
+4. このファイルをブラウザで開く
+
+    すべてのテストを実行したければ `development/all_tests.html` に **http スキーム** でアクセスしてください（file スキームだとうまくいきません）。
+    また、このテストの前に依存情報の更新が必要です。
+    以下のコマンドを実行してください。
+
+        $ python tools/update_deps.py
+
+この HTML ファイルは慣例的に `{target_name}_test.html` という名前
+
+
 ### コンパイルしたくないスクリプトがある
 `development/js_dev` ディレクトリ以外の場所に配置してください。
 本番用では、このディレクトリ内のファイルはすべてコンパイル・統合されたのち、
