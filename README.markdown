@@ -68,31 +68,34 @@ After changing, don't forget to apply changes and update dependency information.
 Edit `compiled_js` in `tools/tools.cfg`.
 
 
-### Unit-testing
-This kit support unit-testing by Closure Library testing tools.
-You can easily unit-test your code with [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm).
+### Running Unit Tests
+This kit supports unit testing with Closure Library testing tools.
+You can easily run unit tests your code with [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm).
 
 1. Copy [example_test.html](https://github.com/cocopon/goog-starter-kit/blob/master/development/js_dev/example_test.html) into Where the Unit-Test Target is in
 
-    After copy the file, you should rename the file as `{target_name}_test.html`.
+    After copying the file, rename it to `{target_name}_test.html`.
     
     You can change the traditional name as `{target_name}_test.html` by `test_file_pattern` in `tools/tools.cfg`.
 
-2. Apply Configs for Unit-Testing
+2. Apply Config Changes
 
     Enter following commands in the terminal:
 
         (in `goog-starter-kit` directory)
         $ python tools/apply_config.py
 
-3. Write Your Code for Unit-Testing
+3. Write Unit Tests
 
-4. Open the File on Your Browser
+4. Update Dependency Information
 
-    If you want to test all, open `development/all_tests.html` on your browser by using **http scheme** (file scheme is unavailable).
-    And before the test, you need to update dependency information:
- 
+    Enter a following command in the terminal:
+
         $ python tools/update_deps.py
+
+5. Open the File in Your Browser
+
+    If you want to run all tests, open `development/all_tests.html` in your browser with **http scheme** (file scheme doesn't work).
 
 
 ### Preventing Some Scripts from Compiling
