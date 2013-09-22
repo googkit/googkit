@@ -9,8 +9,7 @@ import json
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
-COMPILE_TARGET_PATTERN = r'\.(html|xhtml)$'
-JS_DEVELOPMENT_DIR = 'js_dev'
+COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
 
 def rmtree_silent(path):
@@ -61,8 +60,9 @@ def setup_files(config, target_dir):
     devel_dir = config.development_dir()
     compiled_js = config.compiled_js()
 
-    # Avoid copy unnecessary files if exists in the development directory
+    # Avoid to copy unnecessary files for production
     ignores = (
+            config.testrunner(),
             config.library_root(),
             config.compiler_root(),
             config.js_dev_dir())
@@ -73,7 +73,8 @@ def setup_files(config, target_dir):
     for root, dirs, files in os.walk(target_dir):
         for file in files:
             path = os.path.join(root, file)
-            if re.search(COMPILE_TARGET_PATTERN, path) is None:
+            (base, ext) = os.path.splitext(path)
+            if ext not in COMPILE_TARGET_EXT:
                 continue
 
             compile_resource(path, compiled_js)
@@ -81,7 +82,7 @@ def setup_files(config, target_dir):
 
 def compile_scripts(config):
     devel_dir = config.development_dir()
-    js_dev_dir = os.path.join(devel_dir, JS_DEVELOPMENT_DIR)
+    js_dev_dir = config.js_dev_dir()
     compiled_js = config.compiled_js()
 
     if config.is_debug_enabled():
@@ -124,7 +125,7 @@ def compile_scripts(config):
             '--compiler_flags=--compilation_level=' + config.compilation_level(),
             '--compiler_flags=--define=goog.DEBUG=false',
             '--output_file=' + prod_compiled_js]
-    #os.system('python %s %s' % (config.closurebuilder(), ' '.join(prod_args)))
+    os.system('python %s %s' % (config.closurebuilder(), ' '.join(prod_args)))
 
 
 def modify_source_map(config):

@@ -8,6 +8,7 @@ import toolsconfig
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
+CONFIG_TARGET_EXT = ('.html', '.xhtml', '.js', '.css')
 
 
 def line_indent(line):
@@ -91,17 +92,25 @@ def apply_config(path, config):
 
 def apply_config_all(config):
     devel_dir = config.development_dir()
-    library_root_rel = os.path.relpath(config.library_root(), devel_dir)
-    library_root_rels = library_root_rel.split(os.path.sep)
+
+    # If library_root is in development_dir, we should avoid to walk into the library_root.
+    ignores = (
+            config.library_root(),
+            config.compiler_root())
 
     for root, dirs, files in os.walk(devel_dir):
-        for file in files:
-            path = os.path.join(root, file)
-            apply_config(path, config)
+        for filename in files:
+            (base, ext) = os.path.splitext(filename)
+            if ext not in CONFIG_TARGET_EXT:
+                continue
 
-        # Avoid to walk into Closure Library
-        if root is devel_dir and library_root_rels[0] in dirs:
-            dirs.remove(library_root_rels[0])
+            filepath = os.path.join(root, filename)
+            apply_config(filepath, config)
+
+        # Avoid to walk into ignores
+        for dirname in dirs:
+            if os.path.join(root, dirname) in ignores:
+                dirs.remove(dirname)
 
 
 if __name__ == '__main__':
