@@ -55,9 +55,20 @@ def setup_files(config, target_dir):
     devel_dir = config.development_dir()
     compiled_js = config.compiled_js()
 
+    library_root = config.library_root()
+    compiler_root = config.compiler_root()
+    devel_dir_len = len(devel_dir)
+    ignores = [ os.path.basename(config.js_dev_dir()) ]
+
+    if library_root[:devel_dir_len] is devel_dir:
+        ignores.append(ps.path.basename(library_root))
+
+    if compiler_root[:devel_dir_len] is devel_dir:
+        ignores.append(ps.path.basename(compiler_root))
+
     rmtree_silent(target_dir)
-    shutil.copytree(devel_dir, target_dir)
-    rmtree_silent(os.path.join(target_dir, JS_DEVELOPMENT_DIR))
+    shutil.copytree(devel_dir, target_dir, ignore = shutil.ignore_patterns(*ignores))
+    # rmtree_silent(os.path.join(target_dir, JS_DEVELOPMENT_DIR))
 
     for root, dirs, files in os.walk(target_dir):
         for file in files:
@@ -81,7 +92,7 @@ def compile_scripts(config):
         debug_source_map = os.path.join(debug_dir, source_map)
         debug_compiled_js = os.path.join(debug_dir, compiled_js)
         debug_args = [
-                '--root=' + config.library_local_root(),
+                '--root=' + config.library_root(),
                 '--root=' + js_dev_dir,
                 '--namespace=' + config.main_namespace(),
                 '--output_mode=compiled',
@@ -105,7 +116,7 @@ def compile_scripts(config):
     prod_dir = config.production_dir()
     prod_compiled_js = os.path.join(prod_dir, compiled_js)
     prod_args = [
-            '--root=' + config.library_local_root(),
+            '--root=' + config.library_root(),
             '--root=' + js_dev_dir,
             '--namespace=' + config.main_namespace(),
             '--output_mode=compiled',

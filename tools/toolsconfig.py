@@ -19,16 +19,20 @@ class ToolsConfig(object):
         return self.parser.get('project', 'main_namespace')
 
     def development_dir(self):
-        return self.parser.get('project', 'development')
+        path = self.parser.get('project', 'development')
+        return os.path.normpath(path)
 
     def debug_dir(self):
-        return self.parser.get('project', 'debug')
+        path = self.parser.get('project', 'debug')
+        return os.path.normpath(path)
 
     def production_dir(self):
-        return self.parser.get('project', 'production')
+        path = self.parser.get('project', 'production')
+        return os.path.normpath(path)
 
     def compiled_js(self):
-        return self.parser.get('project', 'compiled_js')
+        path = self.parser.get('project', 'compiled_js')
+        return os.path.normpath(path)
 
     def test_file_pattern(self):
         return self.parser.get('project', 'test_file_pattern')
@@ -36,26 +40,28 @@ class ToolsConfig(object):
     def is_debug_enabled(self):
         return self.parser.getboolean('project', 'is_debug_enabled')
 
-    def library_local_root(self):
-        return self.parser.get('library', 'local_root')
+    def library_root(self):
+        path = self.parser.get('library', 'root')
+        return os.path.normpath(path)
 
     def compiler_root(self):
-        return self.parser.get('compiler', 'root')
+        path = self.parser.get('compiler', 'root')
+        return os.path.normpath(path)
 
     def closurebuilder(self):
-        dir = self.library_local_root()
+        dir = self.library_root()
         return os.path.join(dir, 'closure', 'bin', 'build', 'closurebuilder.py')
 
     def depswriter(self):
-        dir = self.library_local_root()
+        dir = self.library_root()
         return os.path.join(dir, 'closure', 'bin', 'build', 'depswriter.py')
 
     def base_js(self):
-        dir = self.library_local_root()
+        dir = self.library_root()
         return os.path.join(dir, 'closure', 'goog', 'base.js')
 
     def multitestrunner_css(self):
-        dir = self.library_local_root()
+        dir = self.library_root()
         return os.path.join(dir, 'closure', 'goog', 'css', 'multitestrunner.css')
 
     def js_dev_dir(self):
