@@ -51,24 +51,24 @@ def compile_resource(path, compiled_js_path):
             f.write(line)
 
 
+def ignore_dirs(*ignore_dirs):
+    def ignoref(dirpath, files):
+        return [filename for filename in files if (os.path.join(dirpath, filename) in ignore_dirs)]
+    return ignoref
+
+
 def setup_files(config, target_dir):
     devel_dir = config.development_dir()
     compiled_js = config.compiled_js()
 
-    library_root = config.library_root()
-    compiler_root = config.compiler_root()
-    devel_dir_len = len(devel_dir)
-    ignores = [ os.path.basename(config.js_dev_dir()) ]
-
-    if library_root[:devel_dir_len] is devel_dir:
-        ignores.append(ps.path.basename(library_root))
-
-    if compiler_root[:devel_dir_len] is devel_dir:
-        ignores.append(ps.path.basename(compiler_root))
+    # Avoid copy unnecessary files if exists in the development directory
+    ignores = (
+            config.library_root(),
+            config.compiler_root(),
+            config.js_dev_dir())
 
     rmtree_silent(target_dir)
-    shutil.copytree(devel_dir, target_dir, ignore = shutil.ignore_patterns(*ignores))
-    # rmtree_silent(os.path.join(target_dir, JS_DEVELOPMENT_DIR))
+    shutil.copytree(devel_dir, target_dir, ignore = ignore_dirs(*ignores))
 
     for root, dirs, files in os.walk(target_dir):
         for file in files:
@@ -124,7 +124,7 @@ def compile_scripts(config):
             '--compiler_flags=--compilation_level=' + config.compilation_level(),
             '--compiler_flags=--define=goog.DEBUG=false',
             '--output_file=' + prod_compiled_js]
-    os.system('python %s %s' % (config.closurebuilder(), ' '.join(prod_args)))
+    #os.system('python %s %s' % (config.closurebuilder(), ' '.join(prod_args)))
 
 
 def modify_source_map(config):

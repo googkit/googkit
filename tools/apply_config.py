@@ -90,12 +90,18 @@ def apply_config(path, config):
 
 
 def apply_config_all(config):
-    dev_dir = config.development_dir()
+    devel_dir = config.development_dir()
+    library_root_rel = os.path.relpath(config.library_root(), devel_dir)
+    library_root_rels = library_root_rel.split(os.path.sep)
 
-    for root, dirs, files in os.walk(dev_dir):
+    for root, dirs, files in os.walk(devel_dir):
         for file in files:
             path = os.path.join(root, file)
             apply_config(path, config)
+
+        # Avoid to walk into Closure Library
+        if root is devel_dir and library_root_rels[0] in dirs:
+            dirs.remove(library_root_rels[0])
 
 
 if __name__ == '__main__':
