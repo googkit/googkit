@@ -1,6 +1,7 @@
 import os
 import os.path
 import shutil
+import lib.clone
 import lib.download
 import lib.unzip
 
@@ -14,20 +15,8 @@ class SetupCommand(object):
         self.config = config
 
 
-    @classmethod
-    def command_exists(cls, command):
-        # TODO: Is there a better way?
-        with os.popen(command + ' --help') as p:
-            return p.read() != ''
-
-
     def setup_closure_library(self):
-        if SetupCommand.command_exists('git'):
-            os.system('git clone %s %s' % (SetupCommand.LIBRARY_GIT_REPOS, self.config.library_root()))
-        else:
-            print '[Error] Git not found.'
-            print 'Please install git to download Closure Library.'
-            sys.exit()
+        lib.clone.run(SetupCommand.LIBRARY_GIT_REPOS, self.config.library_root())
 
 
     def setup_closure_compiler(self):
