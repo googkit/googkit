@@ -66,7 +66,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 
 ユニットテストを実行する
 ------------------------
-[jsunit の形式](http://www.infoq.com/jp/articles/javascript-tdd) で、ユニットテストを実行できます。
+[jsunit 形式](http://www.infoq.com/jp/articles/javascript-tdd) のユニットテストを実行できます。
 
 
 1. テスト用のHTMLを作成する

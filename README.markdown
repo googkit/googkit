@@ -62,7 +62,7 @@ Getting Started
 
 Running Unit Tests
 ------------------
-You can run unit tests with [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm).
+You can run [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm) unit tests.
 
 
 1. Create a HTML File for Testing
@@ -139,8 +139,10 @@ Misc
 ### Author
 cocopon (cocopon@me.com)
 
+
 ### Contributors
 OrgaChem (orga.chem.job@gmail.com)
+
 
 ### License
 These tools are licensed under MIT License.
