@@ -2,6 +2,7 @@ import os
 import re
 import shutil
 import json
+from lib.error import GoogkitError
 
 
 class CompileCommand(object):
@@ -148,5 +149,8 @@ class CompileCommand(object):
 
 
     def run(self):
+        if self.config is None:
+            raise GoogkitError('No config file found.')
+
         self.compile_scripts()
         print('Completed.')

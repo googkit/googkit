@@ -41,7 +41,7 @@ try:
     config = Config()
     config.load(CONFIG)
 except IOError:
-    pass
+    config = None
 
 try:
     for klass in subcommand_classes:
