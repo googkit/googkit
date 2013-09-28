@@ -14,7 +14,7 @@ COMMANDS_DICT = {
         'apply-config': [ApplyConfigCommand, UpdateDepsCommand],
         'compile': [CompileCommand],
         'init': [InitCommand],
-        'setup': [SetupCommand],
+        'setup': [SetupCommand, UpdateDepsCommand],
         'update-deps': [UpdateDepsCommand]}
 
 
