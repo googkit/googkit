@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-
 import sys
 
 urllib_urlretrieve = None
@@ -14,15 +11,5 @@ except ImportError:
     urllib_urlretrieve = urllib.urlretrieve
 
 
-def download(url, target_path):
+def run(url, target_path):
     urllib_urlretrieve(url, target_path)
-
-
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print 'Usage: python %s url target_path' % sys.argv[0]
-        sys.exit()
-
-    url = sys.argv[1]
-    target_path = sys.argv[2]
-    download(url, target_path)

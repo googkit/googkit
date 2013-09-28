@@ -5,10 +5,10 @@ import os
 import os.path
 import sys
 import toolsconfig
-from apply_config import ApplyConfigCommand
-from compile import CompileCommand
-from setup import SetupCommand
-from update_deps import UpdateDepsCommand
+from commands.apply_config import ApplyConfigCommand
+from commands.compile import CompileCommand
+from commands.setup import SetupCommand
+from commands.update_deps import UpdateDepsCommand
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
@@ -20,7 +20,7 @@ COMMANDS = {
 
 
 def print_help():
-    print 'TODO: Help'
+    print ('TODO: Help')
 
 
 if len(sys.argv) != 2:

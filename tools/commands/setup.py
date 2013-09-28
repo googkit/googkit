@@ -1,9 +1,8 @@
-#!/usr/bin/env python
-
-
 import os
 import os.path
 import shutil
+import lib.download
+import lib.unzip
 
 
 class SetupCommand(object):
@@ -37,15 +36,14 @@ class SetupCommand(object):
     def setup_closure_compiler(self):
         os.makedirs('tmp')
 
-        subtool_download = os.path.join('tools', 'sub', 'download.py')
         compiler_zip = os.path.join('tmp', 'compiler.zip')
-        os.system('python %s %s %s' % (subtool_download, SetupCommand.COMPILER_LATEST_ZIP, compiler_zip))
+        lib.download.run(SetupCommand.COMPILER_LATEST_ZIP, compiler_zip)
 
         compiler_root = self.config.compiler_root()
         os.makedirs(compiler_root)
 
         subtool_unzip = os.path.join('tools', 'sub', 'unzip.py')
-        os.system('python %s %s %s' % (subtool_unzip, compiler_zip, compiler_root))
+        lib.unzip.run(compiler_zip, compiler_root)
 
         shutil.rmtree('tmp')
 

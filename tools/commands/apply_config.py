@@ -1,10 +1,6 @@
-#!/usr/bin/env python
-
-
 import glob
 import os
 import re
-import toolsconfig
 
 
 class ApplyConfigCommand(object):
