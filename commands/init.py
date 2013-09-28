@@ -24,4 +24,4 @@ class InitCommand(object):
 
     def run(self):
         self.copy_template(os.getcwd())
-        print('Initialization completed.')
+        print('Completed.')

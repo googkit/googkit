@@ -66,5 +66,7 @@ class UpdateDepsCommand(object):
 
 
     def run(self):
+        print('Updating dependency information...')
         self.update_deps()
         self.update_testrunner()
+        print('Completed.')

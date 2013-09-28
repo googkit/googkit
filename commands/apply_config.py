@@ -116,4 +116,6 @@ class ApplyConfigCommand(object):
 
 
     def run(self):
+        print('Applying config...')
         self.apply_config_all()
+        print('Completed.')

@@ -149,3 +149,4 @@ class CompileCommand(object):
 
     def run(self):
         self.compile_scripts()
+        print('Completed.')

@@ -46,3 +46,5 @@ class SetupCommand(object):
 
         print('Downloading Closure Compiler...')
         self.setup_closure_compiler()
+
+        print('Completed.')
