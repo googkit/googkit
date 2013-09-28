@@ -105,10 +105,7 @@ Tips
 If you want to change the default namespace of Main class (`foo.Main`),
 change `main_namespace` in `tools/tools.cfg`.
 
-After changing, don't forget to apply changes and update dependency information.
-
     $ python tools/tool.py apply-config
-    $ python tools/tool.py update-deps
 
 
 ### Renaming a Compiled Script

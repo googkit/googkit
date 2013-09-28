@@ -12,11 +12,11 @@ from commands.update_deps import UpdateDepsCommand
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
-COMMANDS = {
-        'apply-config': ApplyConfigCommand,
-        'compile': CompileCommand,
-        'setup': SetupCommand,
-        'update-deps': UpdateDepsCommand}
+COMMANDS_DICT = {
+        'apply-config': [ApplyConfigCommand, UpdateDepsCommand],
+        'compile': [CompileCommand],
+        'setup': [SetupCommand],
+        'update-deps': [UpdateDepsCommand]}
 
 
 def print_help():
@@ -27,8 +27,8 @@ if len(sys.argv) != 2:
     print_help()
     sys.exit()
 
-subcommand_class = COMMANDS.get(sys.argv[1])
-if subcommand_class is None:
+subcommand_classes = COMMANDS_DICT.get(sys.argv[1])
+if subcommand_classes is None:
     print_help()
     sys.exit()
 
@@ -37,5 +37,6 @@ os.chdir(basedir)
 config = toolsconfig.ToolsConfig()
 config.load(CONFIG)
 
-subcommand = subcommand_class(config)
-subcommand.run()
+for klass in subcommand_classes:
+    subcommand = klass(config)
+    subcommand.run()

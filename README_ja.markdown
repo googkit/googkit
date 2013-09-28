@@ -109,10 +109,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`tools/tools.cfg` の
 `main_namespace` を変更してください。
 
-変更後は、設定の反映と依存情報の更新をお忘れなく。
-
     $ python tools/tool.py apply-config
-    $ python tools/tool.py update-deps
 
 
 ### コンパイル後のファイル名を変更する
