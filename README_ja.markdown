@@ -2,6 +2,8 @@ goog-starter-kit
 ================
 
 
+
+
 概要
 ----
 goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
@@ -26,6 +28,8 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 - tools/ ......... 便利なツール群
 
 
+
+
 作業の流れ
 ----------
 1. Closure Tools をダウンロード、配置する
@@ -34,6 +38,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 
         (`goog-starter-kit` ディレクトリに移動してから)
         $ python tools/setup.py
+
 
 2. `development/` ディレクトリで開発する
 
@@ -44,6 +49,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
     以下のコマンドを実行してください。
 
         $ python tools/update_deps.py
+
 
 3. コンパイルする
 
@@ -56,15 +62,19 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
     コンパイルに成功すると、 `production/` ディレクトリに出力されます。
 
 
+
+
 ユニットテストを実行する
 ------------------------
 [jsunit の形式](http://www.infoq.com/jp/articles/javascript-tdd) で、ユニットテストを実行できます。
+
 
 1. テスト用のHTMLを作成する
 
     [example_test.html](https://github.com/cocopon/goog-starter-kit/blob/master/development/js_dev/example_test.html) をテスト対象と同じディレクトリにコピーしてから、名前を `{target_name}_test.html` に変更します。
 
     デフォルトの名前 `{target_name}_test.html` が気に入らない場合は、 `tool/tools.cfg` の `test_file_pattern` で変更できます。
+
 
 2. テストファイルの設定を更新する
 
@@ -73,7 +83,9 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
         (`goog-starter-kit` ディレクトリに移動してから)
         $ python tools/apply_config.py
 
+
 3. テストコードを書く
+
 
 4. 依存情報を更新する
 
@@ -81,11 +93,14 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 
         $ python tools/update_deps.py
 
+
 5. テストを実行する
 
     テスト用のHTMLファイルをブラウザで開きます。
 
     すべてのテストを実行する場合は、 `development/all_tests.html` に **http スキーム** でアクセスしてください (file スキームではうまくいきません)。
+
+
 
 
 小技
@@ -122,13 +137,17 @@ goog-starter-kitは、Source Map ファイル `script.min.js.map` を `debug/` �
 難読性を保つために、Source Map は `production/` ディレクトリには **保存されません** 。
 
 
+
+
 その他
 ------
 ### 作者
 cocopon (cocopon@me.com)
 
+
 ### 共同開発者
 OrgaChem (orga.chem.job@gmail.com)
+
 
 ### ライセンス
 含まれるツールについては、 MIT License で配布しています。

@@ -2,6 +2,8 @@ goog-starter-kit
 ================
 
 
+
+
 Overview
 --------
 goog-starter-kit is a starter kit for Google Closure Library newbies
@@ -25,6 +27,8 @@ Install them if not installed yet.
 - tools/ ......... Contains convenient tools
 
 
+
+
 Getting Started
 ---------------
 1. Setup Closure Tools
@@ -34,6 +38,7 @@ Getting Started
         (in `goog-starter-kit` directory)
         $ python tools/setup.py
 
+
 2. Develop Your Web App in `development/`
 
     Modify existing scripts, or add awesome scripts to `development/js_dev`.
@@ -41,6 +46,7 @@ Getting Started
     After adding/removing scripts, you need to update dependency information:
 
         $ python tools/update_deps.py
+
 
 3. Compile Scripts
 
@@ -52,15 +58,19 @@ Getting Started
     If it succeed, output files will be stored in `production/`.
 
 
+
+
 Running Unit Tests
 ------------------
 You can run unit tests with [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm).
+
 
 1. Create a HTML File for Testing
 
     Copy [example_test.html](https://github.com/cocopon/goog-starter-kit/blob/master/development/js_dev/example_test.html) into the same directory as the target, then rename it to `{target_name}_test.html`.
 
     If you don't like the default name `{target_name}_test.html`, you can change it by `test_file_pattern` in `tools/tools.cfg`.
+
 
 2. Apply Config Changes
 
@@ -69,7 +79,9 @@ You can run unit tests with [jsunit-style](http://people.apache.org/~dennisbyrne
         (in `goog-starter-kit` directory)
         $ python tools/apply_config.py
 
+
 3. Write Unit Tests
+
 
 4. Update Dependency Information
 
@@ -77,11 +89,14 @@ You can run unit tests with [jsunit-style](http://people.apache.org/~dennisbyrne
 
         $ python tools/update_deps.py
 
+
 5. Run Unit Tests
 
     Open the test html file in your browser.
 
     If you want to run all tests, open `development/all_tests.html` in your browser with **http scheme** (doesn't work with file scheme).
+
+
 
 
 Tips
@@ -115,6 +130,8 @@ This option makes compilation slow.
 This kit generates a source map file `script.min.js.map` within `debug/`, so you can use [Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1) if your browser supports it.
 
 For reason of obfuscation, source map file will **NOT** be stored in `production/`.
+
+
 
 
 Misc
