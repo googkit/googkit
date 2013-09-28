@@ -8,7 +8,7 @@ from commands.setup import SetupCommand
 from commands.update_deps import UpdateDepsCommand
 
 
-CONFIG = 'tools.cfg'
+CONFIG = 'googkit.cfg'
 COMMANDS_DICT = {
         'apply-config': [ApplyConfigCommand, UpdateDepsCommand],
         'compile': [CompileCommand],
