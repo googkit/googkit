@@ -1,5 +1,4 @@
 import os
-import os.path
 import sys
 from lib.config import Config
 from commands.apply_config import ApplyConfigCommand
