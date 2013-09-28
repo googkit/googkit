@@ -1,16 +1,19 @@
 import os
 import sys
-from lib.config import Config
 from commands.apply_config import ApplyConfigCommand
 from commands.compile import CompileCommand
+from commands.init import InitCommand
 from commands.setup import SetupCommand
 from commands.update_deps import UpdateDepsCommand
+from lib.config import Config
+from lib.error import GoogkitError
 
 
 CONFIG = 'googkit.cfg'
 COMMANDS_DICT = {
         'apply-config': [ApplyConfigCommand, UpdateDepsCommand],
         'compile': [CompileCommand],
+        'init': [InitCommand],
         'setup': [SetupCommand],
         'update-deps': [UpdateDepsCommand]}
 
@@ -33,9 +36,16 @@ if subcommand_classes is None:
     print_help()
     sys.exit()
 
-config = Config()
-config.load(CONFIG)
+config = None
+try:
+    config = Config()
+    config.load(CONFIG)
+except IOError:
+    pass
 
-for klass in subcommand_classes:
-    subcommand = klass(config)
-    subcommand.run()
+try:
+    for klass in subcommand_classes:
+        subcommand = klass(config)
+        subcommand.run()
+except GoogkitError, e:
+    sys.exit('[ERROR] ' + str(e))
