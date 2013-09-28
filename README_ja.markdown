@@ -1,15 +1,14 @@
-goog-starter-kit
-================
+Googkit
+=======
 
 
 
 
 概要
 ----
-goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
-使いはじめるためのツールセットです。
-コマンドをひとつ実行するだけで初期設定が終わるので、すぐに開発がはじめられます。
-リリース用のコンパイルも、コマンドひとつでOKです。
+Googkit は、Closure Library を簡単に使えるようにするツールです。
+わずか2コマンドで初期設定が終わり、すぐに開発がはじめられます。
+面倒な設定が必要だったコンパイルも、コマンド一発でOKです。
 
 
 ### 動作環境
@@ -20,68 +19,95 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 - Python ... Closure Tools を実行する
 
 
-### ディレクトリ構成
-- closure/ ....... ダウンロードした Closure Tools を格納する
-- development/ ... 開発用のディレクトリ
-- debug/ ......... デバッグ用のディレクトリ(`tools/tools.cfg`の`is_debug_enabled`が`yes`のときのみ存在)
-- production/ .... 本番用のディレクトリ
-- tools/ ......... 便利なツール群
+
+
+Googkitのインストール
+---------------------
+はじめに、Googkit をインストールします。
+
+1. Googkit をダウンロードする
+
+        $ git clone https://github.com/cocopon/googkit
+
+
+2. 適切な場所に移動する
+
+        $ mv googkit /usr/local
+
+
+3. 環境変数の `PATH` に追加する
+
+        export GOOGKIT_HOME=/usr/local/googkit
+        export PATH=$PATH:$GOOGKIT_HOME/bin
 
 
 
 
 作業の流れ
 ----------
-1. Closure Tools をダウンロード、配置する
+1. プロジェクト用のディレクトリを作成し、初期化する
 
-    ターミナルを開き、以下のコマンドを実行します。
-
-        (`goog-starter-kit` ディレクトリに移動してから)
-        $ python tools/tool.py setup
-
-
-2. `development/` ディレクトリで開発する
-
-    `development/js_dev` ディレクトリ下の既存のコードを修正したり、新たに
-    追加したりしてください。
-
-    スクリプトを追加/削除したあとは、依存情報の更新が必要です。
-    以下のコマンドを実行してください。
-
-        $ python tools/tool.py update-deps
+        $ mkdir my_project
+        $ cd my_project
+        $ googkit init
 
 
-3. コンパイルする
+2. Closure Tools をダウンロードする
 
-    コンパイルすると、パフォーマンス向上や、ソースコードが難読化されるなどの
+        $ googkit setup
+
+
+3. `development/` ディレクトリで開発する
+
+    `development/js_dev` ディレクトリ内で開発します。
+
+    スクリプトを追加/削除したあとは、依存情報を更新します。
+
+        $ googkit update-deps
+
+
+4. コンパイルする
+
+    コンパイルすると、パフォーマンスが向上し、ソースコードが難読化されるなどの
     利点があります。
-    コンパイルするには、以下のコマンドを実行してください。
 
-        $ python tools/tool.py compile
+        $ googkit compile
 
-    コンパイルに成功すると、 `production/` ディレクトリに出力されます。
+    コンパイルに成功すると、 `production/` ディレクトリが作成されます。
+
+
+
+
+プロジェクトの構成
+------------------
+- googkit.cfg .... プロジェクトの設定ファイル
+- closure/ ....... ダウンロードした Closure Tools が格納される
+- development/ ... 開発用
+- debug/ ......... デバッグ用(`googkit.cfg`の`is_debug_enabled`が`yes`のときのみ存在)
+- production/ .... 本番用
 
 
 
 
 ユニットテストを実行する
 ------------------------
-[jsunit 形式](http://www.infoq.com/jp/articles/javascript-tdd) のユニットテストを実行できます。
+[jsunit 形式](http://www.infoq.com/jp/articles/javascript-tdd) の
+ユニットテストを実行できます。
 
 
 1. テスト用のHTMLを作成する
 
-    [example_test.html](https://github.com/cocopon/goog-starter-kit/blob/master/development/js_dev/example_test.html) をテスト対象と同じディレクトリにコピーしてから、名前を `{target_name}_test.html` に変更します。
+    [example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html)
+    をテスト対象と同じディレクトリにコピーしてから、名前を
+    `{target_name}_test.html` に変更します。
 
-    デフォルトの名前 `{target_name}_test.html` が気に入らない場合は、 `tool/tools.cfg` の `test_file_pattern` で変更できます。
+    デフォルトの名前 `{target_name}_test.html` が気に入らない場合は、
+    `googkit.cfg` の `test_file_pattern` で変更できます。
 
 
 2. テストファイルの設定を更新する
 
-    ターミナルを開き、以下のコマンドを実行します。
-
-        (`goog-starter-kit` ディレクトリに移動してから)
-        $ python tools/tool.py apply-config
+        $ googkit apply-config
 
 
 3. テストコードを書く
@@ -89,16 +115,16 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 
 4. 依存情報を更新する
 
-    以下のコマンドを実行します。
-
-        $ python tools/tool.py update-deps
+        $ googkit update-deps
 
 
 5. テストを実行する
 
     テスト用のHTMLファイルをブラウザで開きます。
 
-    すべてのテストを実行する場合は、 `development/all_tests.html` に **http スキーム** でアクセスしてください (file スキームではうまくいきません)。
+    すべてのテストを実行する場合は、 `development/all_tests.html` に
+	**http スキーム** でアクセスしてください
+	(file スキームではうまくいきません)。
 
 
 
@@ -106,32 +132,45 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 小技
 ----
 ### Mainクラスの名前空間を変更する
-Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`tools/tools.cfg` の
-`main_namespace` を変更してください。
+Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`googkit.cfg` の
+`main_namespace` を変更します。
+編集したあと、以下のコマンドで変更を適用します。
 
-    $ python tools/tool.py apply-config
+    $ googkit apply-config
 
 
 ### コンパイル後のファイル名を変更する
-`tools/tools.cfg` の `compiled_js` を修正してください。
+`googkit.cfg` の `compiled_js` を修正します。
+編集したあと、以下のコマンドで変更を適用します。
+
+    $ googkit apply-config
 
 
 ### コンパイルしたくないスクリプトがある
-`development/js_dev` ディレクトリ以外の場所に配置してください。
+`development/js_dev` ディレクトリ以外の場所に配置します。
 本番用では、このディレクトリ内のファイルはすべてコンパイル・統合されたのち、
 削除されてしまいます。
 
 
 ### コンパイル後のスクリプトをデバッグする
-もし、コンパイル後のスクリプトをデバッグしたければ `tools/tools.cfg` の `is_debug_enabled` を `yes` にしてください。
-デバッグが有効だと Source Map や Closure Library のデバッグ機能が動作する `debug/` ディレクトリが作成されます。しかし、コンパイルに時間がかかります。
+コンパイル後のスクリプトをデバッグする場合は、 `googkit.cfg` の
+`is_debug_enabled` を `yes` にしてから、変更を適用します。
+
+    $ googkit apply-config
+
+`debug/` ディレクトリが作成され、デバッグ用の機能が使えるようになります。
+コンパイルの時間が長くなるので注意してください。
 
 
 #### Source Map を使う
-goog-starter-kitは、Source Map ファイル `script.min.js.map` を `debug/` ディレクトリに生成します。
-お使いのブラウザが対応していれば、 [Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1) によるデバッグが可能です。
+Googkit は、Source Map ファイル `script.min.js.map` を `debug/`
+ディレクトリに生成します。
+お使いのブラウザが対応していれば、
+[Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1)
+によるデバッグが可能です。
 
-難読性を保つために、Source Map は `production/` ディレクトリには **保存されません** 。
+難読性を保つために、Source Map は `production/` ディレクトリには
+**保存されません** 。
 
 
 
@@ -147,5 +186,5 @@ OrgaChem (orga.chem.job@gmail.com)
 
 
 ### ライセンス
-含まれるツールについては、 MIT License で配布しています。
+MIT License で配布しています。
 詳細は `LICENSE.txt` を参照してください。

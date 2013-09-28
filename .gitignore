@@ -1,5 +1,7 @@
 .DS_Store
 *.pyc
+deps.js
+
 /closure/
 /production/
 /debug/

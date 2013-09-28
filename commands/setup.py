@@ -4,6 +4,7 @@ import shutil
 import lib.clone
 import lib.download
 import lib.unzip
+from lib.error import GoogkitError
 
 
 class SetupCommand(object):
@@ -41,8 +42,13 @@ class SetupCommand(object):
 
 
     def run(self):
+        if self.config is None:
+            raise GoogkitError('No config file found.')
+
         print('Downloading Closure Library...')
         self.setup_closure_library()
 
         print('Downloading Closure Compiler...')
         self.setup_closure_compiler()
+
+        print('Completed.')

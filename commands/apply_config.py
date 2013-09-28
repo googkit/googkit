@@ -1,6 +1,7 @@
 import glob
 import os
 import re
+from lib.error import GoogkitError
 
 
 class ApplyConfigCommand(object):
@@ -116,4 +117,9 @@ class ApplyConfigCommand(object):
 
 
     def run(self):
+        if self.config is None:
+            raise GoogkitError('No config file found.')
+
+        print('Applying config...')
         self.apply_config_all()
+        print('Completed.')

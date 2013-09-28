@@ -1,6 +1,6 @@
 import os
 import re
-import toolsconfig
+from lib.error import GoogkitError
 
 
 class UpdateDepsCommand(object):
@@ -67,5 +67,10 @@ class UpdateDepsCommand(object):
 
 
     def run(self):
+        if self.config is None:
+            raise GoogkitError('No config file found.')
+
+        print('Updating dependency information...')
         self.update_deps()
         self.update_testrunner()
+        print('Completed.')

@@ -1,100 +1,132 @@
-goog-starter-kit
-================
+Googkit
+=======
 
 
 
 
 Overview
 --------
-goog-starter-kit is a starter kit for Google Closure Library newbies
-(including me!).
-You can easily setup, develop, and compile using convenient tools.
+Googkit is an easy way to use Google Closure Library.
+You can setup only two commands, so start developing quickly.
+You can also do such a complicated compiling ... at one blow!
 
 
 ### System Requirement
-Following programs are required to use this starter kit.
+Following programs are required to use this program.
 Install them if not installed yet.
 
 - Git ...... Downloads Closure Library
 - Python ... Executes Closure Tools
 
 
-### Directory Structure
-- closure/ ....... Stores Closure Tools
-- development/ ... For development
-- debug/ ......... For debug (it will be created when `is_debug_enabled` is `yes` in `tools/tools.cfg`)
-- production/ .... For production
-- tools/ ......... Contains convenient tools
+
+
+Install Googkit
+---------------
+At first, you need to install Googkit.
+
+
+1. Download Googkit
+
+        $ git clone https://github.com/cocopon/googkit
+
+
+2. Put it into a preferred place
+
+        $ mv googkit /usr/local
+
+
+3. Add to environment variable `PATH`
+
+        export GOOGKIT_HOME=/usr/local/googkit
+        export PATH=$PATH:$GOOGKIT_HOME/bin
 
 
 
 
 Getting Started
 ---------------
-1. Setup Closure Tools
+1. Create a project directory and initialize
 
-    Enter following commands in the terminal:
+        $ mkdir my_project
+        $ cd my_project
+        $ googkit init
 
-        (in `goog-starter-kit` directory)
-        $ python tools/tool.py setup
+
+2. Download Closure Tools
+
+        $ googkit setup
 
 
-2. Develop Your Web App in `development/`
+3. Develop your web app in `development/`
 
-    Modify existing scripts, or add awesome scripts to `development/js_dev`.
+    Modify existing scripts, or add your awesome scripts
+	to `development/js_dev`.
 
     After adding/removing scripts, you need to update dependency information:
 
-        $ python tools/tool.py update-deps
+        $ googkit update-deps
 
 
-3. Compile Scripts
+4. Compile scripts
 
     Compiling scripts improves performance and makes them unreadable.
-    To compile your scripts, enter following command:
 
-        $ python tools/tool.py compile
+        $ googkit compile
 
     If it succeed, output files will be stored in `production/`.
 
 
 
 
+Project Structure
+-----------------
+- googkit.cfg .... Config file of the project
+- closure/ ....... Stores Closure Tools
+- development/ ... For development
+- debug/ ......... For debug (it will be created when `is_debug_enabled` is `yes` in `googkit.cfg`)
+- production/ .... For production
+
+
+
+
 Running Unit Tests
 ------------------
-You can run [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm) unit tests.
+You can run
+[jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm)
+unit tests.
 
 
-1. Create a HTML File for Testing
+1. Create a HTML file for testing
 
-    Copy [example_test.html](https://github.com/cocopon/goog-starter-kit/blob/master/development/js_dev/example_test.html) into the same directory as the target, then rename it to `{target_name}_test.html`.
+    Copy
+	[example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html)
+	into the same directory as the target, then rename it to
+	`{target_name}_test.html`.
 
-    If you don't like the default name `{target_name}_test.html`, you can change it by `test_file_pattern` in `tools/tools.cfg`.
-
-
-2. Apply Config Changes
-
-    Enter following commands in the terminal:
-
-        (in `goog-starter-kit` directory)
-        $ python tools/tool.py apply-config
+    If you don't like the default name `{target_name}_test.html`, you can
+	change it by `test_file_pattern` in `googkit.cfg`.
 
 
-3. Write Unit Tests
+2. Apply config changes
+
+        $ googkit apply-config
 
 
-4. Update Dependency Information
-
-    Enter a following command in the terminal:
-
-        $ python tools/tool.py update-deps
+3. Write unit tests
 
 
-5. Run Unit Tests
+4. Update dependency information
+
+        $ googkit update-deps
+
+
+5. Run unit tests
 
     Open the test html file in your browser.
 
-    If you want to run all tests, open `development/all_tests.html` in your browser with **http scheme** (doesn't work with file scheme).
+    If you want to run all tests, open `development/all_tests.html`
+	in your browser with **http scheme** (doesn't work with file scheme).
 
 
 
@@ -103,13 +135,17 @@ Tips
 ----
 ### Changing Namespace of Main Class
 If you want to change the default namespace of Main class (`foo.Main`),
-change `main_namespace` in `tools/tools.cfg`.
+change `main_namespace` in `googkit.cfg`.
+After editing, apply it with a following command:
 
-    $ python tools/tool.py apply-config
+    $ googkit apply-config
 
 
 ### Renaming a Compiled Script
-Edit `compiled_js` in `tools/tools.cfg`.
+Edit `compiled_js` in `googkit.cfg`.
+After editing, apply it with a following command:
+
+    $ googkit apply-config
 
 
 ### Preventing Some Scripts from Compiling
@@ -118,15 +154,23 @@ Scripts that are in it will be compiled and removed in production.
 
 
 ### Debugging a Compiled Source
-If you want to debug a compiled script, change `is_debug_enabled` to `yes` in `tools/tools.cfg`.
-Then you can use a source map and debugging features by Closure Library in `debug/`.
+If you want to debug a compiled script, change `is_debug_enabled` to `yes`
+in `googkit.cfg` and apply it:
+
+    $ googkit apply-config
+
+Then you can use a debugging features in `debug/`.
 This option makes compilation slow.
 
 
 #### Using Source Map
-This kit generates a source map file `script.min.js.map` within `debug/`, so you can use [Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1) if your browser supports it.
+Googkit generates a source map file `script.min.js.map` within `debug/`,
+so you can use
+[Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1)
+if your browser supports it.
 
-For reason of obfuscation, source map file will **NOT** be stored in `production/`.
+For reason of obfuscation, source map file will **NOT** be stored
+in `production/`.
 
 
 
@@ -142,5 +186,5 @@ OrgaChem (orga.chem.job@gmail.com)
 
 
 ### License
-These tools are licensed under MIT License.
+Googkit are licensed under MIT License.
 See `LICENSE.txt` for more information.
