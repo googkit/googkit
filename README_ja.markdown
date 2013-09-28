@@ -16,8 +16,8 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 以下のプログラムが必要です。
 お手元の環境にない場合は、あらかじめインストールしておいてください。
 
-- Git or Subversion ... Closure Library をダウンロードする
-- Python .............. Closure Tools を実行する
+- Git  ..... Closure Library をダウンロードする
+- Python ... Closure Tools を実行する
 
 
 ### ディレクトリ構成

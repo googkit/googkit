@@ -7,7 +7,6 @@ import lib.unzip
 
 class SetupCommand(object):
     LIBRARY_GIT_REPOS = 'https://code.google.com/p/closure-library/'
-    LIBRARY_SVN_REPOS = 'http://closure-library.googlecode.com/svn/trunk'
     COMPILER_LATEST_ZIP = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
 
 
@@ -25,11 +24,9 @@ class SetupCommand(object):
     def setup_closure_library(self):
         if SetupCommand.command_exists('git'):
             os.system('git clone %s %s' % (SetupCommand.LIBRARY_GIT_REPOS, self.config.library_root()))
-        elif SetupCommand.command_exists('svn'):
-            os.system('svn checkout %s %s' % (SetupCommand.LIBRARY_SVN_REPOS, self.config.library_root()))
         else:
-            print '[Error] Git or Subversion not found.'
-            print 'Please install one of them to download Closure Library.'
+            print '[Error] Git not found.'
+            print 'Please install git to download Closure Library.'
             sys.exit()
 
 

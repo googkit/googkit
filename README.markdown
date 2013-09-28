@@ -15,8 +15,8 @@ You can easily setup, develop, and compile using convenient tools.
 Following programs are required to use this starter kit.
 Install them if not installed yet.
 
-- Git or Subversion ... Downloads Closure Library
-- Python .............. Executes Closure Tools
+- Git ...... Downloads Closure Library
+- Python ... Executes Closure Tools
 
 
 ### Directory Structure
