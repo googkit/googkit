@@ -5,10 +5,14 @@ import os
 import os.path
 import sys
 import toolsconfig
+from apply_config import ApplyConfigCommand
 from setup import SetupCommand
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
+COMMANDS = {
+        'apply-config': ApplyConfigCommand,
+        'setup': SetupCommand}
 
 
 def print_help():
@@ -19,12 +23,15 @@ if len(sys.argv) != 2:
     print_help()
     sys.exit()
 
-subcommand = sys.argv[1]
+subcommand_class = COMMANDS.get(sys.argv[1])
+if subcommand_class is None:
+    print_help()
+    sys.exit()
 
 basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 os.chdir(basedir)
 config = toolsconfig.ToolsConfig()
 config.load(CONFIG)
 
-if subcommand == 'setup':
-    SetupCommand(config).run()
+subcommand = subcommand_class(config)
+subcommand.run()
