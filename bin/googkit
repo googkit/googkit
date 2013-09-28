@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+bin_dir=$(dirname $0)
+python $bin_dir/../googkit.py $@

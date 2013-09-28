@@ -12,7 +12,7 @@ except ImportError:
     ParserClass = configparser.ConfigParser
 
 
-class ToolsConfig(object):
+class Config(object):
     def __init__(self):
         pass
 

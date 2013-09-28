@@ -1,6 +1,5 @@
 import os
 import re
-import toolsconfig
 
 
 class UpdateDepsCommand(object):
