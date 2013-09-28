@@ -16,8 +16,8 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 以下のプログラムが必要です。
 お手元の環境にない場合は、あらかじめインストールしておいてください。
 
-- Git or Subversion ... Closure Library をダウンロードする
-- Python .............. Closure Tools を実行する
+- Git  ..... Closure Library をダウンロードする
+- Python ... Closure Tools を実行する
 
 
 ### ディレクトリ構成
@@ -37,7 +37,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
     ターミナルを開き、以下のコマンドを実行します。
 
         (`goog-starter-kit` ディレクトリに移動してから)
-        $ python tools/setup.py
+        $ python tools/tool.py setup
 
 
 2. `development/` ディレクトリで開発する
@@ -48,7 +48,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
     スクリプトを追加/削除したあとは、依存情報の更新が必要です。
     以下のコマンドを実行してください。
 
-        $ python tools/update_deps.py
+        $ python tools/tool.py update-deps
 
 
 3. コンパイルする
@@ -57,7 +57,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
     利点があります。
     コンパイルするには、以下のコマンドを実行してください。
 
-        $ python tools/compile.py
+        $ python tools/tool.py compile
 
     コンパイルに成功すると、 `production/` ディレクトリに出力されます。
 
@@ -81,7 +81,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
     ターミナルを開き、以下のコマンドを実行します。
 
         (`goog-starter-kit` ディレクトリに移動してから)
-        $ python tools/apply_config.py
+        $ python tools/tool.py apply-config
 
 
 3. テストコードを書く
@@ -91,7 +91,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 
     以下のコマンドを実行します。
 
-        $ python tools/update_deps.py
+        $ python tools/tool.py update-deps
 
 
 5. テストを実行する
@@ -109,10 +109,7 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
 Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`tools/tools.cfg` の
 `main_namespace` を変更してください。
 
-変更後は、設定の反映と依存情報の更新をお忘れなく。
-
-    $ python tools/apply_config.py
-    $ python tools/update_deps.py
+    $ python tools/tool.py apply-config
 
 
 ### コンパイル後のファイル名を変更する
