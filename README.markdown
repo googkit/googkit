@@ -36,7 +36,7 @@ Getting Started
     Enter following commands in the terminal:
 
         (in `goog-starter-kit` directory)
-        $ python tools/setup.py
+        $ python tools/tool.py setup
 
 
 2. Develop Your Web App in `development/`
@@ -45,7 +45,7 @@ Getting Started
 
     After adding/removing scripts, you need to update dependency information:
 
-        $ python tools/update_deps.py
+        $ python tools/tool.py update-deps
 
 
 3. Compile Scripts
@@ -53,7 +53,7 @@ Getting Started
     Compiling scripts improves performance and makes them unreadable.
     To compile your scripts, enter following command:
 
-        $ python tools/compile.py
+        $ python tools/tool.py compile
 
     If it succeed, output files will be stored in `production/`.
 
@@ -77,7 +77,7 @@ You can run [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.
     Enter following commands in the terminal:
 
         (in `goog-starter-kit` directory)
-        $ python tools/apply_config.py
+        $ python tools/tool.py apply-config
 
 
 3. Write Unit Tests
@@ -87,7 +87,7 @@ You can run [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.
 
     Enter a following command in the terminal:
 
-        $ python tools/update_deps.py
+        $ python tools/tool.py update-deps
 
 
 5. Run Unit Tests
@@ -107,8 +107,8 @@ change `main_namespace` in `tools/tools.cfg`.
 
 After changing, don't forget to apply changes and update dependency information.
 
-    $ python tools/apply_config.py
-    $ python tools/update_deps.py
+    $ python tools/tool.py apply-config
+    $ python tools/tool.py update-deps
 
 
 ### Renaming a Compiled Script
