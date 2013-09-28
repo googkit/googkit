@@ -74,13 +74,13 @@ class ApplyConfigCommand(object):
     def apply_config(self, path):
         lines = []
         updaters = {
-                '<!--@base_js@-->': update_base_js,
+                '<!--@base_js@-->': self.update_base_js,
                 '<!--@deps_js@-->': self.update_deps_js,
-                '/*@exec_main@*/': update_exec_main,
-                '/*@main_fn@*/': update_main_fn,
-                '/*@provide_main@*/': update_provide_main,
-                '<!--@require_main@-->': update_require_main,
-                '<!--@multitestrunner_css@-->': update_multitestrunner_css}
+                '/*@exec_main@*/': self.update_exec_main,
+                '/*@main_fn@*/': self.update_main_fn,
+                '/*@provide_main@*/': self.update_provide_main,
+                '<!--@require_main@-->': self.update_require_main,
+                '<!--@multitestrunner_css@-->': self.update_multitestrunner_css}
         markers = updaters.keys()
         dirpath = os.path.dirname(path)
 
