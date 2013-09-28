@@ -19,14 +19,20 @@ class SetupCommand(object):
         lib.clone.run(SetupCommand.LIBRARY_GIT_REPOS, self.config.library_root())
 
 
+    @classmethod
+    def safe_mkdirs(cls, path):
+        shutil.rmtree(path, True)
+        os.makedirs(path)
+
+
     def setup_closure_compiler(self):
-        os.makedirs('tmp')
+        SetupCommand.safe_mkdirs('tmp')
 
         compiler_zip = os.path.join('tmp', 'compiler.zip')
         lib.download.run(SetupCommand.COMPILER_LATEST_ZIP, compiler_zip)
 
         compiler_root = self.config.compiler_root()
-        os.makedirs(compiler_root)
+        SetupCommand.safe_mkdirs(compiler_root)
 
         subtool_unzip = os.path.join('tools', 'sub', 'unzip.py')
         lib.unzip.run(compiler_zip, compiler_root)
