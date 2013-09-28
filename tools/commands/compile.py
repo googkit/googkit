@@ -115,7 +115,7 @@ class CompileCommand(object):
             # map attribute as "sourceRoot" to fix the original source paths.
             # But cannot set the "sourceRoot" by Closure Compiler yet, so "modify_source_map" does it
             # until Closure Compiler support "sourceRoot".
-            self.modify_source_map(config)
+            self.modify_source_map()
 
         self.setup_files(config.production_dir())
 
