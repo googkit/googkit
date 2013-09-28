@@ -52,24 +52,9 @@ Getting Started
     If it succeed, output files will be stored in `production/`.
 
 
-Tips
-----
-### Changing Namespace of Main Class
-If you want to change the default namespace of Main class (`foo.Main`),
-change `main_namespace` in `tools/tools.cfg`.
-
-After changing, don't forget to apply changes and update dependency information.
-
-    $ python tools/apply_config.py
-    $ python tools/update_deps.py
-
-
-### Renaming a Compiled Script
-Edit `compiled_js` in `tools/tools.cfg`.
-
-
-### Running Unit Tests
-You can easily run unit tests your code with [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm).
+Running Unit Tests
+------------------
+You can run unit tests with [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm).
 
 1. Create a HTML File for Testing
 
@@ -92,9 +77,27 @@ You can easily run unit tests your code with [jsunit-style](http://people.apache
 
         $ python tools/update_deps.py
 
-5. Open the File in Your Browser
+5. Run Unit Tests
 
-    If you want to run all tests, open `development/all_tests.html` in your browser with **http scheme** (file scheme doesn't work).
+    Open the test html file in your browser.
+
+    If you want to run all tests, open `development/all_tests.html` in your browser with **http scheme** (doesn't work with file scheme).
+
+
+Tips
+----
+### Changing Namespace of Main Class
+If you want to change the default namespace of Main class (`foo.Main`),
+change `main_namespace` in `tools/tools.cfg`.
+
+After changing, don't forget to apply changes and update dependency information.
+
+    $ python tools/apply_config.py
+    $ python tools/update_deps.py
+
+
+### Renaming a Compiled Script
+Edit `compiled_js` in `tools/tools.cfg`.
 
 
 ### Preventing Some Scripts from Compiling

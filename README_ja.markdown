@@ -56,24 +56,9 @@ goog-starter-kit は、環境構築が面倒な Closure Library を手軽に
     コンパイルに成功すると、 `production/` ディレクトリに出力されます。
 
 
-小技
-----
-### Mainクラスの名前空間を変更する
-Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`tools/tools.cfg` の
-`main_namespace` を変更してください。
-
-変更後は、設定の反映と依存情報の更新をお忘れなく。
-
-    $ python tools/apply_config.py
-    $ python tools/update_deps.py
-
-
-### コンパイル後のファイル名を変更する
-`tools/tools.cfg` の `compiled_js` を修正してください。
-
-
-### ユニットテストを実行する
-[jsunit の形式](http://www.infoq.com/jp/articles/javascript-tdd) で、簡単にユニットテストを実行できます。
+ユニットテストを実行する
+------------------------
+[jsunit の形式](http://www.infoq.com/jp/articles/javascript-tdd) で、ユニットテストを実行できます。
 
 1. テスト用のHTMLを作成する
 
@@ -88,7 +73,7 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`too
         (`goog-starter-kit` ディレクトリに移動してから)
         $ python tools/apply_config.py
 
-3. ユニットテストのコードを書く
+3. テストコードを書く
 
 4. 依存情報を更新する
 
@@ -96,9 +81,27 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`too
 
         $ python tools/update_deps.py
 
-5. このファイルをブラウザで開く
+5. テストを実行する
+
+    テスト用のHTMLファイルをブラウザで開きます。
 
     すべてのテストを実行する場合は、 `development/all_tests.html` に **http スキーム** でアクセスしてください (file スキームではうまくいきません)。
+
+
+小技
+----
+### Mainクラスの名前空間を変更する
+Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`tools/tools.cfg` の
+`main_namespace` を変更してください。
+
+変更後は、設定の反映と依存情報の更新をお忘れなく。
+
+    $ python tools/apply_config.py
+    $ python tools/update_deps.py
+
+
+### コンパイル後のファイル名を変更する
+`tools/tools.cfg` の `compiled_js` を修正してください。
 
 
 ### コンパイルしたくないスクリプトがある
