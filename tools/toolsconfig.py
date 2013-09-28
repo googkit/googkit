@@ -1,6 +1,15 @@
-import ConfigParser
 import re
 import os
+
+ParserClass = None
+try:
+    # Python 2.x
+    import ConfigParser
+    ParserClass = ConfigParser.ConfigParser
+except ImportError:
+    # Python 3.x or later
+    import configparser
+    ParserClass = configparser.ConfigParser
 
 
 class ToolsConfig(object):
@@ -8,7 +17,7 @@ class ToolsConfig(object):
         pass
 
     def load(self, path):
-        parser = ConfigParser.ConfigParser()
+        parser = ParserClass()
 
         with open(path) as f:
             parser.readfp(f)

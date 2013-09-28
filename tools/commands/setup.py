@@ -41,8 +41,8 @@ class SetupCommand(object):
 
 
     def run(self):
-        print 'Downloading Closure Library...'
+        print('Downloading Closure Library...')
         self.setup_closure_library()
 
-        print 'Downloading Closure Compiler...'
+        print('Downloading Closure Compiler...')
         self.setup_closure_compiler()
