@@ -27,25 +27,25 @@ def print_help():
         print('    ' + name)
 
 
-if len(sys.argv) != 2:
-    print_help()
-    sys.exit()
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print_help()
+        sys.exit()
 
-subcommand_classes = COMMANDS_DICT.get(sys.argv[1])
-if subcommand_classes is None:
-    print_help()
-    sys.exit()
+    subcommand_classes = COMMANDS_DICT.get(sys.argv[1])
+    if subcommand_classes is None:
+        print_help()
+        sys.exit()
 
-config = None
-try:
     config = Config()
-    config.load(CONFIG)
-except IOError:
-    config = None
+    try:
+        config.load(CONFIG)
+    except IOError:
+        config = None
 
-try:
-    for klass in subcommand_classes:
-        subcommand = klass(config)
-        subcommand.run()
-except GoogkitError, e:
-    sys.exit('[ERROR] ' + str(e))
+    try:
+        for klass in subcommand_classes:
+            subcommand = klass(config)
+            subcommand.run()
+    except GoogkitError, e:
+        sys.exit('[ERROR] ' + str(e))
