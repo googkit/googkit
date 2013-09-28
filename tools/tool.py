@@ -20,7 +20,12 @@ COMMANDS_DICT = {
 
 
 def print_help():
-    print ('TODO: Help')
+    print 'Usage: python tool.py command'
+    print
+    print 'Available subcommands:'
+
+    for name in sorted(COMMANDS_DICT.keys()):
+        print '    ' + name
 
 
 if len(sys.argv) != 2:
