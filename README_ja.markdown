@@ -97,8 +97,8 @@ Googkitのインストール
 
 1. テスト用のHTMLを作成する
 
-    [example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html)
-    をテスト対象と同じディレクトリにコピーしてから、名前を
+    [example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html) を
+	テスト対象と同じディレクトリにコピーしてから、名前を
     `{target_name}_test.html` に変更します。
 
     デフォルトの名前 `{target_name}_test.html` が気に入らない場合は、
@@ -165,8 +165,7 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`goo
 #### Source Map を使う
 Googkit は、Source Map ファイル `script.min.js.map` を `debug/`
 ディレクトリに生成します。
-お使いのブラウザが対応していれば、
-[Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1)
+お使いのブラウザが対応していれば、 [Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1)
 によるデバッグが可能です。
 
 難読性を保つために、Source Map は `production/` ディレクトリには

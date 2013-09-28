@@ -92,15 +92,13 @@ Project Structure
 
 Running Unit Tests
 ------------------
-You can run
-[jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm)
+You can run [jsunit-style](http://people.apache.org/~dennisbyrne/infoq/js_tdd.2.htm)
 unit tests.
 
 
 1. Create a HTML file for testing
 
-    Copy
-	[example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html)
+    Copy [example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html)
 	into the same directory as the target, then rename it to
 	`{target_name}_test.html`.
 
@@ -165,8 +163,7 @@ This option makes compilation slow.
 
 #### Using Source Map
 Googkit generates a source map file `script.min.js.map` within `debug/`,
-so you can use
-[Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1)
+so you can use [Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1)
 if your browser supports it.
 
 For reason of obfuscation, source map file will **NOT** be stored
