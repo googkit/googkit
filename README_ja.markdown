@@ -73,13 +73,13 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`too
 
 
 ### ユニットテストを実行する
-goog-starter-kit は、 Closure Library のテストツールを利用したユニットテストをサポートしています。
 [jsunit の形式](http://www.infoq.com/jp/articles/javascript-tdd) で、簡単にユニットテストを実行できます。
 
-1. [example_test.html](https://github.com/cocopon/goog-starter-kit/blob/master/development/js_dev/example_test.html) をユニットテスト対象と同じディレクトリにコピーする
-    
-    コピー後、このファイルを `{target_name}_test.html` となるようにリネームします。
-    テストファイルの名前は慣例的に `{target_name}_test.html` ですが、 `tool/tools.cfg` の `test_file_pattern` によって変更できます。
+1. テスト用のHTMLを作成する
+
+    [example_test.html](https://github.com/cocopon/goog-starter-kit/blob/master/development/js_dev/example_test.html) をテスト対象と同じディレクトリにコピーしてから、名前を `{target_name}_test.html` に変更します。
+
+    デフォルトの名前 `{target_name}_test.html` が気に入らない場合は、 `tool/tools.cfg` の `test_file_pattern` で変更できます。
 
 2. テストファイルの設定を更新する
 
@@ -113,9 +113,10 @@ goog-starter-kit は、 Closure Library のテストツールを利用したユ�
 
 
 #### Source Map を使う
-goog-starter-kitは Source Map をサポートしており、[Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1) に対応しているブラウザをお使いであれば Source Map を使うことができます。Source Map ファイルは `debug/` ディレクトリに `script.min.js.map` のように保存されます。
+goog-starter-kitは、Source Map ファイル `script.min.js.map` を `debug/` ディレクトリに生成します。
+お使いのブラウザが対応していれば、 [Source Map V3](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1) によるデバッグが可能です。
 
-ちなみに `production/` ディレクトリに Source Map は **保存されません** 。これは、難読性を保つための措置です。
+難読性を保つために、Source Map は `production/` ディレクトリには **保存されません** 。
 
 
 その他
