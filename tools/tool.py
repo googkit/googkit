@@ -8,13 +8,15 @@ import toolsconfig
 from apply_config import ApplyConfigCommand
 from compile import CompileCommand
 from setup import SetupCommand
+from update_deps import UpdateDepsCommand
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
 COMMANDS = {
         'apply-config': ApplyConfigCommand,
         'compile': CompileCommand,
-        'setup': SetupCommand}
+        'setup': SetupCommand,
+        'update-deps': UpdateDepsCommand}
 
 
 def print_help():
