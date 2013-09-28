@@ -6,12 +6,14 @@ import os.path
 import sys
 import toolsconfig
 from apply_config import ApplyConfigCommand
+from compile import CompileCommand
 from setup import SetupCommand
 
 
 CONFIG = os.path.join('tools', 'tools.cfg')
 COMMANDS = {
         'apply-config': ApplyConfigCommand,
+        'compile': CompileCommand,
         'setup': SetupCommand}
 
 
