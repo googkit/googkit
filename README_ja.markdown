@@ -154,8 +154,7 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`goo
 
 
 ### コンパイル後のスクリプトをデバッグする
-コンパイル後のスクリプトをデバッグする場合は、 `googkit.cfg` の
-`is_debug_enabled` を `yes` にしてから、変更を適用します。
+`googkit.cfg` の `is_debug_enabled` を `yes` にしてから、変更を適用します。
 
     $ googkit apply-config
 
