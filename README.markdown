@@ -12,11 +12,11 @@ You can also do such a complicated compiling ... at one blow!
 
 
 ### System Requirement
-Following programs are required to use this program.
+Googkit requires Following commands.
 Install them if not installed yet.
 
-- Git ...... Downloads Closure Library
-- Python ... Executes Closure Tools
+- Git ...... downloads Closure Library
+- Python ... executes Closure Tools
 
 
 
@@ -81,11 +81,11 @@ Getting Started
 
 Project Structure
 -----------------
-- googkit.cfg .... Config file of the project
-- closure/ ....... Stores Closure Tools
-- development/ ... For development
-- debug/ ......... For debug (it will be created when `is_debug_enabled` is `yes` in `googkit.cfg`)
-- production/ .... For production
+- googkit.cfg .... config file of the project
+- closure/ ....... stores Closure Tools
+- development/ ... for development
+- debug/ ......... for debug (it will be created when `is_debug_enabled` is `yes` in `googkit.cfg`)
+- production/ .... for production
 
 
 
@@ -152,12 +152,11 @@ Scripts that are in it will be compiled and removed in production.
 
 
 ### Debugging a Compiled Source
-If you want to debug a compiled script, change `is_debug_enabled` to `yes`
-in `googkit.cfg` and apply it:
+Change `is_debug_enabled` to `yes` in `googkit.cfg` and apply it:
 
     $ googkit apply-config
 
-Then you can use a debugging features in `debug/`.
+Then you can use debugging features in `debug/`.
 This option makes compilation slow.
 
 

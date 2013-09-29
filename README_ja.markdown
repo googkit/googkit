@@ -25,12 +25,13 @@ Googkitのインストール
 ---------------------
 はじめに、Googkit をインストールします。
 
+
 1. Googkit をダウンロードする
 
         $ git clone https://github.com/cocopon/googkit
 
 
-2. 適切な場所に移動する
+2. お好みの場所に移動する
 
         $ mv googkit /usr/local
 
