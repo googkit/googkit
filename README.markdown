@@ -28,18 +28,18 @@ At first, you need to install Googkit.
 
 1. Download Googkit
 
-        $ git clone https://github.com/cocopon/googkit
+		$ git clone https://github.com/cocopon/googkit
 
 
 2. Put it into a preferred place
 
-        $ mv googkit /usr/local
+		$ mv googkit /usr/local
 
 
 3. Add to environment variable `PATH`
 
-        export GOOGKIT_HOME=/usr/local/googkit
-        export PATH=$PATH:$GOOGKIT_HOME/bin
+		export GOOGKIT_HOME=/usr/local/googkit
+		export PATH=$PATH:$GOOGKIT_HOME/bin
 
 
 
@@ -48,33 +48,33 @@ Getting Started
 ---------------
 1. Create a project directory and initialize
 
-        $ mkdir my_project
-        $ cd my_project
-        $ googkit init
+		$ mkdir my_project
+		$ cd my_project
+		$ googkit init
 
 
 2. Download Closure Tools
 
-        $ googkit setup
+		$ googkit setup
 
 
 3. Develop your web app in `development/`
 
-    Modify existing scripts, or add your awesome scripts
+	Modify existing scripts, or add your awesome scripts
 	to `development/js_dev`.
 
-    After adding/removing scripts, you need to update dependency information:
+	After adding/removing scripts, you need to update dependency information:
 
-        $ googkit update-deps
+		$ googkit update-deps
 
 
 4. Compile scripts
 
-    Compiling scripts improves performance and makes them unreadable.
+	Compiling scripts improves performance and makes them unreadable.
 
-        $ googkit compile
+		$ googkit compile
 
-    If it succeed, output files will be stored in `production/`.
+	If it succeed, output files will be stored in `production/`.
 
 
 
@@ -84,7 +84,7 @@ Project Structure
 - googkit.cfg .... config file of the project
 - closure/ ....... stores Closure Tools
 - development/ ... for development
-- debug/ ......... for debug (it will be created when `is_debug_enabled` is `yes` in `googkit.cfg`)
+- debug/ ......... for debug (it will be created if debug is enabled)
 - production/ .... for production
 
 
@@ -98,17 +98,17 @@ unit tests.
 
 1. Create a HTML file for testing
 
-    Copy [example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html)
+	Copy [example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html)
 	into the same directory as the target, then rename it to
 	`{target_name}_test.html`.
 
-    If you don't like the default name `{target_name}_test.html`, you can
+	If you don't like the default name `{target_name}_test.html`, you can
 	change it by `test_file_pattern` in `googkit.cfg`.
 
 
 2. Apply config changes
 
-        $ googkit apply-config
+		$ googkit apply-config
 
 
 3. Write unit tests
@@ -116,14 +116,14 @@ unit tests.
 
 4. Update dependency information
 
-        $ googkit update-deps
+		$ googkit update-deps
 
 
 5. Run unit tests
 
-    Open the test html file in your browser.
+	Open the test html file in your browser.
 
-    If you want to run all tests, open `development/all_tests.html`
+	If you want to run all tests, open `development/all_tests.html`
 	in your browser with **http scheme** (doesn't work with file scheme).
 
 
@@ -136,14 +136,14 @@ If you want to change the default namespace of Main class (`foo.Main`),
 change `main_namespace` in `googkit.cfg`.
 After editing, apply it with a following command:
 
-    $ googkit apply-config
+	$ googkit apply-config
 
 
 ### Renaming a Compiled Script
 Edit `compiled_js` in `googkit.cfg`.
 After editing, apply it with a following command:
 
-    $ googkit apply-config
+	$ googkit apply-config
 
 
 ### Preventing Some Scripts from Compiling
@@ -154,7 +154,7 @@ Scripts that are in it will be compiled and removed in production.
 ### Debugging a Compiled Source
 Change `is_debug_enabled` to `yes` in `googkit.cfg` and apply it:
 
-    $ googkit apply-config
+	$ googkit apply-config
 
 Then you can use debugging features in `debug/`.
 This option makes compilation slow.

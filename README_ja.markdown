@@ -28,18 +28,18 @@ Googkitのインストール
 
 1. Googkit をダウンロードする
 
-        $ git clone https://github.com/cocopon/googkit
+		$ git clone https://github.com/cocopon/googkit
 
 
 2. お好みの場所に移動する
 
-        $ mv googkit /usr/local
+		$ mv googkit /usr/local
 
 
 3. 環境変数の `PATH` に追加する
 
-        export GOOGKIT_HOME=/usr/local/googkit
-        export PATH=$PATH:$GOOGKIT_HOME/bin
+		export GOOGKIT_HOME=/usr/local/googkit
+		export PATH=$PATH:$GOOGKIT_HOME/bin
 
 
 
@@ -48,33 +48,33 @@ Googkitのインストール
 ----------
 1. プロジェクト用のディレクトリを作成し、初期化する
 
-        $ mkdir my_project
-        $ cd my_project
-        $ googkit init
+		$ mkdir my_project
+		$ cd my_project
+		$ googkit init
 
 
 2. Closure Tools をダウンロードする
 
-        $ googkit setup
+		$ googkit setup
 
 
 3. `development/` ディレクトリで開発する
 
-    `development/js_dev` ディレクトリ内で開発します。
+	`development/js_dev` ディレクトリ内で開発します。
 
-    スクリプトを追加/削除したあとは、依存情報を更新します。
+	スクリプトを追加/削除したあとは、依存情報を更新します。
 
-        $ googkit update-deps
+		$ googkit update-deps
 
 
 4. コンパイルする
 
-    コンパイルすると、パフォーマンスが向上し、ソースコードが難読化されるなどの
-    利点があります。
+	コンパイルすると、パフォーマンスが向上し、ソースコードが難読化されるなどの
+	利点があります。
 
-        $ googkit compile
+		$ googkit compile
 
-    コンパイルに成功すると、 `production/` ディレクトリが作成されます。
+	コンパイルに成功すると、 `production/` ディレクトリが作成されます。
 
 
 
@@ -84,7 +84,7 @@ Googkitのインストール
 - googkit.cfg .... プロジェクトの設定ファイル
 - closure/ ....... ダウンロードした Closure Tools が格納される
 - development/ ... 開発用
-- debug/ ......... デバッグ用(`googkit.cfg`の`is_debug_enabled`が`yes`のときのみ存在)
+- debug/ ......... デバッグ用(デバッグが有効のときのみ作成される)
 - production/ .... 本番用
 
 
@@ -98,17 +98,17 @@ Googkitのインストール
 
 1. テスト用のHTMLを作成する
 
-    [example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html) を
+	[example_test.html](https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html) を
 	テスト対象と同じディレクトリにコピーしてから、名前を
-    `{target_name}_test.html` に変更します。
+	`{target_name}_test.html` に変更します。
 
-    デフォルトの名前 `{target_name}_test.html` が気に入らない場合は、
-    `googkit.cfg` の `test_file_pattern` で変更できます。
+	デフォルトの名前 `{target_name}_test.html` が気に入らない場合は、
+	`googkit.cfg` の `test_file_pattern` で変更できます。
 
 
 2. テストファイルの設定を更新する
 
-        $ googkit apply-config
+		$ googkit apply-config
 
 
 3. テストコードを書く
@@ -116,14 +116,14 @@ Googkitのインストール
 
 4. 依存情報を更新する
 
-        $ googkit update-deps
+		$ googkit update-deps
 
 
 5. テストを実行する
 
-    テスト用のHTMLファイルをブラウザで開きます。
+	テスト用のHTMLファイルをブラウザで開きます。
 
-    すべてのテストを実行する場合は、 `development/all_tests.html` に
+	すべてのテストを実行する場合は、 `development/all_tests.html` に
 	**http スキーム** でアクセスしてください
 	(file スキームではうまくいきません)。
 
@@ -137,14 +137,14 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`goo
 `main_namespace` を変更します。
 編集したあと、以下のコマンドで変更を適用します。
 
-    $ googkit apply-config
+	$ googkit apply-config
 
 
 ### コンパイル後のファイル名を変更する
 `googkit.cfg` の `compiled_js` を修正します。
 編集したあと、以下のコマンドで変更を適用します。
 
-    $ googkit apply-config
+	$ googkit apply-config
 
 
 ### コンパイルしたくないスクリプトがある
@@ -156,7 +156,7 @@ Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`goo
 ### コンパイル後のスクリプトをデバッグする
 `googkit.cfg` の `is_debug_enabled` を `yes` にしてから、変更を適用します。
 
-    $ googkit apply-config
+	$ googkit apply-config
 
 `debug/` ディレクトリが作成され、デバッグ用の機能が使えるようになります。
 コンパイルの時間が長くなるので注意してください。
