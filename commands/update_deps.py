@@ -38,6 +38,10 @@ class UpdateDepsCommand(object):
         config = self.config
         js_dev_dir = config.js_dev_dir()
         testrunner = config.testrunner()
+
+        if not os.path.exists(testrunner):
+            return
+
         testrunner_dir = os.path.dirname(testrunner)
         test_file_pattern = config.test_file_pattern()
         tests = []
