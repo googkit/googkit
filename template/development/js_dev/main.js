@@ -3,7 +3,7 @@
  */
 
 
-goog.provide('foo.main');/*@provide_main@*/
+goog.provide('main');/*@provide_main@*/
 
 goog.require('foo.Example');
 
