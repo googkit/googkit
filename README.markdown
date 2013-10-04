@@ -131,14 +131,6 @@ unit tests.
 
 Tips
 ----
-### Changing Namespace of Main Class
-If you want to change the default namespace of Main class (`foo.Main`),
-change `main_namespace` in `googkit.cfg`.
-After editing, apply it with a following command:
-
-	$ googkit apply-config
-
-
 ### Renaming a Compiled Script
 Edit `compiled_js` in `googkit.cfg`.
 After editing, apply it with a following command:

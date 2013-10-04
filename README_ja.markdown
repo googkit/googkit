@@ -132,14 +132,6 @@ Googkitのインストール
 
 小技
 ----
-### Mainクラスの名前空間を変更する
-Mainクラスの名前空間(初期値は`foo.Main`)を変更するには、`googkit.cfg` の
-`main_namespace` を変更します。
-編集したあと、以下のコマンドで変更を適用します。
-
-	$ googkit apply-config
-
-
 ### コンパイル後のファイル名を変更する
 `googkit.cfg` の `compiled_js` を修正します。
 編集したあと、以下のコマンドで変更を適用します。
