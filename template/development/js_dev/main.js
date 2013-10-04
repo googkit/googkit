@@ -3,7 +3,7 @@
  */
 
 
-goog.provide('main');/*@provide_main@*/
+goog.provide('main');
 
 goog.require('foo.Example');
 
@@ -11,7 +11,7 @@ goog.require('foo.Example');
 /**
  * Entry point of the web app.
  */
-foo.main = function() {/*@main_fn@*/
+main = function() {
   // TODO: Write your code here
   example = new foo.Example();
   example.doSomething();
@@ -19,4 +19,4 @@ foo.main = function() {/*@main_fn@*/
 
 
 // Start the web app.
-foo.main();/*@exec_main@*/
+main();
