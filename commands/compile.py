@@ -101,7 +101,7 @@ class CompileCommand(object):
             debug_args = [
                     '--root=' + config.library_root(),
                     '--root=' + js_dev_dir,
-                    '--namespace=' + config.main_namespace(),
+                    '--namespace=main',
                     '--output_mode=compiled',
                     '--compiler_jar=' + config.compiler(),
                     '--compiler_flags=--compilation_level=' + config.compilation_level(),
@@ -125,7 +125,7 @@ class CompileCommand(object):
         prod_args = [
                 '--root=' + config.library_root(),
                 '--root=' + js_dev_dir,
-                '--namespace=' + config.main_namespace(),
+                '--namespace=main',
                 '--output_mode=compiled',
                 '--compiler_jar=' + config.compiler(),
                 '--compiler_flags=--compilation_level=' + config.compilation_level(),

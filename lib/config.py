@@ -24,9 +24,6 @@ class Config(object):
 
         self.parser = parser
 
-    def main_namespace(self):
-        return self.parser.get('project', 'main_namespace')
-
     def development_dir(self):
         path = self.parser.get('project', 'development')
         return os.path.normpath(path)
