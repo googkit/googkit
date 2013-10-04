@@ -39,6 +39,14 @@ if __name__ == '__main__':
 
     config = Config()
     try:
+        while os.path.exists(os.path.relpath(CONFIG)):
+            before = os.getcwd()
+            os.chdir('..')
+
+            # Break if current dir is root.
+            if before == os.getcwd():
+                break
+
         config.load(CONFIG)
     except IOError:
         config = None
