@@ -2,6 +2,7 @@ import os
 import sys
 from lib.command import CommandParser
 from lib.config import Config
+from lib.environment import Environment
 from lib.error import GoogkitError
 
 
@@ -9,17 +10,17 @@ CONFIG = 'googkit.cfg'
 
 
 def print_help(args=[]):
-    commands = CommandParser.right_commands(args)
-    if len(commands) == 0:
+    right_commands = CommandParser.right_commands(args)
+    if len(right_commands) == 0:
         print('Usage: googkit <command>')
     else:
-        print('Usage: googkit %s <command>' % (' '.join(commands)))
+        print('Usage: googkit %s <command>' % (' '.join(right_commands)))
 
     print('')
     print('Available commands:')
 
-    commands = CommandParser.available_commands(args)
-    for name in sorted(commands):
+    available_commands = CommandParser.available_commands(right_commands)
+    for name in sorted(available_commands):
         print('    ' + name)
 
 
@@ -58,7 +59,8 @@ if __name__ == '__main__':
             if config is None and cls.needs_config():
                 config = find_config()
 
-            command = cls(config)
+            env = Environment(args, config)
+            command = cls(env)
             command.run()
     except GoogkitError, e:
         sys.exit('[ERROR] ' + str(e))

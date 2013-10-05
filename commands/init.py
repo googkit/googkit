@@ -8,7 +8,7 @@ class InitCommand(object):
     TEMPLATE_DIR = 'template'
 
 
-    def __init__(self, config):
+    def __init__(self, env):
         pass
 
 

@@ -9,8 +9,8 @@ class CompileCommand(object):
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
 
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, env):
+        self.env = env
 
 
     @classmethod
@@ -66,7 +66,7 @@ class CompileCommand(object):
 
 
     def setup_files(self, target_dir):
-        config = self.config
+        config = self.env.config
         devel_dir = config.development_dir()
         compiled_js = config.compiled_js()
 
@@ -91,7 +91,7 @@ class CompileCommand(object):
 
 
     def compile_scripts(self):
-        config = self.config
+        config = self.env.config
         devel_dir = config.development_dir()
         js_dev_dir = config.js_dev_dir()
         compiled_js = config.compiled_js()
@@ -140,8 +140,8 @@ class CompileCommand(object):
 
 
     def modify_source_map(self):
-        debug_dir = self.config.debug_dir()
-        source_map = self.config.compiled_js() + '.map'
+        debug_dir = self.env.config.debug_dir()
+        source_map = self.env.config.compiled_js() + '.map'
         debug_source_map = os.path.join(debug_dir, source_map)
 
         with open(debug_source_map, 'r+') as source_map_file:
@@ -154,7 +154,7 @@ class CompileCommand(object):
 
 
     def run(self):
-        if self.config is None:
+        if self.env.config is None:
             raise GoogkitError('No config file found.')
 
         self.compile_scripts()

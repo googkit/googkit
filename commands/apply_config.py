@@ -8,8 +8,8 @@ class ApplyConfigCommand(object):
     CONFIG_TARGET_EXT = ('.html', '.xhtml', '.js', '.css')
 
 
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, env):
+        self.env = env
 
 
     @classmethod
@@ -33,21 +33,21 @@ class ApplyConfigCommand(object):
 
 
     def update_base_js(self, line, dirpath):
-        path = self.config.base_js()
+        path = self.env.config.base_js()
         relpath = os.path.relpath(path, dirpath)
 
         return '<script type="text/javascript" src="%s"></script>' % ApplyConfigCommand.html_path(relpath)
 
 
     def update_deps_js(self, line, dirpath):
-        path = self.config.deps_js()
+        path = self.env.config.deps_js()
         relpath = os.path.relpath(path, dirpath)
 
         return '<script type="text/javascript" src="%s"></script>' % ApplyConfigCommand.html_path(relpath)
 
 
     def update_multitestrunner_css(self, line, dirpath):
-        path = self.config.multitestrunner_css()
+        path = self.env.config.multitestrunner_css()
         relpath = os.path.relpath(path, dirpath)
 
         return '<link rel="stylesheet" type="text/css" href="%s">' % ApplyConfigCommand.html_path(relpath)
@@ -75,12 +75,12 @@ class ApplyConfigCommand(object):
 
 
     def apply_config_all(self):
-        devel_dir = self.config.development_dir()
+        devel_dir = self.env.config.development_dir()
 
         # If library_root is in development_dir, we should avoid to walk into the library_root.
         ignores = (
-                self.config.library_root(),
-                self.config.compiler_root())
+                self.env.config.library_root(),
+                self.env.config.compiler_root())
 
         for root, dirs, files in os.walk(devel_dir):
             for filename in files:
@@ -98,7 +98,7 @@ class ApplyConfigCommand(object):
 
 
     def run(self):
-        if self.config is None:
+        if self.env.config is None:
             raise GoogkitError('No config file found.')
 
         print('Applying config...')

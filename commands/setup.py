@@ -12,8 +12,8 @@ class SetupCommand(object):
     COMPILER_LATEST_ZIP = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
 
 
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, env):
+        self.env = env
 
 
     @classmethod
@@ -22,7 +22,7 @@ class SetupCommand(object):
 
 
     def setup_closure_library(self):
-        lib.clone.run(SetupCommand.LIBRARY_GIT_REPOS, self.config.library_root())
+        lib.clone.run(SetupCommand.LIBRARY_GIT_REPOS, self.env.config.library_root())
 
 
     @classmethod
@@ -37,7 +37,7 @@ class SetupCommand(object):
         compiler_zip = os.path.join('tmp', 'compiler.zip')
         lib.download.run(SetupCommand.COMPILER_LATEST_ZIP, compiler_zip)
 
-        compiler_root = self.config.compiler_root()
+        compiler_root = self.env.config.compiler_root()
         SetupCommand.safe_mkdirs(compiler_root)
 
         subtool_unzip = os.path.join('tools', 'sub', 'unzip.py')
@@ -47,7 +47,7 @@ class SetupCommand(object):
 
 
     def run(self):
-        if self.config is None:
+        if self.env.config is None:
             raise GoogkitError('No config file found.')
 
         print('Downloading Closure Library...')

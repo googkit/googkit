@@ -1,4 +1,5 @@
 from commands.apply_config import ApplyConfigCommand
+from commands.commands import CommandsCommand
 from commands.compile import CompileCommand
 from commands.init import InitCommand
 from commands.setup import SetupCommand
@@ -7,6 +8,7 @@ from commands.update_deps import UpdateDepsCommand
 
 class CommandParser(object):
     DICT = {
+        'commands': [CommandsCommand],
         'compile': [CompileCommand],
         'config': {
             'update': [ApplyConfigCommand, UpdateDepsCommand]
@@ -21,31 +23,35 @@ class CommandParser(object):
 
     @classmethod
     def right_commands(cls, args):
-        dict = CommandParser.DICT
+        command_dict = CommandParser.DICT
         result = []
 
         for arg in args:
-            next_dict = dict.get(arg)
+            next_dict = command_dict.get(arg)
             if next_dict is None:
                 break
 
             result.append(arg)
-            dict = next_dict
+            command_dict = next_dict
 
         return result
 
     @classmethod
-    def available_commands(cls, args):
-        dict = CommandParser.DICT
+    def available_commands(cls, args=[]):
+        command_dict = CommandParser.DICT
 
         for arg in args:
-            next_dict = dict.get(arg)
+            next_dict = command_dict.get(arg)
             if next_dict is None:
-                return dict.keys()
+                return []
 
-            dict = next_dict
+            command_dict = next_dict
 
-        return dict
+        if not isinstance(command_dict, dict):
+            return []
+
+        return command_dict.keys()
+
 
     @classmethod
     def command_classes(cls, args):

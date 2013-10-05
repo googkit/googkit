@@ -4,8 +4,8 @@ from lib.error import GoogkitError
 
 
 class UpdateDepsCommand(object):
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, env):
+        self.env = env
 
 
     @classmethod
@@ -24,7 +24,7 @@ class UpdateDepsCommand(object):
 
 
     def update_deps(self):
-        config = self.config
+        config = self.env.config
         js_dev_dir = config.js_dev_dir()
         deps_js = config.deps_js()
 
@@ -40,7 +40,7 @@ class UpdateDepsCommand(object):
 
 
     def update_testrunner(self):
-        config = self.config
+        config = self.env.config
         js_dev_dir = config.js_dev_dir()
         testrunner = config.testrunner()
 
@@ -76,7 +76,7 @@ class UpdateDepsCommand(object):
 
 
     def run(self):
-        if self.config is None:
+        if self.env.config is None:
             raise GoogkitError('No config file found.')
 
         print('Updating dependency information...')
