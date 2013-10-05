@@ -20,7 +20,7 @@ def print_help(args=[]):
     print('Available commands:')
 
     available_commands = CommandParser.available_commands(right_commands)
-    for name in sorted(available_commands):
+    for name in available_commands:
         print('    ' + name)
 
 

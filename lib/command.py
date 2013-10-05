@@ -8,7 +8,7 @@ from commands.update_deps import UpdateDepsCommand
 
 class CommandParser(object):
     DICT = {
-        'commands': [CommandsCommand],
+        '_commands': [CommandsCommand],
         'compile': [CompileCommand],
         'config': {
             'update': [ApplyConfigCommand, UpdateDepsCommand]
@@ -36,6 +36,12 @@ class CommandParser(object):
 
         return result
 
+
+    @classmethod
+    def is_internal_command(cls, name):
+        return name[0] == '_'
+
+
     @classmethod
     def available_commands(cls, args=[]):
         command_dict = CommandParser.DICT
@@ -50,7 +56,8 @@ class CommandParser(object):
         if not isinstance(command_dict, dict):
             return []
 
-        return command_dict.keys()
+        commands = command_dict.keys()
+        return sorted([cmd for cmd in commands if not CommandParser.is_internal_command(cmd)])
 
 
     @classmethod
