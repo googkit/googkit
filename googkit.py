@@ -23,17 +23,7 @@ def print_help(args=[]):
         print('    ' + name)
 
 
-if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print_help()
-        sys.exit()
-
-    args = sys.argv[1:]
-    classes = CommandParser.command_classes(args)
-    if classes is None:
-        print_help(args)
-        sys.exit()
-
+def find_config():
     config = Config()
     try:
         while not os.path.exists(os.path.relpath(CONFIG)):
@@ -48,8 +38,26 @@ if __name__ == '__main__':
     except IOError:
         config = None
 
+    return config
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print_help()
+        sys.exit()
+
+    args = sys.argv[1:]
+    classes = CommandParser.command_classes(args)
+    if classes is None:
+        print_help(args)
+        sys.exit()
+
     try:
+        config = None
         for cls in classes:
+            if config is None and cls.needs_config():
+                config = find_config()
+
             command = cls(config)
             command.run()
     except GoogkitError, e:

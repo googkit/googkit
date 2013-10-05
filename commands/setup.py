@@ -16,6 +16,11 @@ class SetupCommand(object):
         self.config = config
 
 
+    @classmethod
+    def needs_config(cls):
+        return True
+
+
     def setup_closure_library(self):
         lib.clone.run(SetupCommand.LIBRARY_GIT_REPOS, self.config.library_root())
 

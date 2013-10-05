@@ -14,6 +14,11 @@ class CompileCommand(object):
 
 
     @classmethod
+    def needs_config(cls):
+        return True
+
+
+    @classmethod
     def rmtree_silent(cls, path):
         try:
             shutil.rmtree(path)

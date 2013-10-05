@@ -13,6 +13,11 @@ class ApplyConfigCommand(object):
 
 
     @classmethod
+    def needs_config(cls):
+        return True
+
+
+    @classmethod
     def line_indent(cls, line):
         indent = ''
         m = re.search(r'^(\s*)', line)

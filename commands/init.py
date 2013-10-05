@@ -12,6 +12,11 @@ class InitCommand(object):
         pass
 
 
+    @classmethod
+    def needs_config(cls):
+        return False
+
+
     def copy_template(self, dst_dir):
         script_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
         template_dir = os.path.join(script_dir, InitCommand.TEMPLATE_DIR)
