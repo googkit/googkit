@@ -65,7 +65,7 @@ Getting Started
 
 	After adding/removing scripts, you need to update dependency information:
 
-		$ googkit update-deps
+		$ googkit deps update
 
 
 4. Compile scripts
@@ -108,7 +108,7 @@ unit tests.
 
 2. Apply config changes
 
-		$ googkit apply-config
+		$ googkit config update
 
 
 3. Write unit tests
@@ -116,7 +116,7 @@ unit tests.
 
 4. Update dependency information
 
-		$ googkit update-deps
+		$ googkit deps update
 
 
 5. Run unit tests
@@ -135,7 +135,7 @@ Tips
 Edit `compiled_js` in `googkit.cfg`.
 After editing, apply it with a following command:
 
-	$ googkit apply-config
+	$ googkit config update
 
 
 ### Preventing Some Scripts from Compiling
@@ -146,7 +146,7 @@ Scripts that are in it will be compiled and removed in production.
 ### Debugging a Compiled Source
 Change `is_debug_enabled` to `yes` in `googkit.cfg` and apply it:
 
-	$ googkit apply-config
+	$ googkit config update
 
 Then you can use debugging features in `debug/`.
 This option makes compilation slow.
