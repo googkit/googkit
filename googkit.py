@@ -1,40 +1,37 @@
 import os
 import sys
-from commands.apply_config import ApplyConfigCommand
-from commands.compile import CompileCommand
-from commands.init import InitCommand
-from commands.setup import SetupCommand
-from commands.update_deps import UpdateDepsCommand
+from lib.command import CommandParser
 from lib.config import Config
 from lib.error import GoogkitError
 
 
 CONFIG = 'googkit.cfg'
-COMMANDS_DICT = {
-        'apply-config': [ApplyConfigCommand, UpdateDepsCommand],
-        'compile': [CompileCommand],
-        'init': [InitCommand],
-        'setup': [SetupCommand, UpdateDepsCommand],
-        'update-deps': [UpdateDepsCommand]}
 
 
-def print_help():
-    print('Usage: googkit command')
+def print_help(args=[]):
+    commands = CommandParser.right_commands(args)
+    if len(commands) == 0:
+        print('Usage: googkit <command>')
+    else:
+        print('Usage: googkit %s <command>' % (' '.join(commands)))
+
     print('')
-    print('Available subcommands:')
+    print('Available commands:')
 
-    for name in sorted(COMMANDS_DICT.keys()):
+    commands = CommandParser.available_commands(args)
+    for name in sorted(commands):
         print('    ' + name)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         print_help()
         sys.exit()
 
-    subcommand_classes = COMMANDS_DICT.get(sys.argv[1])
-    if subcommand_classes is None:
-        print_help()
+    args = sys.argv[1:]
+    classes = CommandParser.command_classes(args)
+    if classes is None:
+        print_help(args)
         sys.exit()
 
     config = Config()
@@ -52,8 +49,8 @@ if __name__ == '__main__':
         config = None
 
     try:
-        for klass in subcommand_classes:
-            subcommand = klass(config)
-            subcommand.run()
+        for cls in classes:
+            command = cls(config)
+            command.run()
     except GoogkitError, e:
         sys.exit('[ERROR] ' + str(e))
