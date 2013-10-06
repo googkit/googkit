@@ -2,15 +2,16 @@ import os
 import re
 import shutil
 import json
+from command import Command
 from lib.error import GoogkitError
 
 
-class BuildCommand(object):
+class BuildCommand(Command):
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
 
     def __init__(self, env):
-        self.env = env
+        super(BuildCommand, self).__init__(env)
 
 
     @classmethod
@@ -153,9 +154,5 @@ class BuildCommand(object):
             source_map_file.truncate()
 
 
-    def run(self):
-        if self.env.config is None:
-            raise GoogkitError('No config file found.')
-
+    def run_internal(self):
         self.compile_scripts()
-        print('Completed.')

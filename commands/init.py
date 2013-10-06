@@ -1,20 +1,16 @@
 import distutils.core
 import os
 import shutil
+from command import Command
 from lib.error import GoogkitError
 
 
-class InitCommand(object):
+class InitCommand(Command):
     TEMPLATE_DIR = 'template'
 
 
     def __init__(self, env):
-        pass
-
-
-    @classmethod
-    def needs_config(cls):
-        return False
+        super(InitCommand, self).__init__(env)
 
 
     def copy_template(self, dst_dir):
@@ -27,6 +23,5 @@ class InitCommand(object):
         distutils.dir_util.copy_tree(template_dir, dst_dir)
 
 
-    def run(self):
+    def run_internal(self):
         self.copy_template(os.getcwd())
-        print('Completed.')

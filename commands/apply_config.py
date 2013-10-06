@@ -1,15 +1,16 @@
 import glob
 import os
 import re
+from command import Command
 from lib.error import GoogkitError
 
 
-class ApplyConfigCommand(object):
+class ApplyConfigCommand(Command):
     CONFIG_TARGET_EXT = ('.html', '.xhtml', '.js', '.css')
 
 
     def __init__(self, env):
-        self.env = env
+        super(ApplyConfigCommand, self).__init__(env)
 
 
     @classmethod
@@ -97,10 +98,6 @@ class ApplyConfigCommand(object):
                     dirs.remove(dirname)
 
 
-    def run(self):
-        if self.env.config is None:
-            raise GoogkitError('No config file found.')
-
+    def run_internal(self):
         print('Applying config...')
         self.apply_config_all()
-        print('Completed.')

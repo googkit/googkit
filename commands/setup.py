@@ -4,16 +4,17 @@ import shutil
 import lib.clone
 import lib.download
 import lib.unzip
+from command import Command
 from lib.error import GoogkitError
 
 
-class SetupCommand(object):
+class SetupCommand(Command):
     LIBRARY_GIT_REPOS = 'https://code.google.com/p/closure-library/'
     COMPILER_LATEST_ZIP = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
 
 
     def __init__(self, env):
-        self.env = env
+        super(SetupCommand, self).__init__(env)
 
 
     @classmethod
@@ -46,14 +47,9 @@ class SetupCommand(object):
         shutil.rmtree('tmp')
 
 
-    def run(self):
-        if self.env.config is None:
-            raise GoogkitError('No config file found.')
-
+    def run_internal(self):
         print('Downloading Closure Library...')
-        self.setup_closure_library()
+        # self.setup_closure_library()
 
         print('Downloading Closure Compiler...')
-        self.setup_closure_compiler()
-
-        print('Completed.')
+        # self.setup_closure_compiler()

@@ -1,11 +1,12 @@
 import os
 import re
+from command import Command
 from lib.error import GoogkitError
 
 
-class UpdateDepsCommand(object):
+class UpdateDepsCommand(Command):
     def __init__(self, env):
-        self.env = env
+        super(UpdateDepsCommand, self).__init__(env)
 
 
     @classmethod
@@ -75,11 +76,7 @@ class UpdateDepsCommand(object):
                 f.write(line)
 
 
-    def run(self):
-        if self.env.config is None:
-            raise GoogkitError('No config file found.')
-
+    def run_internal(self):
         print('Updating dependency information...')
         self.update_deps()
         self.update_testrunner()
-        print('Completed.')
