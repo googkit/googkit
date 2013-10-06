@@ -9,6 +9,16 @@ import lib.unzip
 from command import Command
 from lib.error import GoogkitError
 
+NoOptionError = None
+try:
+    # Python 2.x
+    import ConfigParser
+    NoOptionError = ConfigParser.NoOptionError
+except ImportError:
+    # Python 3.x or later
+    import configparser
+    NoOptionError = configparser.NoOptionError
+
 
 class SetupCommand(Command):
     LIBRARY_GIT_REPOS = 'https://code.google.com/p/closure-library/'
@@ -84,14 +94,22 @@ class SetupCommand(Command):
 
     def link_closure_library(self):
         local_library_root = self.env.config.library_root()
-        global_library_root = self.env.global_config.library_root()
+
+        try:
+            global_library_root = self.env.global_config.library_root()
+        except NoOptionError:
+            raise GoogkitError('No Closure Library Root in global config.')
 
         SetupCommand.link(global_library_root, local_library_root)
 
 
     def link_closure_compiler(self):
         local_compiler_root = self.env.config.compiler_root()
-        global_compiler_root = self.env.global_config.compiler_root()
+
+        try:
+            global_compiler_root = self.env.global_config.compiler_root()
+        except NoOptionError:
+            raise GoogkitError('No Closure Compiler Root in global config.')
 
         SetupCommand.link(global_compiler_root, local_compiler_root)
 
