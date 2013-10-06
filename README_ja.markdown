@@ -127,6 +127,24 @@ Googkitのインストール
 
 小技
 ----
+### ローカルのClosure Library、Closure Compilerを使う
+`googkit setup` はリモートの Closure Library ・ Closure Compiler をダウンロードするために低速です。
+ローカルの Closure Library ・ Closure Compiler を使うことで、高速な `googkit setup-fast` が利用できるようになします。
+
+ホームディレクトリに以下の内容の `.googkit` ファイルを作成します。
+
+	[library]
+	root=/path/to/local/closure/library
+
+	[compiler]
+	root=/path/to/local/closure/compiler
+
+
+作成したあと、以下のコマンドを実行します。
+
+	$ googkit setup-fast
+
+
 ### コンパイル後のファイル名を変更する
 `googkit.cfg` の `compiled_js` を修正します。
 編集したあと、以下のコマンドで変更を適用します。
