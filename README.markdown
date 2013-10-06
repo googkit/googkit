@@ -26,6 +26,8 @@ Install Googkit
 At first, you need to install Googkit.
 
 
+### Linux or Mac OSX
+
 1. Download Googkit
 
 		$ git clone https://github.com/cocopon/googkit
@@ -40,6 +42,26 @@ At first, you need to install Googkit.
 
 		export GOOGKIT_HOME=/usr/local/googkit
 		export PATH=$PATH:$GOOGKIT_HOME/bin
+
+
+### Windows
+
+1. Download Googkit
+
+		$ git clone https://github.com/cocopon/googkit
+
+
+2. Put it into a preferred place
+
+		$ move googkit C:\
+
+
+3. Add to environment variables
+
+	| Variable       | Value                                 |
+	|:---------------|:--------------------------------------|
+	| `GOOGKIT_HOME` | `C:\googkit`                          |
+	| `PATH`         | Add `;%GOOGKIT_HOME%\bin` to the last |
 
 
 

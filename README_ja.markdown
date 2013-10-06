@@ -26,6 +26,8 @@ Googkitのインストール
 はじめに、Googkit をインストールします。
 
 
+### LinuxまたはMac OSX
+
 1. Googkit をダウンロードする
 
 		$ git clone https://github.com/cocopon/googkit
@@ -40,6 +42,26 @@ Googkitのインストール
 
 		export GOOGKIT_HOME=/usr/local/googkit
 		export PATH=$PATH:$GOOGKIT_HOME/bin
+
+
+### Windows
+
+1. Googkit をダウンロードする
+
+		$ git clone https://github.com/cocopon/googkit
+
+
+2. お好みの場所に移動する
+
+		$ move googkit C:\
+
+
+3. 環境変数を追加する
+
+	| Variable       | Value                                 |
+	|:---------------|:--------------------------------------|
+	| `GOOGKIT_HOME` | `C:\googkit`                          |
+	| `PATH`         | add `;%GOOGKIT_HOME%\bin` to the last |
 
 
 
