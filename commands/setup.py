@@ -49,7 +49,7 @@ class SetupCommand(Command):
 
     def run_internal(self):
         print('Downloading Closure Library...')
-        # self.setup_closure_library()
+        self.setup_closure_library()
 
         print('Downloading Closure Compiler...')
-        # self.setup_closure_compiler()
+        self.setup_closure_compiler()
