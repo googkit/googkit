@@ -64,7 +64,7 @@ Googkitのインストール
 
 	スクリプトを追加/削除したあとは、依存情報を更新します。
 
-		$ googkit deps update
+		$ googkit ready
 
 
 4. コンパイルする
@@ -106,20 +106,15 @@ Googkitのインストール
 	`googkit.cfg` の `test_file_pattern` で変更できます。
 
 
-2. テストファイルの設定を更新する
-
-		$ googkit config update
+2. テストコードを書く
 
 
-3. テストコードを書く
+3. 設定変更を適用し、依存情報を更新する
+
+		$ googkit ready
 
 
-4. 依存情報を更新する
-
-		$ googkit deps update
-
-
-5. テストを実行する
+4. テストを実行する
 
 	テスト用のHTMLファイルをブラウザで開きます。
 
@@ -136,7 +131,7 @@ Googkitのインストール
 `googkit.cfg` の `compiled_js` を修正します。
 編集したあと、以下のコマンドで変更を適用します。
 
-	$ googkit config update
+	$ googkit ready
 
 
 ### コンパイルしたくないスクリプトがある
@@ -146,9 +141,9 @@ Googkitのインストール
 
 
 ### コンパイル後のスクリプトをデバッグする
-`googkit.cfg` の `is_debug_enabled` を `yes` にしてから、変更を適用します。
+`googkit.cfg` の `is_debug_enabled` を `yes` にしてから、コンパイルします。
 
-	$ googkit config update
+	$ googkit compile
 
 `debug/` ディレクトリが作成され、デバッグ用の機能が使えるようになります。
 コンパイルの時間が長くなるので注意してください。

@@ -11,14 +11,14 @@ class CommandParser(object):
         '_commands': [CommandsCommand],
         'compile': [CompileCommand],
         'config': {
-            'update': [ApplyConfigCommand, UpdateDepsCommand]
+            'apply': [ApplyConfigCommand, UpdateDepsCommand]
         },
         'deps': {
             'update': [UpdateDepsCommand]
         },
         'init': [InitCommand],
-        'setup': [SetupCommand, UpdateDepsCommand],
-        'update': [ApplyConfigCommand, UpdateDepsCommand]
+        'ready': [ApplyConfigCommand, UpdateDepsCommand],
+        'setup': [SetupCommand, UpdateDepsCommand]
     }
 
     @classmethod
