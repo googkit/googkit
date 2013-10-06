@@ -9,6 +9,7 @@ from lib.error import GoogkitError
 
 CONFIG = 'googkit.cfg'
 GLOBAL_CONFIG = '.googkit'
+DEFAULT_CONFIG = os.path.join(os.environ.get('GOOGKIT_HOME'), 'config/default.cfg')
 
 
 def print_help(args=[]):
@@ -50,9 +51,9 @@ def find_global_config():
 
     try:
         path = os.path.relpath(GLOBAL_CONFIG, home_dir)
-        global_config.load(path)
+        global_config.load(DEFAULT_CONFIG, path)
     except IOError:
-        global_config = None
+        global_config.load(DEFAULT_CONFIG)
 
     return global_config
 
@@ -76,7 +77,7 @@ if __name__ == '__main__':
                 config = find_config()
 
             if global_config is None and cls.needs_global_config():
-                global_config = fing_global_config()
+                global_config = find_global_config()
 
             env = Environment(args, config, global_config)
             command = cls(env)

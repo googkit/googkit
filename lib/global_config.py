@@ -13,22 +13,28 @@ except ImportError:
 
 
 class GlobalConfig(object):
+    DEFAULT_CONFIG = ''
     def __init__(self):
         pass
 
-    def load(self, path):
+    def load(self, default_path, user_path = None):
         parser = ParserClass()
 
-        with open(path) as f:
+        with open(default_path) as f:
             parser.readfp(f)
+
+        if user_path is not None:
+            with open(user_path) as f:
+                parser.readfp(f)
 
         self.parser = parser
 
-    def global_library_root(self):
+
+    def library_root(self):
         path = self.parser.get('library', 'root')
         return os.path.normpath(path)
 
 
-    def global_compiler_root(self):
+    def compiler_root(self):
         path = self.parser.get('compiler', 'root')
         return os.path.normpath(path)
