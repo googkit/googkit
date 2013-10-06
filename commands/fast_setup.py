@@ -30,7 +30,7 @@ class FastSetupCommand(Command):
 
 
     @classmethod
-    def link(cls, src, dst):
+    def symlink(cls, src, dst):
         src_path = os.path.abspath(src)
         dst_path = os.path.abspath(dst)
 
@@ -42,7 +42,7 @@ class FastSetupCommand(Command):
         if os.path.exists(dst_path):
             try:
                 os.unlink(dst_path)
-            except WindowsError:
+            except OSError:
                 os.rmdir(dst_path)
 
         dst_dir = os.path.abspath(os.path.join(dst_path, '..'))
@@ -50,8 +50,8 @@ class FastSetupCommand(Command):
         if not os.path.exists(dst_dir):
             os.makedirs(dst_dir)
 
-        if hasattr(os, 'link'):
-            os.link(src_path, dst_path)
+        if hasattr(os, 'symlink'):
+            os.symlink(src_path, dst_path)
         else:
             # Make a NTFS junction if run on Windows
             subprocess.check_call(['mklink', '/J', dst_path, src_path], shell = True)
@@ -65,7 +65,7 @@ class FastSetupCommand(Command):
         except NoOptionError:
             raise GoogkitError('No Closure Library Root in global config.')
 
-        FastSetupCommand.link(global_library_root, local_library_root)
+        FastSetupCommand.symlink(global_library_root, local_library_root)
 
 
     def link_closure_compiler(self):
@@ -76,7 +76,7 @@ class FastSetupCommand(Command):
         except NoOptionError:
             raise GoogkitError('No Closure Compiler Root in global config.')
 
-        FastSetupCommand.link(global_compiler_root, local_compiler_root)
+        FastSetupCommand.symlink(global_compiler_root, local_compiler_root)
 
 
     def run_internal(self):
