@@ -5,7 +5,7 @@ import json
 from lib.error import GoogkitError
 
 
-class CompileCommand(object):
+class BuildCommand(object):
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
 
@@ -48,7 +48,7 @@ class CompileCommand(object):
 
             # Replace deps.js by a compiled script
             if line.find('<!--@require_main@-->') >= 0:
-                indent = CompileCommand.line_indent(line)
+                indent = BuildCommand.line_indent(line)
                 line = '%s<script type="text/javascript" src="%s"></script>\n' % (indent, compiled_js_path)
 
             lines.append(line)
@@ -77,14 +77,14 @@ class CompileCommand(object):
                 config.compiler_root(),
                 config.js_dev_dir())
 
-        CompileCommand.rmtree_silent(target_dir)
-        shutil.copytree(devel_dir, target_dir, ignore = CompileCommand.ignore_dirs(*ignores))
+        BuildCommand.rmtree_silent(target_dir)
+        shutil.copytree(devel_dir, target_dir, ignore = BuildCommand.ignore_dirs(*ignores))
 
         for root, dirs, files in os.walk(target_dir):
             for file in files:
                 path = os.path.join(root, file)
                 (base, ext) = os.path.splitext(path)
-                if ext not in CompileCommand.COMPILE_TARGET_EXT:
+                if ext not in BuildCommand.COMPILE_TARGET_EXT:
                     continue
 
                 self.compile_resource(path, compiled_js)

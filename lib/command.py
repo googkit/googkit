@@ -1,6 +1,6 @@
 from commands.apply_config import ApplyConfigCommand
+from commands.build import BuildCommand
 from commands.commands import CommandsCommand
-from commands.compile import CompileCommand
 from commands.init import InitCommand
 from commands.setup import SetupCommand
 from commands.update_deps import UpdateDepsCommand
@@ -9,7 +9,7 @@ from commands.update_deps import UpdateDepsCommand
 class CommandParser(object):
     DICT = {
         '_commands': [CommandsCommand],
-        'build': [CompileCommand],
+        'build': [BuildCommand],
         'config': {
             'apply': [ApplyConfigCommand, UpdateDepsCommand]
         },
