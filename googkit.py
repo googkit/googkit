@@ -50,7 +50,7 @@ def find_global_config():
     home_dir = os.path.expanduser('~')
 
     try:
-        path = os.path.relpath(GLOBAL_CONFIG, home_dir)
+        path = os.path.join(home_dir, GLOBAL_CONFIG)
         global_config.load(DEFAULT_CONFIG, path)
     except IOError:
         global_config.load(DEFAULT_CONFIG)
