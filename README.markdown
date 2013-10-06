@@ -68,11 +68,12 @@ Getting Started
 		$ googkit ready
 
 
-4. Compile scripts
+4. Build your project
 
-	Compiling scripts improves performance and makes them unreadable.
+	Building the project including JavaScript files compilation improves
+	performance and makes them unreadable.
 
-		$ googkit compile
+		$ googkit build
 
 	If it succeed, output files will be stored in `production/`.
 
@@ -139,9 +140,9 @@ Scripts that are in it will be compiled and removed in production.
 
 
 ### Debugging a Compiled Source
-Change `is_debug_enabled` to `yes` in `googkit.cfg` and compile it:
+Change `is_debug_enabled` to `yes` in `googkit.cfg` and build it:
 
-	$ googkit compile
+	$ googkit build
 
 Then you can use debugging features in `debug/`.
 This option makes compilation slow.

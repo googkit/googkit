@@ -9,7 +9,7 @@ from commands.update_deps import UpdateDepsCommand
 class CommandParser(object):
     DICT = {
         '_commands': [CommandsCommand],
-        'compile': [CompileCommand],
+        'build': [CompileCommand],
         'config': {
             'apply': [ApplyConfigCommand, UpdateDepsCommand]
         },

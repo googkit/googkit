@@ -67,14 +67,14 @@ Googkitのインストール
 		$ googkit ready
 
 
-4. コンパイルする
+4. プロジェクトをビルドする
 
-	コンパイルすると、パフォーマンスが向上し、ソースコードが難読化されるなどの
-	利点があります。
+	ビルドするとJavaScriptファイルがコンパイルされ、パフォーマンスが向上し、
+	ソースコードが難読化されるなどの利点があります。
 
-		$ googkit compile
+		$ googkit build
 
-	コンパイルに成功すると、 `production/` ディレクトリが作成されます。
+	ビルドに成功すると、 `production/` ディレクトリが作成されます。
 
 
 
@@ -141,12 +141,12 @@ Googkitのインストール
 
 
 ### コンパイル後のスクリプトをデバッグする
-`googkit.cfg` の `is_debug_enabled` を `yes` にしてから、コンパイルします。
+`googkit.cfg` の `is_debug_enabled` を `yes` にしてから、ビルドします。
 
-	$ googkit compile
+	$ googkit build
 
 `debug/` ディレクトリが作成され、デバッグ用の機能が使えるようになります。
-コンパイルの時間が長くなるので注意してください。
+ビルドの時間が長くなるので注意してください。
 
 
 #### Source Map を使う
