@@ -8,6 +8,11 @@ from lib.environment import Environment
 from lib.error import GoogkitError
 
 
+PROJECT_CONFIG = 'googkit.cfg'
+USER_CONFIG = '.googkit'
+DEFAULT_CONFIG = 'config/default.cfg'
+
+
 def print_help(tree, args=[]):
     right_commands = tree.right_commands(args)
     if len(right_commands) == 0:
@@ -56,5 +61,5 @@ if __name__ == '__main__':
             env = Environment(args, tree, config)
             command = cls(env)
             command.run()
-    except GoogkitError, e:
+    except GoogkitError:
         sys.exit('[ERROR] ' + str(e))
