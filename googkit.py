@@ -1,15 +1,14 @@
 import os
 import sys
 from lib.command import CommandParser
-from lib.global_config import GlobalConfig
 from lib.config import Config
 from lib.environment import Environment
 from lib.error import GoogkitError
 
 
-CONFIG = 'googkit.cfg'
-GLOBAL_CONFIG = '.googkit'
-DEFAULT_CONFIG = os.path.join(os.environ.get('GOOGKIT_HOME'), 'config/default.cfg')
+PROJECT_CONFIG = 'googkit.cfg'
+USER_CONFIG = '.googkit'
+DEFAULT_CONFIG = 'config/default.cfg'
 
 
 def print_help(args=[]):
@@ -27,35 +26,75 @@ def print_help(args=[]):
         print('    ' + name)
 
 
-def find_config():
-    config = Config()
-    try:
-        while not os.path.exists(os.path.relpath(CONFIG)):
-            before = os.getcwd()
-            os.chdir('..')
+def googkit_root():
+    googkit_home_path = os.environ.get('GOOGKIT_HOME')
+    if googkit_home_path is None:
+        raise GoogkitError('Missing environment variable: "GOOGKIT_HOME"')
 
-            # Break if current dir is root.
-            if before == os.getcwd():
+    if not os.path.exists(googkit_home_path):
+        raise GoogkitError('googkit directory is not found: %s' % googkit_home_path)
+
+    return os.path.expanduser(googkit_home_path)
+
+
+def project_root():
+    current = os.getcwd()
+    try:
+        while not os.path.exists(os.path.join(current, PROJECT_CONFIG)):
+            before = current
+            current = os.path.abspath(os.path.join(current, '../'))
+
+            # Break if current smeems root.
+            if before == current:
                 break
 
-        config.load(CONFIG)
+        if os.path.exists(os.path.join(current, PROJECT_CONFIG)):
+            return current
+        else:
+            return None
     except IOError:
-        config = None
-
-    return config
+        return None
 
 
-def find_global_config():
-    global_config = GlobalConfig()
+def project_config_path():
+    proj_root = project_root()
+
+    if proj_root is None:
+        raise GoogkitError('Project directory is not found.')
+
+    project_config = os.path.join(proj_root, PROJECT_CONFIG)
+
+    if not os.path.exists(project_config):
+        raise GoogkitError('Project config file is not found.')
+
+    return project_config
+
+
+def user_config_path():
     home_dir = os.path.expanduser('~')
+    user_config = os.path.join(home_dir, USER_CONFIG)
 
-    try:
-        path = os.path.join(home_dir, GLOBAL_CONFIG)
-        global_config.load(DEFAULT_CONFIG, path)
-    except IOError:
-        global_config.load(DEFAULT_CONFIG)
+    return user_config if os.path.exists(user_config) else None
 
-    return global_config
+
+def default_config_path():
+    googkit_home_path = googkit_root()
+    default_config = os.path.join(googkit_home_path, DEFAULT_CONFIG)
+
+    if not os.path.exists(default_config):
+        raise GoogkitError('Default config file is not found: %s' % default_config)
+
+    return default_config
+
+
+def find_config():
+    default_config = default_config_path()
+    user_config = user_config_path()
+    project_config = project_config_path()
+
+    config = Config()
+    config.load(project_config, user_config, default_config)
+    return config
 
 
 if __name__ == '__main__':
@@ -71,15 +110,11 @@ if __name__ == '__main__':
 
     try:
         config = None
-        global_config = None
         for cls in classes:
             if config is None and cls.needs_config():
                 config = find_config()
 
-            if global_config is None and cls.needs_global_config():
-                global_config = find_global_config()
-
-            env = Environment(args, config, global_config)
+            env = Environment(args, config)
             command = cls(env)
             command.run()
     except GoogkitError, e:

@@ -1,5 +1,4 @@
 class Environment(object):
-    def __init__(self, args, config, global_config):
+    def __init__(self, args, config):
         self.args = args
         self.config = config
-        self.global_config = global_config

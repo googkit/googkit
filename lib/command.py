@@ -1,7 +1,6 @@
 from commands.apply_config import ApplyConfigCommand
 from commands.build import BuildCommand
 from commands.commands import CommandsCommand
-from commands.fast_setup import FastSetupCommand
 from commands.init import InitCommand
 from commands.setup import SetupCommand
 from commands.update_deps import UpdateDepsCommand
@@ -19,8 +18,7 @@ class CommandParser(object):
         },
         'init': [InitCommand],
         'ready': [ApplyConfigCommand, UpdateDepsCommand],
-        'setup': [SetupCommand, UpdateDepsCommand],
-        'setup-fast': [FastSetupCommand, UpdateDepsCommand]
+        'setup': [SetupCommand, UpdateDepsCommand]
     }
 
     @classmethod

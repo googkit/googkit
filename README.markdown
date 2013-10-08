@@ -149,24 +149,6 @@ unit tests.
 
 Tips
 ----
-### Setting up with local Closure Library and Closure Compiler
-`googkit setup` is slow, because it uses remote Closure Library and Closure Compiler.
-You can use faster setup command as `googkit setup-fast` that uses local files.
-
-Creates `.googkit` on your home directory with following contents:
-
-	[library]
-	root=/path/to/local/closure/library
-
-	[compiler]
-	root=/path/to/local/closure/compiler
-
-
-After creating, executes a following command:
-
-	$ googkit setup-fast
-
-
 ### Renaming a Compiled Script
 Edit `compiled_js` in `googkit.cfg`.
 After editing, apply it with a following command:

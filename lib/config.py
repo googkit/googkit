@@ -16,11 +16,20 @@ class Config(object):
     def __init__(self):
         pass
 
-    def load(self, path):
+    def load(self, project_path, user_path, default_path):
         parser = ParserClass()
 
-        with open(path) as f:
-            parser.readfp(f)
+        if project_path is not None:
+            with open(project_path) as f:
+                parser.readfp(f)
+
+        if user_path is not None:
+            with open(user_path) as f:
+                parser.readfp(f)
+
+        if default_path is not None:
+            with open(default_path) as f:
+                parser.readfp(f)
 
         self.parser = parser
 
