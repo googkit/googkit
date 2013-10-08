@@ -10,6 +10,9 @@ PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
 DEFAULT_CONFIG = 'config/default.cfg'
 
+# It makes unit-testing easy
+GLOBAL = { 'ENV': os.environ }
+
 
 def print_help(args=[]):
     right_commands = CommandParser.right_commands(args)
@@ -27,7 +30,7 @@ def print_help(args=[]):
 
 
 def googkit_root():
-    googkit_home_path = os.environ.get('GOOGKIT_HOME')
+    googkit_home_path = GLOBAL['ENV'].get('GOOGKIT_HOME')
     if googkit_home_path is None:
         raise GoogkitError('Missing environment variable: "GOOGKIT_HOME"')
 
@@ -46,12 +49,10 @@ def project_root():
 
             # Break if current smeems root.
             if before == current:
+                current = None
                 break
 
-        if os.path.exists(os.path.join(current, PROJECT_CONFIG)):
-            return current
-        else:
-            return None
+        return current
     except IOError:
         return None
 
@@ -117,5 +118,5 @@ if __name__ == '__main__':
             env = Environment(args, config)
             command = cls(env)
             command.run()
-    except GoogkitError, e:
+    except GoogkitError:
         sys.exit('[ERROR] ' + str(e))
