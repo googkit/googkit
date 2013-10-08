@@ -1,16 +1,27 @@
-import unittest
-import re
-from io import BytesIO
-
+# Run the following command to test:
+#
+#     (in /usr/local/googkit)
+#     $ python -m {test_module_name}
+#
+# See also: http://docs.python.org/3.3/library/unittest.html#command-line-interfacejjkkjj
+#
 # We cannot use unittest.mock on python 2.x!
 # Please install the Mock module when you use Python 2.x.
 #
 #     $ easy_install -U Mock
 #
 # See also: http://www.voidspace.org.uk/python/mock/#installing
+
+import unittest
+import os
+import re
+from io import BytesIO
+
 if not hasattr(unittest, 'mock'):
+    # Python 2.x or 3.2-
     import mock
 else:
+    # Python 3.3 or later
     import unittest.mock as mock
 
 
