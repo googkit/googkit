@@ -22,11 +22,6 @@ class SetupCommand(Command):
 
 
     @classmethod
-    def needs_global_config(cls):
-        return True
-
-
-    @classmethod
     def safe_mkdirs(cls, path):
         shutil.rmtree(path, True)
         os.makedirs(path)

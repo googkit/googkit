@@ -11,17 +11,9 @@ class Command(object):
         return False
 
 
-    @classmethod
-    def needs_global_config(cls):
-        return False
-
-
     def run(self):
-        if  self.__class__.needs_config() and self.env.config is None:
+        if self.__class__.needs_config() and self.env.config is None:
             raise GoogkitError('No config file found.')
-
-        if  self.__class__.needs_global_config() and self.env.global_config is None:
-            raise GoogkitError('No global config file found.')
 
         self.run_internal()
         self.complete()
