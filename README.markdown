@@ -38,7 +38,7 @@ At first, you need to install Googkit.
 		$ mv googkit /usr/local
 
 
-3. Add to environment variable `PATH`
+3. Add environment variables
 
 		export GOOGKIT_HOME=/usr/local/googkit
 		export PATH=$PATH:$GOOGKIT_HOME/bin
@@ -56,12 +56,12 @@ At first, you need to install Googkit.
 		$ move googkit C:\
 
 
-3. Add to environment variables
+3. Add environment variables
 
-	| Variable       | Value                                 |
-	|:---------------|:--------------------------------------|
-	| `GOOGKIT_HOME` | `C:\googkit`                          |
-	| `PATH`         | Add `;%GOOGKIT_HOME%\bin` to the last |
+	| Variable       | Value                        |
+	|:---------------|:-----------------------------|
+	| `GOOGKIT_HOME` | `C:\googkit`                 |
+	| `PATH`         | Append `;%GOOGKIT_HOME%\bin` |
 
 
 
