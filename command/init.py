@@ -1,11 +1,11 @@
 import distutils.core
 import os
 import shutil
-from command import Command
+from command.base_command import BaseCommand
 from lib.error import GoogkitError
 
 
-class InitCommand(Command):
+class InitCommand(BaseCommand):
     TEMPLATE_DIR = 'template'
 
 

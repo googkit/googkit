@@ -61,5 +61,5 @@ if __name__ == '__main__':
             env = Environment(args, tree, config)
             command = cls(env)
             command.run()
-    except GoogkitError:
+    except GoogkitError as e:
         sys.exit('[ERROR] ' + str(e))

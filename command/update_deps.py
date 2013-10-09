@@ -1,10 +1,10 @@
 import os
 import re
-from command import Command
+from command.base_command import BaseCommand
 from lib.error import GoogkitError
 
 
-class UpdateDepsCommand(Command):
+class UpdateDepsCommand(BaseCommand):
     def __init__(self, env):
         super(UpdateDepsCommand, self).__init__(env)
 

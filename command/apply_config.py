@@ -1,11 +1,11 @@
 import glob
 import os
 import re
-from command import Command
+from command.base_command import BaseCommand
 from lib.error import GoogkitError
 
 
-class ApplyConfigCommand(Command):
+class ApplyConfigCommand(BaseCommand):
     CONFIG_TARGET_EXT = ('.html', '.xhtml', '.js', '.css')
 
 

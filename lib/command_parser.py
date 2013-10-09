@@ -1,9 +1,9 @@
-from commands.apply_config import ApplyConfigCommand
-from commands.build import BuildCommand
-from commands.commands import CommandsCommand
-from commands.init import InitCommand
-from commands.setup import SetupCommand
-from commands.update_deps import UpdateDepsCommand
+from command.apply_config import ApplyConfigCommand
+from command.build import BuildCommand
+from command.commands import CommandsCommand
+from command.init import InitCommand
+from command.setup import SetupCommand
+from command.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):
@@ -36,6 +36,10 @@ class CommandTree(object):
                 break
 
             result.append(arg)
+
+            if not isinstance(next_dict, dict):
+                break
+
             command_dict = next_dict
 
         return result
@@ -69,7 +73,12 @@ class CommandTree(object):
         for arg in args:
             next_value = value.get(arg)
 
-            if next_value is None:
+            if isinstance(next_value, dict):
+                value = next_value
+                continue
+            elif isinstance(next_value, list):
+                last_value = next_value
+            else:
                 return None
 
             if isinstance(next_value, list):
