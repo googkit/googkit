@@ -1,15 +1,16 @@
 import sys
 
-urllib_urlretrieve = None
+_urllib = None
 try:
     # Python 2.x
     import urllib
-    urllib_urlretrieve = urllib.urlretrieve
+    urllib.urlretrieve
+    _urllib = urllib
 except ImportError:
     # Python 3.x or later
     import urllib.request
-    urllib_urlretrieve = urllib.request.urlretrieve
+    _urllib = urllib.request
 
 
 def run(url, target_path):
-    urllib_urlretrieve(url, target_path)
+    _urllib.urlretrieve(url, target_path)
