@@ -71,15 +71,21 @@ class CommandTree(object):
         value = self._tree
 
         for arg in args:
+            # a garbage found next to a right command
+            if last_value is not None:
+                return None
+
             next_value = value.get(arg)
+
+            if isinstance(next_value, list):
+                last_value = next_value
+                continue
 
             if isinstance(next_value, dict):
                 value = next_value
                 continue
-            elif isinstance(next_value, list):
-                last_value = next_value
-            else:
-                return None
+
+            return None
 
             if isinstance(next_value, list):
                 return next_value

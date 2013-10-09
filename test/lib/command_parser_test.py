@@ -169,7 +169,7 @@ class TestCommandParser(unittest.TestCase):
         self.assertEqual(CommandParser.command_classes(['cmd99']), None)
 
     def test_command_classes_with_main_cmd(self):
-        result = CommandParser.command_classes(['cmd1']), 
+        result = CommandParser.command_classes(['cmd1'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], TestCommandParser.cmd1)
 
@@ -187,7 +187,7 @@ class TestCommandParser(unittest.TestCase):
 
 
     def test_command_classes_with_sub_cmd(self):
-        result = CommandParser.command_classes(['cmd2', 'cmd3']), 
+        result = CommandParser.command_classes(['cmd2', 'cmd3'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], TestCommandParser.cmd3)
 
@@ -205,7 +205,7 @@ class TestCommandParser(unittest.TestCase):
 
 
     def test_command_classes_with_sub_sub_cmd(self):
-        result = CommandParser.command_classes(['cmd2', 'cmd4', 'cmd5']), 
+        result = CommandParser.command_classes(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], TestCommandParser.cmd5)
     # }}}
