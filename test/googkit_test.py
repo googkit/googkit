@@ -17,16 +17,15 @@ import os
 import re
 from io import BytesIO
 
-if not hasattr(unittest, 'mock'):
-    # Python 2.x or 3.2-
-    import mock
-else:
+try:
     # Python 3.3 or later
     import unittest.mock as mock
+except ImportError:
+    # Python 2.x or 3.2-
+    import mock
 
 
 from googkit import *
-from lib.config import Config
 
 
 class StdoutHook():
