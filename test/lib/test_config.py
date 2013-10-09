@@ -62,10 +62,9 @@ class TestConfig(unittest.TestCase):
         cfg.load(TEST_CONFIG_1, None, TEST_CONFIG_3)
 
         self.assertEqual(cfg.parser.get('test1', 'test'), 'TEST1')
-        self.assertEqual(cfg.parser.get('test3', 'test'), 'TEST3')
-
         with self.assertRaises(_configparser.NoSectionError):
             cfg.parser.get('test2', 'test')
+        self.assertEqual(cfg.parser.get('test3', 'test'), 'TEST3')
 
 
     def test_load(self):
