@@ -14,24 +14,26 @@ except ImportError:
 
 class Config(object):
     def __init__(self):
-        pass
+        self.parser = _configparser.ConfigParser()
+
+    def __load_if_necessary(self, path):
+        if path is None:
+            return
+
+        with open(path) as fp:
+            if hasattr(self.parser, 'read_file'):
+                # Python 3.2 or later
+                self.parser.read_file(fp)
+            else:
+                # Python 3.1 or earlier
+                self.parser.readfp(fp)
+
 
     def load(self, project_path, user_path, default_path):
-        parser = _configparser.ConfigParser()
+        self.__load_if_necessary(default_path)
+        self.__load_if_necessary(user_path)
+        self.__load_if_necessary(project_path)
 
-        if project_path is not None:
-            with open(project_path) as f:
-                parser.readfp(f)
-
-        if user_path is not None:
-            with open(user_path) as f:
-                parser.readfp(f)
-
-        if default_path is not None:
-            with open(default_path) as f:
-                parser.readfp(f)
-
-        self.parser = parser
 
     def development_dir(self):
         path = self.parser.get('project', 'development')

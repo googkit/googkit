@@ -48,7 +48,12 @@ class TestConfig(unittest.TestCase):
         self.cfg.parser = _configparser.ConfigParser()
 
         with open(DEFAULT_CONFIG) as fp:
-            self.cfg.parser.readfp(fp)
+            if hasattr(self.cfg.parser, 'read_file'):
+                # Python 3.2 or later
+                self.cfg.parser.read_file(fp)
+            else:
+                # Python 3.1 or earlier
+                self.cfg.parser.readfp(fp)
 
 
     # run {{{
