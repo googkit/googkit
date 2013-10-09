@@ -1,15 +1,15 @@
 import re
 import os
 
-ParserClass = None
+_configparser = None
 try:
     # Python 2.x
     import ConfigParser
-    ParserClass = ConfigParser.ConfigParser
+    _configparser = ConfigParser
 except ImportError:
     # Python 3.x or later
     import configparser
-    ParserClass = configparser.ConfigParser
+    _configparser = configparser
 
 
 class Config(object):
@@ -17,7 +17,7 @@ class Config(object):
         pass
 
     def load(self, project_path, user_path, default_path):
-        parser = ParserClass()
+        parser = _configparser.ConfigParser()
 
         if project_path is not None:
             with open(project_path) as f:
