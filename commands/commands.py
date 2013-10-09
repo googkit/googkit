@@ -13,5 +13,5 @@ class CommandsCommand(Command):
 
     def run_internal(self):
         args = self.env.args[1:]
-        commands = lib.command.CommandParser.available_commands(args)
+        commands = self.env.tree.available_commands(args)
         print('\n'.join(commands))

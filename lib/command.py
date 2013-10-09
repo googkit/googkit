@@ -6,8 +6,8 @@ from commands.setup import SetupCommand
 from commands.update_deps import UpdateDepsCommand
 
 
-class CommandParser(object):
-    DICT = {
+class CommandTree(object):
+    DEFAULT_TREE = {
         '_commands': [CommandsCommand],
         'build': [BuildCommand],
         'config': {
@@ -21,9 +21,13 @@ class CommandParser(object):
         'setup': [SetupCommand, UpdateDepsCommand]
     }
 
-    @classmethod
-    def right_commands(cls, args):
-        command_dict = CommandParser.DICT
+
+    def __init__(self):
+        self._tree = CommandTree.DEFAULT_TREE.copy()
+
+
+    def right_commands(self, args):
+        command_dict = self._tree
         result = []
 
         for arg in args:
@@ -42,9 +46,8 @@ class CommandParser(object):
         return name[0] == '_'
 
 
-    @classmethod
-    def available_commands(cls, args=[]):
-        command_dict = CommandParser.DICT
+    def available_commands(self, args=[]):
+        command_dict = self._tree
 
         for arg in args:
             next_dict = command_dict.get(arg)
@@ -57,12 +60,11 @@ class CommandParser(object):
             return []
 
         commands = command_dict.keys()
-        return sorted([cmd for cmd in commands if not CommandParser.is_internal_command(cmd)])
+        return sorted([cmd for cmd in commands if not CommandTree.is_internal_command(cmd)])
 
 
-    @classmethod
-    def command_classes(cls, args):
-        value = CommandParser.DICT
+    def command_classes(self, args):
+        value = self._tree
 
         for arg in args:
             next_value = value.get(arg)
@@ -76,3 +78,13 @@ class CommandParser(object):
             value = next_value
 
         return None
+
+
+    def register(self, names, commands):
+        command_dict = self._tree
+
+        for name in names[:-1]:
+            command_dict[name] = {}
+            command_dict = command_dict[name]
+
+        command_dict[names[-1]] = commands
