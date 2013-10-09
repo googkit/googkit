@@ -28,7 +28,6 @@ urlretrieveMock = mock.MagicMock()
 try:
     # Python 2.x
     import urllib
-    #urllib.urlretrieve
     urllib.urlretrieve = urlretrieveMock
 except ImportError:
     # Python 3.x or later

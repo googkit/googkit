@@ -1,12 +1,12 @@
 import sys
+import urllib
 
 _urllib = None
-try:
+
+if hasattr(urllib, 'urlretrieve'):
     # Python 2.x
-    import urllib
-    urllib.urlretrieve
     _urllib = urllib
-except ImportError:
+else:
     # Python 3.x or later
     import urllib.request
     _urllib = urllib.request
