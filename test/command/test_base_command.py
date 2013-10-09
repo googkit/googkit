@@ -13,6 +13,8 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
+import sys
+from io import BytesIO
 
 try:
     # Python 3.3 or later
@@ -23,6 +25,21 @@ except ImportError:
 
 from lib.error import GoogkitError
 from command.base_command import BaseCommand
+
+
+class StdoutHook():
+    def __init__(self):
+        self.orig_stdout = sys.stdout
+
+
+    def __enter__(self):
+        io_base = BytesIO()
+        sys.stdout = io_base
+        return io_base
+
+
+    def __exit__(self, *args):
+        sys.stdout = self.orig_stdout
 
 
 class EnvironmentStub(object):
@@ -36,21 +53,22 @@ class TestBaseCommand(unittest.TestCase):
         class ConcreteCommand(BaseCommand):
             pass
 
-        env1 = EnvironmentStub()
-        env1.config = mock.MagicMock()
+        with StdoutHook():
+            env1 = EnvironmentStub()
+            env1.config = mock.MagicMock()
 
-        cmd1 = ConcreteCommand(env1)
-        cmd1.run_internal = mock.MagicMock()
-        cmd1.run()
-        cmd1.run_internal.assert_called_once_with()
+            cmd1 = ConcreteCommand(env1)
+            cmd1.run_internal = mock.MagicMock()
+            cmd1.run()
+            cmd1.run_internal.assert_called_once_with()
 
-        env2 = EnvironmentStub()
-        env2.config = None
+            env2 = EnvironmentStub()
+            env2.config = None
 
-        cmd2 = ConcreteCommand(env2)
-        cmd2.run_internal = mock.MagicMock()
-        cmd2.run()
-        cmd2.run_internal.assert_called_once_with()
+            cmd2 = ConcreteCommand(env2)
+            cmd2.run_internal = mock.MagicMock()
+            cmd2.run()
+            cmd2.run_internal.assert_called_once_with()
 
 
     def test_run_on_cmd_needs_config(self):
@@ -59,21 +77,22 @@ class TestBaseCommand(unittest.TestCase):
             def needs_config(cls):
                 return True
 
-        env1 = EnvironmentStub()
-        env1.config = mock.MagicMock()
+        with StdoutHook():
+            env1 = EnvironmentStub()
+            env1.config = mock.MagicMock()
 
-        cmd1 = ConcreteCommandNeedsConfig(env1)
-        cmd1.run_internal = mock.MagicMock()
-        cmd1.run()
-        cmd1.run_internal.assert_called_once_with()
+            cmd1 = ConcreteCommandNeedsConfig(env1)
+            cmd1.run_internal = mock.MagicMock()
+            cmd1.run()
+            cmd1.run_internal.assert_called_once_with()
 
-        env2 = EnvironmentStub()
-        env2.config = None
+            env2 = EnvironmentStub()
+            env2.config = None
 
-        cmd2 = ConcreteCommandNeedsConfig(env2)
-        cmd2.run_internal = mock.MagicMock()
-        with self.assertRaises(GoogkitError):
-            cmd2.run()
+            cmd2 = ConcreteCommandNeedsConfig(env2)
+            cmd2.run_internal = mock.MagicMock()
+            with self.assertRaises(GoogkitError):
+                cmd2.run()
     # }}}
 
 
