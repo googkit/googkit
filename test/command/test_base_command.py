@@ -14,7 +14,6 @@
 
 import unittest
 import sys
-from io import BytesIO
 
 try:
     # Python 3.3 or later
@@ -26,20 +25,7 @@ except ImportError:
 from lib.error import GoogkitError
 from command.base_command import BaseCommand
 
-
-class StdoutHook():
-    def __init__(self):
-        self.orig_stdout = sys.stdout
-
-
-    def __enter__(self):
-        io_base = BytesIO()
-        sys.stdout = io_base
-        return io_base
-
-
-    def __exit__(self, *args):
-        sys.stdout = self.orig_stdout
+from test.stub_stdout import StubStdout
 
 
 class EnvironmentStub(object):
@@ -53,7 +39,7 @@ class TestBaseCommand(unittest.TestCase):
         class ConcreteCommand(BaseCommand):
             pass
 
-        with StdoutHook():
+        with mock.patch('sys.stdout', new_callable = StubStdout):
             env1 = EnvironmentStub()
             env1.config = mock.MagicMock()
 
@@ -77,7 +63,7 @@ class TestBaseCommand(unittest.TestCase):
             def needs_config(cls):
                 return True
 
-        with StdoutHook():
+        with mock.patch('sys.stdout', new_callable = StubStdout):
             env1 = EnvironmentStub()
             env1.config = mock.MagicMock()
 

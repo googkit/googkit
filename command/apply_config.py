@@ -30,7 +30,7 @@ class ApplyConfigCommand(BaseCommand):
 
     @classmethod
     def html_path(cls, path):
-        return '/'.join(path.split(os.path.sep))
+        return '/'.join(path.split(os.sep))
 
 
     def update_base_js(self, line, dirpath):
@@ -63,16 +63,17 @@ class ApplyConfigCommand(BaseCommand):
         markers = updaters.keys()
         dirpath = os.path.dirname(path)
 
-        for line in open(path):
-            for marker in markers:
-                if line.find(marker) >= 0:
-                    updater = updaters[marker]
-                    line = ApplyConfigCommand.line_indent(line) + updater(line, dirpath) + marker + '\n'
-            lines.append(line)
+        with open(path) as fp:
+            for line in fp:
+                for marker in markers:
+                    if line.find(marker) >= 0:
+                        updater = updaters[marker]
+                        line = ApplyConfigCommand.line_indent(line) + updater(line, dirpath) + marker + '\n'
+                lines.append(line)
 
-        with open(path, 'w') as f:
+        with open(path, 'w') as fp:
             for line in lines:
-                f.write(line)
+                fp.write(line)
 
 
     def apply_config_all(self):
