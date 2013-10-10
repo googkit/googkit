@@ -51,16 +51,13 @@ class TestGoogkit(unittest.TestCase):
         GLOBAL['ENV'] = { 'GOOGKIT_HOME': '/usr/local/googkit' }
 
 
-    # print_help {{{
     def test_print_help(self):
         with mock.patch('sys.stdout', new_callable = stub_stdout) as mock_stdout:
             mock_stdout.write = mock.MagicMock()
             print_help()
             self.assertTrue(mock_stdout.write.called)
-    # }}}
 
 
-    # googkit_root {{{
     def test_googkit_root(self):
         self.assertEqual(googkit_root(), '/usr/local/googkit')
 
@@ -69,10 +66,8 @@ class TestGoogkit(unittest.TestCase):
         GLOBAL['ENV'] = {}
         with self.assertRaises(GoogkitError):
             googkit_root()
-    # }}}
 
 
-    # project_root {{{
     def test_project_root_on_grandchild(self):
         os.getcwd = mock.MagicMock()
         os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
@@ -116,10 +111,8 @@ class TestGoogkit(unittest.TestCase):
         os.path.exists.return_value = False
 
         self.assertEqual(project_root(), None)
-    # }}}
 
 
-    # project_config_path {{{
     def test_project_config_path_on_groundchild(self):
         os.getcwd = mock.MagicMock()
         os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
@@ -171,10 +164,8 @@ class TestGoogkit(unittest.TestCase):
 
         with self.assertRaises(GoogkitError):
             project_config_path()
-    # }}}
 
 
-    # user_config_path {{{
     def test_user_config_path_on_groundchild(self):
         def side_effect_expand_user(path):
             return re.sub(r'~', '/home/user', path)
@@ -208,10 +199,8 @@ class TestGoogkit(unittest.TestCase):
         os.path.exists.side_effect = side_effect_path_exists
 
         self.assertEqual(user_config_path(), '/home/user/.googkit')
-    # }}}
 
 
-    # default_config_path {{{
     def test_default_config_path(self):
         def side_effect_path_exists(path):
             exists = [
@@ -246,10 +235,8 @@ class TestGoogkit(unittest.TestCase):
 
         with self.assertRaises(GoogkitError):
             default_config_path()
-    # }}}
 
 
-    # find_config {{{
     def test_find_config(self):
         os.getcwd = mock.MagicMock()
         os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
@@ -285,7 +272,6 @@ class TestGoogkit(unittest.TestCase):
         Config.load = mock.MagicMock()
         find_config()
         Config.load.assert_called_with('/dir1/dir2/googkit.cfg', '/home/user/.googkit', '/usr/local/googkit/config/default.cfg')
-    # }}}
 
 
 if __name__ == '__main__':
