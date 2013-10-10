@@ -25,22 +25,25 @@ except ImportError:
     import mock
 
 
+# Check whether bytes aliased to str.
+# In Python 2.x, bytes aliaased to str, but Python 3.x is defferent.
+# Hooking stdout by io.StringIO will be failed on Python 3.x for the reason.
+#
+# http://docs.python.org/3.3/howto/pyporting.html#bytes-literals
+try:
+    b'a' + u'b'
+
+    # Python 2.x
+    from io import BytesIO
+    stub_stdout = BytesIO
+except TypeError:
+
+    # Python 3.x
+    from io import StringIO
+    stub_stdout = StringIO 
+
+
 from googkit import *
-
-
-class StdoutHook():
-    def __init__(self):
-        self.orig_stdout = sys.stdout
-
-
-    def __enter__(self):
-        io_base = BytesIO()
-        sys.stdout = io_base
-        return io_base
-
-
-    def __exit__(self, *args):
-        sys.stdout = self.orig_stdout
 
 
 class TestGoogkit(unittest.TestCase):
@@ -50,10 +53,10 @@ class TestGoogkit(unittest.TestCase):
 
     # print_help {{{
     def test_print_help(self):
-        with StdoutHook() as hook:
-            hook.write = mock.MagicMock()
+        with mock.patch('sys.stdout', new_callable = stub_stdout) as mock_stdout:
+            mock_stdout.write = mock.MagicMock()
             print_help()
-            self.assertTrue(hook.write.called)
+            self.assertTrue(mock_stdout.write.called)
     # }}}
 
 
