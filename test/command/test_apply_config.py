@@ -241,7 +241,6 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
             cmd.apply_config.assert_any_call(expected_call)
 
 
-    # run {{{
     def test_run_internal(self):
         with mock.patch('sys.stdout', new_callable = StubStdout):
             base_js_rel = os.path.relpath(BASE_JS, DEVELOPMENT_DIR)
@@ -253,7 +252,6 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
             cmd.apply_config_all = mock.MagicMock()
             cmd.run()
             cmd.apply_config_all.assert_called_once_with()
-    # }}}
 
 
 if __name__ == '__main__':

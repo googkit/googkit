@@ -44,7 +44,6 @@ class TestCommandParser(unittest.TestCase):
         }
 
 
-    # right {{{
     def test_right_commands_with_no_cmd(self):
         result = CommandParser.right_commands([])
         self.assertEqual(len(result), 0)
@@ -113,18 +112,14 @@ class TestCommandParser(unittest.TestCase):
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd4')
         self.assertEqual(result[2], 'cmd5')
-    # }}}
 
 
-    # is_internal_command {{{
     def test_is_internal_command(self):
         self.assertTrue(CommandParser.is_internal_command('_cmd0'))
 
         self.assertFalse(CommandParser.is_internal_command('cmd1'))
-    # }}}
 
 
-    # available_commands {{{
     def test_available_commands_with_no_cmd(self):
         result = CommandParser.available_commands([])
         self.assertEqual(len(result), 2)
@@ -158,10 +153,8 @@ class TestCommandParser(unittest.TestCase):
     def test_available_commands_with_sub_sub_cmd(self):
         result = CommandParser.available_commands(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 0)
-    # }}}
 
 
-    # command_classes {{{
     def test_command_classes_with_no_cmd(self):
         self.assertEqual(CommandParser.command_classes([]), None)
 
@@ -208,7 +201,6 @@ class TestCommandParser(unittest.TestCase):
         result = CommandParser.command_classes(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], TestCommandParser.cmd5)
-    # }}}
 
 
 if __name__ == '__main__':

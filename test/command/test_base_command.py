@@ -34,7 +34,6 @@ class EnvironmentStub(object):
 
 
 class TestBaseCommand(unittest.TestCase):
-    # run {{{
     def test_run_on_cmd(self):
         class ConcreteCommand(BaseCommand):
             pass
@@ -79,7 +78,6 @@ class TestBaseCommand(unittest.TestCase):
             cmd2.run_internal = mock.MagicMock()
             with self.assertRaises(GoogkitError):
                 cmd2.run()
-    # }}}
 
 
 if __name__ == '__main__':

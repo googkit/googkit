@@ -56,7 +56,6 @@ class TestConfig(unittest.TestCase):
                 self.cfg.parser.readfp(fp)
 
 
-    # run {{{
     def test_load_with_no_user_config(self):
         cfg = Config()
         cfg.load(TEST_CONFIG_1, None, TEST_CONFIG_3)
@@ -74,13 +73,11 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(cfg.parser.get('test1', 'test'), 'TEST1')
         self.assertEqual(cfg.parser.get('test2', 'test'), 'TEST2')
         self.assertEqual(cfg.parser.get('test3', 'test'), 'TEST3')
-    # }}}
 
 
     # sample of config methods {{{
     def test_development_dir(self):
         self.assertEqual(self.cfg.development_dir(), 'development')
-    # }}}
 
 
 if __name__ == '__main__':

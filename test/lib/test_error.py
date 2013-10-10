@@ -25,11 +25,9 @@ except ImportError:
 from lib.error import GoogkitError
 
 class TestClone(unittest.TestCase):
-    # run {{{
     def test_init(self):
         error = GoogkitError('Yeah')
         self.assertTrue(isinstance(error, Exception))
-    # }}}
 
 
 if __name__ == '__main__':

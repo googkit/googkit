@@ -26,7 +26,6 @@ import lib.clone
 
 
 class TestClone(unittest.TestCase):
-    # run {{{
     def test_run(self):
         os.getcwd = mock.MagicMock()
         os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
@@ -58,7 +57,6 @@ class TestClone(unittest.TestCase):
         lib.clone.run('https://example.com/example.git', '/dir1/dir2')
 
         os.system.assert_called_once_with('git clone https://example.com/example.git /dir1/dir2')
-    # }}}
 
 
 if __name__ == '__main__':

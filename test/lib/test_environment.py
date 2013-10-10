@@ -26,7 +26,6 @@ from lib.environment import Environment
 
 
 class TestEnvironmtnt(unittest.TestCase):
-    # run {{{
     def test_init(self):
         args = mock.MagicMock()
         config = mock.MagicMock()
@@ -35,7 +34,6 @@ class TestEnvironmtnt(unittest.TestCase):
 
         self.assertEqual(env.args, args)
         self.assertEqual(env.config, config)
-    # }}}
 
 
 if __name__ == '__main__':
