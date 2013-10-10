@@ -18,8 +18,8 @@ If you want to create `ping` command, directory structure will be as follows:
 ```
 
 
-__init__.py
------------
+\_\_init\_\_.py
+---------------
 `__init__.py` is empty, but required to make Python treat the directory
 as containing a package.
 
@@ -39,7 +39,8 @@ class PingCommand(Command):
         print('pong')
 ```
 
-And add `register` function to register the command tree of Googkit:
+And append `register` function to register `ping` command on the command tree
+of Googkit:
 
 ```python
 def register(tree):
