@@ -28,57 +28,8 @@ from command.apply_config import ApplyConfigCommand
 
 from test.stub_stdout import StubStdout
 
-
-# Expected following directory structure:
-#
-# dir1
-# |-- dir2 
-# |   +-- development
-# |       +-- js_dev
-# |           +-- deps.js
-# +-- closure
-#     |-- compiler
-#     +-- library
-#         +-- closure
-#             |-- goog
-#             |   +-- base.js
-#             +-- css
-#                 +-- multitestrunner.css
-#
-LIBRARRY_ROOT = '/dir1/closure/library/'
-COMPILER_ROOT = '/dir1/closure/compiler/'
-DEVELOPMENT_DIR = '/dir1/dir2/development'
-DEPS_JS = os.path.join(DEVELOPMENT_DIR, 'js_dev/deps.js')
-BASE_JS = os.path.join(LIBRARRY_ROOT, 'closure/goog/base.js')
-MULTI_TEST_RUNNER_CSS = os.path.join(LIBRARRY_ROOT, 'closure/css/multitestrunner.css')
-
-
-class EnvironmentStub(object):
-    def __init__(self):
-        self.config = None
-
-
-class ConfigStub(object):
-    def __init__(self):
-        pass
-
-    def library_root(self):
-        return LIBRARRY_ROOT
-
-    def compiler_root(self):
-        return COMPILER_ROOT
-
-    def development_dir(self):
-        return DEVELOPMENT_DIR
-
-    def deps_js(self):
-        return DEPS_JS
-
-    def base_js(self):
-        return BASE_JS
-
-    def multitestrunner_css(self):
-        return MULTI_TEST_RUNNER_CSS
+from test.stub_environment import StubEnvironment
+from test.stub_config import *
 
 
 class TestApplyConfigCommand(unittest.TestCase):
@@ -106,8 +57,8 @@ class TestApplyConfigCommand(unittest.TestCase):
 
 
     def test_update_base_js(self):
-        env = EnvironmentStub()
-        env.config = ConfigStub()
+        env = StubEnvironment()
+        env.config = StubConfig()
         cmd = ApplyConfigCommand(env)
 
         s = '<script type="text/javascript" src="{src}"></script>'
@@ -118,8 +69,8 @@ class TestApplyConfigCommand(unittest.TestCase):
 
 
     def test_update_deps_js(self):
-        env = EnvironmentStub()
-        env.config = ConfigStub()
+        env = StubEnvironment()
+        env.config = StubConfig()
         cmd = ApplyConfigCommand(env)
 
         s = '<script type="text/javascript" src="{src}"></script>'
@@ -130,8 +81,8 @@ class TestApplyConfigCommand(unittest.TestCase):
 
 
     def test_multitestrunner_css(self):
-        env = EnvironmentStub()
-        env.config = ConfigStub()
+        env = StubEnvironment()
+        env.config = StubConfig()
         cmd = ApplyConfigCommand(env)
 
         s = '<link rel="stylesheet" type="text/css" href="{href}">'
@@ -159,8 +110,8 @@ class TestApplyConfigCommand(unittest.TestCase):
         tgt_path = os.path.join(DEVELOPMENT_DIR, 'target.html')
         base_js_rel = os.path.relpath(BASE_JS, DEVELOPMENT_DIR)
         deps_js_rel = os.path.relpath(DEPS_JS, DEVELOPMENT_DIR)
-        env = EnvironmentStub()
-        env.config = ConfigStub()
+        env = StubEnvironment()
+        env.config = StubConfig()
 
         cmd = ApplyConfigCommand(env)
         cmd.update_deps_js = mock.MagicMock()
@@ -219,8 +170,8 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
         stub_proj = os.path.join(script_path, '../fixture/stub_project')
         stub_proj = os.path.normpath(stub_proj)
 
-        env = EnvironmentStub()
-        env.config = mock.MagicMock(spec = ConfigStub)
+        env = StubEnvironment()
+        env.config = mock.MagicMock(spec = StubConfig)
         env.config.development_dir.return_value = stub_proj
 
         cmd = ApplyConfigCommand(env)
@@ -245,8 +196,8 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
         with mock.patch('sys.stdout', new_callable = StubStdout):
             base_js_rel = os.path.relpath(BASE_JS, DEVELOPMENT_DIR)
             deps_js_rel = os.path.relpath(DEPS_JS, DEVELOPMENT_DIR)
-            env = EnvironmentStub()
-            env.config = ConfigStub()
+            env = StubEnvironment()
+            env.config = StubConfig()
 
             cmd = ApplyConfigCommand(env)
             cmd.apply_config_all = mock.MagicMock()

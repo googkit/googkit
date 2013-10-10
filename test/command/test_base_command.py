@@ -26,11 +26,7 @@ from lib.error import GoogkitError
 from command.base_command import BaseCommand
 
 from test.stub_stdout import StubStdout
-
-
-class EnvironmentStub(object):
-    def __init__(self):
-        self.config = None
+from test.stub_environment import StubEnvironment
 
 
 class TestBaseCommand(unittest.TestCase):
@@ -39,7 +35,7 @@ class TestBaseCommand(unittest.TestCase):
             pass
 
         with mock.patch('sys.stdout', new_callable = StubStdout):
-            env1 = EnvironmentStub()
+            env1 = StubEnvironment()
             env1.config = mock.MagicMock()
 
             cmd1 = ConcreteCommand(env1)
@@ -47,7 +43,7 @@ class TestBaseCommand(unittest.TestCase):
             cmd1.run()
             cmd1.run_internal.assert_called_once_with()
 
-            env2 = EnvironmentStub()
+            env2 = StubEnvironment()
             env2.config = None
 
             cmd2 = ConcreteCommand(env2)
@@ -63,7 +59,7 @@ class TestBaseCommand(unittest.TestCase):
                 return True
 
         with mock.patch('sys.stdout', new_callable = StubStdout):
-            env1 = EnvironmentStub()
+            env1 = StubEnvironment()
             env1.config = mock.MagicMock()
 
             cmd1 = ConcreteCommandNeedsConfig(env1)
@@ -71,7 +67,7 @@ class TestBaseCommand(unittest.TestCase):
             cmd1.run()
             cmd1.run_internal.assert_called_once_with()
 
-            env2 = EnvironmentStub()
+            env2 = StubEnvironment()
             env2.config = None
 
             cmd2 = ConcreteCommandNeedsConfig(env2)
