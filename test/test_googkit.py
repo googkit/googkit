@@ -25,53 +25,51 @@ except ImportError:
     import mock
 
 
-# Check whether bytes aliased to str.
-# In Python 2.x, bytes aliaased to str, but Python 3.x is defferent.
-# Hooking stdout by io.StringIO will be failed on Python 3.x for the reason.
-#
-# http://docs.python.org/3.3/howto/pyporting.html#bytes-literals
-try:
-    b'a' + u'b'
-
-    # Python 2.x
-    from io import BytesIO
-    stub_stdout = BytesIO
-except TypeError:
-
-    # Python 3.x
-    from io import StringIO
-    stub_stdout = StringIO 
-
-
-from googkit import *
+import googkit
+from lib.error import GoogkitError
+from test.stub_stdout import StubStdout
 
 
 class TestGoogkit(unittest.TestCase):
-    def setUp(self):
-        GLOBAL['ENV'] = { 'GOOGKIT_HOME': '/usr/local/googkit' }
-
-
     def test_print_help(self):
-        with mock.patch('sys.stdout', new_callable = stub_stdout) as mock_stdout:
-            mock_stdout.write = mock.MagicMock()
-            print_help()
-            self.assertTrue(mock_stdout.write.called)
+        MockStdout = mock.MagicMock(spec = StubStdout)
+
+        with mock.patch('sys.stdout', new_callable = MockStdout) as mock_stdout, \
+                mock.patch('lib.command_parser.CommandParser.right_commands') as mock_right_cmds, \
+                mock.patch('lib.command_parser.CommandParser.available_commands') as mock_available_cmds:
+            mock_right_cmds.return_value = ['DUMMY1', 'DUMMY2']
+            mock_available_cmds.return_value = ['dummy1', 'dummy2']
+
+            googkit.print_help(['ARG1', 'ARG2'])
+
+            mock_right_cmds.assert_called_once_with(['ARG1', 'ARG2'])
+            mock_available_cmds.assert_called_once_with(['DUMMY1', 'DUMMY2'])
+            mock_stdout.write.assert_any_call('Usage: googkit DUMMY1 DUMMY2 <command>')
+            mock_stdout.write.assert_any_call('Available commands:')
+            mock_stdout.write.assert_any_call('    dummy1')
+            mock_stdout.write.assert_any_call('    dummy2')
 
 
-    def test_googkit_root(self):
-        self.assertEqual(googkit_root(), '/usr/local/googkit')
+    def test_print_help_with_no_arg(self):
+        MockStdout = mock.MagicMock(spec = StubStdout)
 
+        with mock.patch('sys.stdout', new_callable = MockStdout) as mock_stdout, \
+                mock.patch('lib.command_parser.CommandParser.right_commands') as mock_right_cmds, \
+                mock.patch('lib.command_parser.CommandParser.available_commands') as mock_available_cmds:
+            mock_right_cmds.return_value = []
+            mock_available_cmds.return_value = ['dummy1', 'dummy2']
 
-    def test_googkit_root_with_no_env(self):
-        GLOBAL['ENV'] = {}
-        with self.assertRaises(GoogkitError):
-            googkit_root()
+            googkit.print_help(['ARG1', 'ARG2'])
+
+            mock_right_cmds.assert_called_once_with(['ARG1', 'ARG2'])
+            mock_available_cmds.assert_called_once_with([])
+            mock_stdout.write.assert_any_call('Usage: googkit <command>')
+            mock_stdout.write.assert_any_call('Available commands:')
+            mock_stdout.write.assert_any_call('    dummy1')
+            mock_stdout.write.assert_any_call('    dummy2')
 
 
     def test_project_root_on_grandchild(self):
-        os.getcwd = mock.MagicMock()
-        os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
-
         def side_effect(path):
             exists = [
                 '/',
@@ -84,39 +82,31 @@ class TestGoogkit(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.side_effect = side_effect
-
-        self.assertEqual(project_root(), '/dir1/dir2')
+        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', side_effect = side_effect):
+            self.assertEqual(googkit.project_root(), '/dir1/dir2')
 
 
     def test_project_root_on_current(self):
-        os.getcwd = mock.MagicMock()
-        os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
-
         def side_effect(path):
             if os.path.normpath(path) == '/dir1/dir2/dir3/dir4/googkit.cfg':
                 return True 
             else:
                 return False
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.side_effect = side_effect
-
-        self.assertEqual(project_root(), '/dir1/dir2/dir3/dir4')
+        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', side_effect = side_effect):
+            self.assertEqual(googkit.project_root(), '/dir1/dir2/dir3/dir4')
 
 
     def test_project_root_with_on_unrelated(self):
         os.path.exists = mock.MagicMock()
         os.path.exists.return_value = False
 
-        self.assertEqual(project_root(), None)
+        self.assertEqual(googkit.project_root(), None)
 
 
     def test_project_config_path_on_groundchild(self):
-        os.getcwd = mock.MagicMock()
-        os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
-
         def side_effect(path):
             exists = [
                 '/',
@@ -129,16 +119,12 @@ class TestGoogkit(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.side_effect = side_effect
-
-        self.assertEqual(project_config_path(), '/dir1/dir2/googkit.cfg')
+        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', side_effect = side_effect):
+            self.assertEqual(googkit.project_config_path(), '/dir1/dir2/googkit.cfg')
 
 
     def test_project_config_path_on_current(self):
-        os.getcwd = mock.MagicMock()
-        os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
-
         def side_effect(path):
             exists = [
                 '/',
@@ -151,40 +137,30 @@ class TestGoogkit(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-
-        os.path.exists = mock.MagicMock()
-        os.path.exists.side_effect = side_effect
-
-        self.assertEqual(project_config_path(), '/dir1/dir2/dir3/dir4/googkit.cfg')
+        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', side_effect = side_effect):
+            self.assertEqual(googkit.project_config_path(), '/dir1/dir2/dir3/dir4/googkit.cfg')
 
 
     def test_project_config_path_with_on_unrelated(self):
-        os.path.exists = mock.MagicMock()
-        os.path.exists.return_value = False
-
-        with self.assertRaises(GoogkitError):
-            project_config_path()
+        with mock.patch('os.path.exists', return_value = False):
+            with self.assertRaises(GoogkitError):
+                googkit.project_config_path()
 
 
     def test_user_config_path_on_groundchild(self):
         def side_effect_expand_user(path):
             return re.sub(r'~', '/home/user', path)
 
-        os.path.expanduser = mock.MagicMock()
-        os.path.expanduser.side_effect = side_effect_expand_user
+        with mock.patch('os.path.expanduser', side_effect = side_effect_expand_user), \
+                mock.patch('os.path.exists'):
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.assert_call_with('/home/user/.googkit')
-
-        self.assertEqual(user_config_path(), '/home/user/.googkit')
+            self.assertEqual(googkit.user_config_path(), '/home/user/.googkit')
 
 
     def test_user_config_path_with_file_missing(self):
         def side_effect_expand_user(path):
             return re.sub(r'~', '/home/user', path)
-
-        os.path.expanduser = mock.MagicMock()
-        os.path.expanduser.side_effect = side_effect_expand_user
 
         def side_effect_path_exists(path):
             exists = [
@@ -195,10 +171,9 @@ class TestGoogkit(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.side_effect = side_effect_path_exists
-
-        self.assertEqual(user_config_path(), '/home/user/.googkit')
+        with mock.patch('os.path.expanduser', side_effect = side_effect_expand_user), \
+                mock.patch('os.path.exists', side_effect = side_effect_path_exists):
+            self.assertEqual(googkit.user_config_path(), '/home/user/.googkit')
 
 
     def test_default_config_path(self):
@@ -213,10 +188,8 @@ class TestGoogkit(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.side_effect = side_effect_path_exists
-
-        self.assertEqual(default_config_path(), '/usr/local/googkit/config/default.cfg')
+        with mock.patch('os.path.exists', side_effect = side_effect_path_exists):
+            self.assertEqual(googkit.default_config_path(), '/usr/local/googkit/config/default.cfg')
 
 
     def test_default_config_path_with_file_missing(self):
@@ -230,48 +203,121 @@ class TestGoogkit(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.side_effect = side_effect_path_exists
-
-        with self.assertRaises(GoogkitError):
-            default_config_path()
+        with mock.patch('os.path.exists', side_effect = side_effect_path_exists):
+            with self.assertRaises(GoogkitError):
+                googkit.default_config_path()
 
 
     def test_find_config(self):
-        os.getcwd = mock.MagicMock()
-        os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
+        with mock.patch('googkit.user_config_path') as mock_usr_cfg, \
+                mock.patch('googkit.default_config_path') as mock_def_cfg, \
+                mock.patch('googkit.project_config_path') as mock_proj_cfg, \
+                mock.patch('googkit.Config') as mock_config:
+            mock_usr_cfg.return_value = 'DUMMY_USR'
+            mock_def_cfg.return_value = 'DUMMY_DEF'
+            mock_proj_cfg.return_value = 'DUMMY_PROJ'
 
-        def side_effect_expand_user(path):
-            return re.sub(r'~', '/home/user', path)
+            googkit.find_config()
 
-        os.path.expanduser = mock.MagicMock()
-        os.path.expanduser.side_effect = side_effect_expand_user
+        mock_usr_cfg.assert_called_once_with()
+        mock_def_cfg.assert_called_once_with()
+        mock_proj_cfg.assert_called_once_with()
+        mock_config.return_value.load.assert_called_once_with('DUMMY_PROJ', 'DUMMY_USR', 'DUMMY_DEF')
 
-        def side_effect_path_exists(path):
-            exists = [
-                '/',
-                '/usr',
-                '/usr/local',
-                '/usr/local/googkit',
-                '/usr/local/googkit/config',
-                '/usr/local/googkit/config/default.cfg',
-                '/dir1',
-                '/dir1/dir2',
-                '/dir1/dir2/googkit.cfg',
-                '/dir1/dir2/dir3',
-                '/dir1/dir2/dir3/dir4',
-                '/home',
-                '/home/user',
-                '/home/user/.googkit']
 
-            return os.path.normpath(path) in exists
+    def test_run(self):
+        mock_cmd1 = mock.MagicMock()
+        mock_cmd2 = mock.MagicMock()
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.side_effect = side_effect_path_exists
+        mock_cmd1.needs_config.return_value = False
+        mock_cmd2.needs_config.return_value = False 
 
-        Config.load = mock.MagicMock()
-        find_config()
-        Config.load.assert_called_with('/dir1/dir2/googkit.cfg', '/home/user/.googkit', '/usr/local/googkit/config/default.cfg')
+        with mock.patch('os.chdir') as mock_chdir, \
+                mock.patch('sys.argv', new = ['/DUMMY.py', 'dummy1', 'dummy2']), \
+                mock.patch('googkit.project_root', return_value = '/dir1/dir2'), \
+                mock.patch('googkit.print_help') as mock_print_help, \
+                mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
+                mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
+                mock.patch('googkit.CommandParser') as mock_cmd_parser:
+            mock_cmd_parser.command_classes.return_value = [mock_cmd1, mock_cmd2]
+
+            googkit.run()
+
+        mock_cmd_parser.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
+
+        mock_cmd1.assert_called_once_with('dummy_env')
+        mock_cmd2.assert_called_once_with('dummy_env')
+
+        mock_cmd1.return_value.run.assert_called_once_with()
+        mock_cmd2.return_value.run.assert_called_once_with()
+
+        mock_env.assert_any_call(['dummy1', 'dummy2'], None)
+        self.assertEqual(mock_env.call_count, 2)
+        self.assertFalse(mock_chdir.called)
+
+
+    def test_run_command_needs_config(self):
+        mock_cmd1 = mock.MagicMock()
+        mock_cmd2 = mock.MagicMock()
+
+        mock_cmd1.needs_config.return_value = False 
+        mock_cmd2.needs_config.return_value = True 
+
+        with mock.patch('os.chdir') as mock_chdir, \
+                mock.patch('sys.argv', new = ['/DUMMY.py', 'dummy1', 'dummy2']), \
+                mock.patch('googkit.project_root', return_value = '/dir1/dir2'), \
+                mock.patch('googkit.print_help') as mock_print_help, \
+                mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
+                mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
+                mock.patch('googkit.CommandParser') as mock_cmd_parser:
+            mock_cmd_parser.command_classes.return_value = [mock_cmd1, mock_cmd2]
+
+            googkit.run()
+
+        mock_cmd_parser.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
+
+        mock_cmd1.assert_called_once_with('dummy_env')
+        mock_cmd2.assert_called_once_with('dummy_env')
+
+        mock_cmd1.return_value.run.assert_called_once_with()
+        mock_cmd2.return_value.run.assert_called_once_with()
+
+        mock_env.assert_any_call(['dummy1', 'dummy2'], 'dummy_cfg')
+        mock_env.assert_any_call(['dummy1', 'dummy2'], None)
+        self.assertEqual(mock_env.call_count, 2)
+
+        mock_chdir.assert_any_call('/dir1/dir2')
+
+
+    def test_run_with_empty_args(self):
+        with mock.patch('os.chdir') as mock_chdir, \
+                mock.patch('sys.argv', new = ['/DUMMY.py']), \
+                mock.patch('googkit.print_help') as mock_print_help, \
+                mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
+                mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
+                mock.patch('googkit.CommandParser') as mock_cmd_parser:
+            mock_cmd_parser.command_classes.return_value = None
+
+            with self.assertRaises(SystemExit):
+                googkit.run()
+
+        mock_print_help.assert_called_once_with()
+
+
+    def test_run_with_invalied_args(self):
+        with mock.patch('os.chdir') as mock_chdir, \
+                mock.patch('sys.argv', new = ['/DUMMY.py', 'dummy']), \
+                mock.patch('googkit.print_help') as mock_print_help, \
+                mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
+                mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
+                mock.patch('googkit.CommandParser') as mock_cmd_parser:
+            mock_cmd_parser.command_classes.return_value = None
+
+            with self.assertRaises(SystemExit):
+                googkit.run()
+
+        mock_print_help.assert_called_once_with(['dummy'])
+
 
 
 if __name__ == '__main__':

@@ -10,7 +10,8 @@ from lib.error import GoogkitError
 
 PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
-DEFAULT_CONFIG = 'config/default.cfg'
+GOOGKIT_ROOT = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
 
 
 def print_help(tree, args=[]):
@@ -38,7 +39,7 @@ def find_config():
     return config
 
 
-if __name__ == '__main__':
+def run():
     tree = CommandTree()
     lib.plugin.load(tree)
 
@@ -56,6 +57,7 @@ if __name__ == '__main__':
         config = None
         for cls in classes:
             if config is None and cls.needs_config():
+                os.chdir(project_root())
                 config = find_config()
 
             env = Environment(args, tree, config)
@@ -63,3 +65,7 @@ if __name__ == '__main__':
             command.run()
     except GoogkitError as e:
         sys.exit('[ERROR] ' + str(e))
+
+
+if __name__ == '__main__':
+    run()
