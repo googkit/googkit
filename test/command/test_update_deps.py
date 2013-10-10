@@ -1,0 +1,132 @@
+# Run the following command to test:
+#
+#     (in /usr/local/googkit)
+#     $ python -m {test_module_name}
+#
+# See also: http://docs.python.org/3.3/library/unittest.html#command-line-interface
+#
+# We cannot use unittest.mock on python 2.x!
+# Please install the Mock module when you use Python 2.x.
+#
+#     $ easy_install -U Mock
+#
+# See also: http://www.voidspace.org.uk/python/mock/#installing
+
+import unittest
+import sys
+
+try:
+    # Python 3.3 or later
+    import unittest.mock as mock
+except ImportError:
+    # Python 2.x or 3.2-
+    import mock
+
+
+from lib.error import GoogkitError
+from command.update_deps import UpdateDepsCommand
+
+from test.stub_stdout import StubStdout
+from test.stub_environment import StubEnvironment
+from test.stub_config import *
+
+
+class TestUpdateDepsCommand(unittest.TestCase):
+    def setUp(self):
+        self.env = StubEnvironment()
+        self.env.config = StubConfig()
+        self.cmd = UpdateDepsCommand(self.env)
+
+
+    def test_needs_config(self):
+        self.assertTrue(UpdateDepsCommand.needs_config())
+
+
+    def test_line_indent(self):
+        self.assertEqual(UpdateDepsCommand.line_indent('    '), '    ')
+        self.assertEqual(UpdateDepsCommand.line_indent('     a    '), '     ')
+        self.assertEqual(UpdateDepsCommand.line_indent('a    '), '')
+
+
+    def test_update_deps_js(self):
+        with mock.patch('os.system') as mock_system:
+            self.cmd.update_deps()
+
+        arg_format_dict = {
+            'depswriter_path': DEPSWRITER,
+            'js_dev_path': JS_DEV_DIR,
+            'relpath_from_base_js_to_js_dev': os.path.relpath(JS_DEV_DIR, os.path.dirname(BASE_JS)),
+            'deps_js_path': DEPS_JS
+        }
+
+        expected = 'python {depswriter_path} --root_with_prefix="{js_dev_path} {relpath_from_base_js_to_js_dev}" --output_file="{deps_js_path}"'.format(**arg_format_dict)
+
+        mock_system.assert_called_once_with(expected)
+
+
+    def test_update_tests(self):
+        self.assertEqual(self.cmd.update_tests('DUMMY', [ 'dummy1', 'dummy2' ]), 'var testFiles = [\'dummy1\',\'dummy2\'];')
+        self.assertEqual(self.cmd.update_tests('DUMMY', []), 'var testFiles = [];')
+
+
+    def test_update_testrunner(self):
+        # Use stub config for stub project directories.
+        self.env.config = StubConfigOnStubProject()
+
+        self.cmd.update_tests = mock.MagicMock()
+        self.cmd.update_tests.return_value = 'changed'
+
+        # Data will be given by open with for-in statement
+        read_data = '''\
+DUMMY
+ change me/*@test_files@*/
+  DUMMY'''
+
+        # Expected data for write()
+        expected_wrote = '''\
+DUMMY
+ changed/*@test_files@*/
+  DUMMY'''
+
+        # Use mock_open
+        mock_open = mock.mock_open(read_data = read_data)
+
+        # Context Manager is a return value of the mock_open.__enter__
+        mock_fp = mock_open.return_value.__enter__.return_value
+
+        # Read lines has "\n" at each last
+        mock_fp.__iter__.return_value = iter([(line + '\n') for line in read_data.split('\n')])
+
+        with mock.patch('command.update_deps.open', mock_open, create = True), mock.patch('os.path.exists') as mock_exists:
+            mock_exists.return_value = True
+
+            self.cmd.update_testrunner()
+
+        # Expected the path is a related path from all_tests.html to js_dev/example_test.html
+        expected_file = os.path.join('js_dev', 'example_test.html')
+        self.cmd.update_tests.assert_called_once_with(' change me/*@test_files@*/\n', [expected_file])
+
+        # Expected open was called twice (for reading and writing)
+        mock_open.assert_any_call(TESTRUNNER_IN_STUB_PROJECT)
+        mock_open.assert_any_call(TESTRUNNER_IN_STUB_PROJECT, 'w')
+        self.assertEqual(mock_open.call_count, 2)
+
+        # Expected correct data was wrote
+        self.assertEqual(
+            mock_fp.write.call_args_list,
+            [mock.call(line + '\n',) for line in expected_wrote.split('\n')])
+
+
+    def test_run_internal(self):
+        with mock.patch('sys.stdout', new_callable = StubStdout):
+            self.cmd.update_deps = mock.MagicMock()
+            self.cmd.update_testrunner = mock.MagicMock()
+
+            self.cmd.run_internal()
+
+            self.cmd.update_deps.assert_called_once_with()
+            self.cmd.update_testrunner.assert_called_once_with()
+
+
+if __name__ == '__main__':
+    unittest.main()

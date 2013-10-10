@@ -40,6 +40,8 @@ TEST_FILE_PATTERN = '_TEST\.(HTML|XHTML)$'
 COMPILED_JS = '%COMPILED_JS%'
 COMPILATION_LEVEL = '%COMPILATION_LEVEL%'
 
+DEPSWRITER = os.path.join(LIBRARRY_ROOT, 'CLOSURE', 'BIN', 'BUILD', 'DEPSWRITER.PY')
+
 
 class StubConfig(object):
     def __init__(self):
@@ -68,6 +70,9 @@ class StubConfig(object):
 
     def closurebuilder(self):
         return CLOSUREBUILDER
+
+    def depswriter(self):
+        return DEPSWRITER
 
     def compiler_root(self):
         return COMPILER_ROOT
@@ -105,6 +110,8 @@ TESTRUNNER_IN_STUB_PROJECT = os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, 'all_
 DEPS_JS_IN_STUB_PROJECT = os.path.join(JS_DEV_DIR_IN_STUB_PROJECT, 'deps.js')
 COMPILED_JS_IN_STUB_PROJECT = 'script.min.js'
 
+TEST_FILE_PATTERN_IN_STUB_PROJECT = '_test\.(html|xhtml)$'
+
 
 class StubConfigOnStubProject(object):
     def __init__(self):
@@ -123,7 +130,7 @@ class StubConfigOnStubProject(object):
         return COMPILED_JS_IN_STUB_PROJECT
 
     def test_file_pattern(self):
-        return TEST_FILE_PATTERN
+        return TEST_FILE_PATTERN_IN_STUB_PROJECT
 
     def is_debug_enabled(self):
         return True
@@ -133,6 +140,9 @@ class StubConfigOnStubProject(object):
 
     def closurebuilder(self):
         return CLOSUREBUILDER
+
+    def depswriter(self):
+        return DEPSWRITER
 
     def compiler_root(self):
         return COMPILER_ROOT
