@@ -96,7 +96,7 @@ class StubConfig(object):
 
 STUB_PROJECT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fixture', 'stub_project'))
 DEVELOPMENT_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'development')
-DEBUG_DIR_IN_STUB_PRODUCTION = os.path.join(STUB_PROJECT, 'debug')
+DEBUG_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'debug')
 PRODUCTION_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'production')
 
 JS_DEV_DIR_IN_STUB_PROJECT = os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, 'js_dev')
@@ -114,7 +114,7 @@ class StubConfigOnStubProject(object):
         return DEVELOPMENT_DIR_IN_STUB_PROJECT
 
     def debug_dir(self):
-        return DEBUG_DIR_IN_STUB_PRODUCTION
+        return DEBUG_DIR_IN_STUB_PROJECT
 
     def production_dir(self):
         return PRODUCTION_DIR_IN_STUB_PROJECT
