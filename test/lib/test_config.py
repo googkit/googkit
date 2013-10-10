@@ -39,7 +39,7 @@ SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 TEST_CONFIG_1 = os.path.join(SCRIPT_PATH, '../fixture/test1.cfg')
 TEST_CONFIG_2 = os.path.join(SCRIPT_PATH, '../fixture/test2.cfg')
 TEST_CONFIG_3 = os.path.join(SCRIPT_PATH, '../fixture/test3.cfg')
-DEFAULT_CONFIG = os.path.join(SCRIPT_PATH, '../fixture/default.cfg')
+DEFAULT_CONFIG = os.path.join(SCRIPT_PATH, '../fixture/stub_default.cfg')
 
 
 class TestConfig(unittest.TestCase):
