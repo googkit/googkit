@@ -34,6 +34,8 @@ BASE_JS = os.path.join(LIBRARRY_ROOT, 'CLOSURE', 'GOOG', 'BASE.JS')
 CLOSUREBUILDER = os.path.join(LIBRARRY_ROOT, 'CLOSURE', 'BIN', 'BUILD', 'CLOSUREBUILDER.PY')
 MULTI_TEST_RUNNER_CSS = os.path.join(LIBRARRY_ROOT, 'CLOSURE', 'CSS', 'MULTITESTRUNNER.CSS')
 
+COMPILER = os.path.join(COMPILER_ROOT, 'compiler.jar')
+
 TEST_FILE_PATTERN = '_TEST\.(HTML|XHTML)$'
 COMPILED_JS = '%COMPILED_JS%'
 COMPILATION_LEVEL = '%COMPILATION_LEVEL%'
@@ -95,12 +97,13 @@ class StubConfig(object):
 STUB_PROJECT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fixture', 'stub_project'))
 DEVELOPMENT_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'development')
 DEBUG_DIR_IN_STUB_PRODUCTION = os.path.join(STUB_PROJECT, 'debug')
-PRODUTION_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'production')
+PRODUCTION_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'production')
 
 JS_DEV_DIR_IN_STUB_PROJECT = os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, 'js_dev')
 TESTRUNNER_IN_STUB_PROJECT = os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, 'all_tests.html')
 
 DEPS_JS_IN_STUB_PROJECT = os.path.join(JS_DEV_DIR_IN_STUB_PROJECT, 'deps.js')
+COMPILED_JS_IN_STUB_PROJECT = 'script.min.js'
 
 
 class StubConfigOnStubProject(object):
@@ -117,7 +120,7 @@ class StubConfigOnStubProject(object):
         return PRODUCTION_DIR_IN_STUB_PROJECT
 
     def compiled_js(self):
-        return COMPILED_JS
+        return COMPILED_JS_IN_STUB_PROJECT
 
     def test_file_pattern(self):
         return TEST_FILE_PATTERN
