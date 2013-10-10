@@ -2,11 +2,11 @@ import os
 import re
 import shutil
 import json
-from commands.base_command import BaseCommand
+from cmds.command import Command
 from lib.error import GoogkitError
 
 
-class BuildCommand(BaseCommand):
+class BuildCommand(Command):
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
 

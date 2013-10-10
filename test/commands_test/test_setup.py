@@ -24,7 +24,7 @@ except ImportError:
 
 
 from lib.error import GoogkitError
-from commands.setup import SetupCommand
+from cmds.setup import SetupCommand
 
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment

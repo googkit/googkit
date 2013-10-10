@@ -3,11 +3,11 @@ import shutil
 import lib.clone
 import lib.download
 import lib.unzip
-from commands.base_command import BaseCommand
+from cmds.command import Command
 from lib.error import GoogkitError
 
 
-class SetupCommand(BaseCommand):
+class SetupCommand(Command):
     LIBRARY_GIT_REPOS = 'https://code.google.com/p/closure-library/'
     COMPILER_LATEST_ZIP = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
 

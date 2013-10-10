@@ -5,8 +5,12 @@ from lib.error import GoogkitError
 
 PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
-GOOGKIT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+GOOGKIT_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
+
+
+def googkit_root():
+    return GOOGKIT_ROOT
 
 
 def project_root():

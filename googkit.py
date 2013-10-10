@@ -57,7 +57,7 @@ def run():
         config = None
         for cls in classes:
             if config is None and cls.needs_config():
-                os.chdir(project_root())
+                os.chdir(lib.path.project_root())
                 config = find_config()
 
             env = Environment(args, tree, config)

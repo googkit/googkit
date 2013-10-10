@@ -24,7 +24,7 @@ except ImportError:
 
 
 from lib.error import GoogkitError
-from commands.apply_config import ApplyConfigCommand
+from cmds.apply_config import ApplyConfigCommand
 
 from test.stub_stdout import StubStdout
 
@@ -138,7 +138,7 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
 
         # Switch to the mock_open from the original open
         with mock.patch.object(os, 'sep', new = '/'), \
-                mock.patch('commands.apply_config.open', mock_open, create = True):
+                mock.patch('cmds.apply_config.open', mock_open, create = True):
             self.cmd.apply_config(tgt_path)
 
         # Expected the target file was opened twice for reading and writing

@@ -1,9 +1,9 @@
-from commands.apply_config import ApplyConfigCommand
-from commands.build import BuildCommand
-from commands.commands import CommandsCommand
-from commands.init import InitCommand
-from commands.setup import SetupCommand
-from commands.update_deps import UpdateDepsCommand
+from cmds.apply_config import ApplyConfigCommand
+from cmds.build import BuildCommand
+from cmds.commands import CommandsCommand
+from cmds.init import InitCommand
+from cmds.setup import SetupCommand
+from cmds.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):

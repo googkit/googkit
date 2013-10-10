@@ -24,7 +24,7 @@ except ImportError:
     import mock
 
 from lib.error import GoogkitError
-from commands.build import BuildCommand
+from cmds.build import BuildCommand
 
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
@@ -82,7 +82,7 @@ DUMMY
 
         # Switch to the mock_open from the original open
         with mock.patch.object(os, 'sep', new = '/'), \
-                mock.patch('commands.build.open', mock_open, create = True):
+                mock.patch('cmds.build.open', mock_open, create = True):
             self.cmd.compile_resource(tgt_path, 'REQUIRE_MAIN')
 
         # Expected the target file was opened twice for reading and writing
@@ -206,8 +206,8 @@ DUMMY
 
         mock_open = mock.mock_open()
 
-        with mock.patch('commands.build.json') as mock_json, \
-                mock.patch('commands.build.open', new = mock_open, create = True):
+        with mock.patch('cmds.build.json') as mock_json, \
+                mock.patch('cmds.build.open', new = mock_open, create = True):
             mock_open.return_value.__enter__.return_value = 'DUMMY'
             mock_json.load.return_value = stub_source_map
 

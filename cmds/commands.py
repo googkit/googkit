@@ -1,6 +1,6 @@
-from commands.base_command import BaseCommand
+from cmds.command import Command
 
-class CommandsCommand(BaseCommand):
+class CommandsCommand(Command):
     def __init__(self, env):
         super(CommandsCommand, self).__init__(env)
 
@@ -10,7 +10,7 @@ class CommandsCommand(BaseCommand):
 
 
     def run_internal(self):
-        from lib.command_parser import CommandParser
+        from lib.command_tree import CommandTree
         args = self.env.args[1:]
         commands = self.env.tree.available_commands(args)
         print('\n'.join(commands))

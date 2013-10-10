@@ -23,15 +23,15 @@ except ImportError:
     import mock
 
 from lib.error import GoogkitError
-from commands.base_command import BaseCommand
+from cmds.command import Command
 
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 
 
-class TestBaseCommand(unittest.TestCase):
+class TestCommand(unittest.TestCase):
     def test_run_on_cmd(self):
-        class ConcreteCommand(BaseCommand):
+        class ConcreteCommand(Command):
             pass
 
         with mock.patch('sys.stdout', new_callable = StubStdout):
@@ -53,7 +53,7 @@ class TestBaseCommand(unittest.TestCase):
 
 
     def test_run_on_cmd_needs_config(self):
-        class ConcreteCommandNeedsConfig(BaseCommand):
+        class ConcreteCommandNeedsConfig(Command):
             @classmethod
             def needs_config(cls):
                 return True

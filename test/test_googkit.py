@@ -32,16 +32,15 @@ from test.stub_stdout import StubStdout
 class TestGoogkit(unittest.TestCase):
     def test_print_help(self):
         MockStdout = mock.MagicMock(spec = StubStdout)
+        with mock.patch('sys.stdout', new_callable = MockStdout) as mock_stdout:
+            mock_tree = mock.MagicMock()
+            mock_tree.right_commands.return_value = ['DUMMY1', 'DUMMY2']
+            mock_tree.available_commands.return_value = ['dummy1', 'dummy2']
 
-        with mock.patch('sys.stdout', new_callable = MockStdout) as mock_stdout, \
-                mock.patch('lib.command_tree.CommandTree') as mock_tree:
-            mock_tree.return_value.right_commands.return_value = ['DUMMY1', 'DUMMY2']
-            mock_tree.return_value.available_commands.return_value = ['dummy1', 'dummy2']
+            googkit.print_help(mock_tree, ['ARG1', 'ARG2'])
 
-            googkit.print_help(['ARG1', 'ARG2'])
-
-            mock_right_cmds.assert_called_once_with(['ARG1', 'ARG2'])
-            mock_available_cmds.assert_called_once_with(['DUMMY1', 'DUMMY2'])
+            mock_tree.right_commands.assert_called_once_with(['ARG1', 'ARG2'])
+            mock_tree.available_commands.assert_called_once_with(['DUMMY1', 'DUMMY2'])
             mock_stdout.write.assert_any_call('Usage: googkit DUMMY1 DUMMY2 <command>')
             mock_stdout.write.assert_any_call('Available commands:')
             mock_stdout.write.assert_any_call('    dummy1')
@@ -50,16 +49,15 @@ class TestGoogkit(unittest.TestCase):
 
     def test_print_help_with_no_arg(self):
         MockStdout = mock.MagicMock(spec = StubStdout)
+        with mock.patch('sys.stdout', new_callable = MockStdout) as mock_stdout:
+            mock_tree = mock.MagicMock()
+            mock_tree.right_commands.return_value = []
+            mock_tree.available_commands.return_value = ['dummy1', 'dummy2']
 
-        with mock.patch('sys.stdout', new_callable = MockStdout) as mock_stdout, \
-                mock.patch('lib.command_tree.CommandTree') as mock_tree:
-            mock_tree.return_value.right_commands.return_value = []
-            mock_tree.return_value.available_commands.return_value = ['dummy1', 'dummy2']
+            googkit.print_help(mock_tree, ['ARG1', 'ARG2'])
 
-            googkit.print_help(['ARG1', 'ARG2'])
-
-            mock_tree.return_value.right_commands.assert_called_once_with(['ARG1', 'ARG2'])
-            mock_tree.return_value.available_commands.assert_called_once_with([])
+            mock_tree.right_commands.assert_called_once_with(['ARG1', 'ARG2'])
+            mock_tree.available_commands.assert_called_once_with([])
             mock_stdout.write.assert_any_call('Usage: googkit <command>')
             mock_stdout.write.assert_any_call('Available commands:')
             mock_stdout.write.assert_any_call('    dummy1')
@@ -92,16 +90,16 @@ class TestGoogkit(unittest.TestCase):
 
         with mock.patch('os.chdir') as mock_chdir, \
                 mock.patch('sys.argv', new = ['/DUMMY.py', 'dummy1', 'dummy2']), \
-                mock.patch('googkit.project_root', return_value = '/dir1/dir2'), \
+                mock.patch('lib.path.project_root', return_value = '/dir1/dir2'), \
                 mock.patch('googkit.print_help') as mock_print_help, \
                 mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
-                mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
-                mock.patch('googkit.CommandTree') as mock_cmd_parser:
-            mock_cmd_parser.command_classes.return_value = [mock_cmd1, mock_cmd2]
+                mock.patch('googkit.Environment', return_value = 'dummy_env') as MockEnv, \
+                mock.patch('googkit.CommandTree') as MockTree:
+            MockTree.return_value.command_classes.return_value = [mock_cmd1, mock_cmd2]
 
             googkit.run()
 
-        mock_cmd_parser.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
+        MockTree.return_value.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
 
         mock_cmd1.assert_called_once_with('dummy_env')
         mock_cmd2.assert_called_once_with('dummy_env')
@@ -109,8 +107,8 @@ class TestGoogkit(unittest.TestCase):
         mock_cmd1.return_value.run.assert_called_once_with()
         mock_cmd2.return_value.run.assert_called_once_with()
 
-        mock_env.assert_any_call(['dummy1', 'dummy2'], None)
-        self.assertEqual(mock_env.call_count, 2)
+        MockEnv.assert_any_call(['dummy1', 'dummy2'], MockTree.return_value, None)
+        self.assertEqual(MockEnv.call_count, 2)
         self.assertFalse(mock_chdir.called)
 
 
@@ -123,16 +121,16 @@ class TestGoogkit(unittest.TestCase):
 
         with mock.patch('os.chdir') as mock_chdir, \
                 mock.patch('sys.argv', new = ['/DUMMY.py', 'dummy1', 'dummy2']), \
-                mock.patch('googkit.project_root', return_value = '/dir1/dir2'), \
+                mock.patch('lib.path.project_root', return_value = '/dir1/dir2'), \
                 mock.patch('googkit.print_help') as mock_print_help, \
                 mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
-                mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
-                mock.patch('googkit.CommandTree') as mock_cmd_parser:
-            mock_cmd_parser.command_classes.return_value = [mock_cmd1, mock_cmd2]
+                mock.patch('googkit.Environment', return_value = 'dummy_env') as MockEnv, \
+                mock.patch('googkit.CommandTree') as MockTree:
+            MockTree.return_value.command_classes.return_value = [mock_cmd1, mock_cmd2]
 
             googkit.run()
 
-        mock_cmd_parser.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
+        MockTree.return_value.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
 
         mock_cmd1.assert_called_once_with('dummy_env')
         mock_cmd2.assert_called_once_with('dummy_env')
@@ -140,9 +138,9 @@ class TestGoogkit(unittest.TestCase):
         mock_cmd1.return_value.run.assert_called_once_with()
         mock_cmd2.return_value.run.assert_called_once_with()
 
-        mock_env.assert_any_call(['dummy1', 'dummy2'], 'dummy_cfg')
-        mock_env.assert_any_call(['dummy1', 'dummy2'], None)
-        self.assertEqual(mock_env.call_count, 2)
+        MockEnv.assert_any_call(['dummy1', 'dummy2'], MockTree.return_value, 'dummy_cfg')
+        MockEnv.assert_any_call(['dummy1', 'dummy2'], MockTree.return_value, None)
+        self.assertEqual(MockEnv.call_count, 2)
 
         mock_chdir.assert_any_call('/dir1/dir2')
 
@@ -153,13 +151,13 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.print_help') as mock_print_help, \
                 mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
-                mock.patch('googkit.CommandTree') as mock_cmd_parser:
-            mock_cmd_parser.command_classes.return_value = None
+                mock.patch('googkit.CommandTree') as MockTree:
+            MockTree.return_value.command_classes.return_value = None
 
             with self.assertRaises(SystemExit):
                 googkit.run()
 
-        mock_print_help.assert_called_once_with()
+        mock_print_help.assert_called_once_with(MockTree.return_value)
 
 
     def test_run_with_invalied_args(self):
@@ -168,13 +166,13 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.print_help') as mock_print_help, \
                 mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
-                mock.patch('googkit.CommandTree') as mock_cmd_parser:
-            mock_cmd_parser.command_classes.return_value = None
+                mock.patch('googkit.CommandTree') as MockTree:
+            MockTree.return_value.command_classes.return_value = None
 
             with self.assertRaises(SystemExit):
                 googkit.run()
 
-        mock_print_help.assert_called_once_with(['dummy'])
+        mock_print_help.assert_called_once_with(MockTree.return_value, ['dummy'])
 
 
 

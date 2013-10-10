@@ -1,7 +1,7 @@
 from lib.error import GoogkitError
 
 
-class BaseCommand(object):
+class Command(object):
     def __init__(self, env):
         self.env = env
 
