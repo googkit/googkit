@@ -53,20 +53,6 @@ BASE_JS = os.path.join(LIBRARRY_ROOT, 'closure/goog/base.js')
 MULTI_TEST_RUNNER_CSS = os.path.join(LIBRARRY_ROOT, 'closure/css/multitestrunner.css')
 
 
-class FileSystemStub(object):
-    def __init__(self, sep):
-        self.orig_sep = os.sep
-        self.sep = sep
-        pass
-
-    def __enter__(self):
-        os.sep = self.sep
-        return self
-
-    def __exit__(self, *args):
-        os.sep = self.orig_sep
-
-
 class EnvironmentStub(object):
     def __init__(self):
         self.config = None
@@ -97,13 +83,13 @@ class ConfigStub(object):
 
 class TestApplyConfigCommand(unittest.TestCase):
     def test_html_path(self):
-        with FileSystemStub('/'):
+        with mock.patch.object(os, 'sep', new = '/'):
             self.assertEqual(
                 ApplyConfigCommand.html_path('/dir1/dir2/file.ext'),
                 '/dir1/dir2/file.ext')
 
 
-        with FileSystemStub('\\'):
+        with mock.patch.object(os, 'sep', new = '\\'):
             self.assertEqual(
                 ApplyConfigCommand.html_path('\\dir1\\dir2\\file.ext'),
                 '/dir1/dir2/file.ext')
@@ -210,7 +196,7 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
         mock_fp.__iter__.return_value = iter([(line + '\n') for line in read_data.split('\n')])
 
         # Switch to the mock_open from the original open
-        with FileSystemStub('/'), mock.patch('command.apply_config.open', mock_open, create = True):
+        with mock.patch.object(os, 'sep', new = '/'), mock.patch('command.apply_config.open', mock_open, create = True):
             cmd.apply_config(tgt_path)
 
         # Expected the target file was opened twice for reading and writing
