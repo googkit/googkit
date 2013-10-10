@@ -66,7 +66,6 @@ class TestInitCommand(unittest.TestCase):
                 self.cmd.copy_template(dst_path)
 
 
-
     def test_run_internal(self):
         with mock.patch('os.getcwd') as mock_getcwd:
             mock_getcwd.return_value = 'DUMMY'
