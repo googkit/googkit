@@ -45,3 +45,31 @@ class StubConfig(object):
 
     def multitestrunner_css(self):
         return MULTI_TEST_RUNNER_CSS
+
+
+STUB_PROJECT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fixture/stub_project'))
+DEVELOPMENT_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'development')
+DEPS_JS_IN_STUB_PROJECT = os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, 'js_dev/deps.js')
+
+
+class StubConfigOnStubProject(object):
+    def __init__(self):
+        pass
+
+    def library_root(self):
+        return LIBRARRY_ROOT
+
+    def compiler_root(self):
+        return COMPILER_ROOT
+
+    def development_dir(self):
+        return DEVELOPMENT_DIR_IN_STUB_PROJECT
+
+    def deps_js(self):
+        return DEPS_JS_IN_STUB_PROJECT
+
+    def base_js(self):
+        return BASE_JS
+
+    def multitestrunner_css(self):
+        return MULTI_TEST_RUNNER_CSS

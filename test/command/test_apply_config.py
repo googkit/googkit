@@ -166,26 +166,20 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
 
 
     def test_apply_config_all(self):
-        script_path = os.path.dirname(os.path.abspath(__file__))
-        stub_proj = os.path.join(script_path, '../fixture/stub_project')
-        stub_proj = os.path.normpath(stub_proj)
-
         env = StubEnvironment()
-        env.config = mock.MagicMock(spec = StubConfig)
-        env.config.development_dir.return_value = stub_proj
+        env.config = StubConfigOnStubProject()
 
         cmd = ApplyConfigCommand(env)
         cmd.apply_config = mock.MagicMock()
-
         cmd.apply_config_all()
 
-        expected_calls = [os.path.join(stub_proj, path) for path in [
-            'development/index.html',
-            'development/all_tests.html',
-            'development/style.css',
-            'development/js_dev/example.js',
-            'development/js_dev/example_test.html',
-            'development/js_dev/main.js'
+        expected_calls = [os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, path) for path in [
+            'index.html',
+            'all_tests.html',
+            'style.css',
+            'js_dev/example.js',
+            'js_dev/example_test.html',
+            'js_dev/main.js'
         ]]
 
         for expected_call in expected_calls:
