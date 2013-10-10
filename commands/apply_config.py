@@ -1,7 +1,7 @@
 import glob
 import os
 import re
-from command.base_command import BaseCommand
+from commands.base_command import BaseCommand
 from lib.error import GoogkitError
 
 

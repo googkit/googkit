@@ -23,7 +23,7 @@ except ImportError:
     import mock
 
 from lib.error import GoogkitError
-from command.init import InitCommand
+from commands.init import InitCommand
 
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
@@ -46,7 +46,9 @@ class TestInitCommand(unittest.TestCase):
         self.cmd.template_dir = mock.MagicMock()
         self.cmd.template_dir.return_value = 'dummy'
 
-        with mock.patch('os.listdir') as mock_listdir, mock.patch('distutils.dir_util.copy_tree') as mock_copytree, mock.patch.object(InitCommand, 'TEMPLATE_DIR', new = 'dummy'):
+        with mock.patch('os.listdir') as mock_listdir, \
+                mock.patch('distutils.dir_util.copy_tree') as mock_copytree, \
+                mock.patch.object(InitCommand, 'TEMPLATE_DIR', new = 'dummy'):
             mock_listdir.return_value = []
 
             self.cmd.copy_template(dst_path)
@@ -59,7 +61,8 @@ class TestInitCommand(unittest.TestCase):
         self.cmd.template_dir = mock.MagicMock()
         self.cmd.template_dir.return_value = 'dummy'
 
-        with mock.patch('os.listdir') as mock_listdir, mock.patch('distutils.dir_util.copy_tree') as mock_copytree:
+        with mock.patch('os.listdir') as mock_listdir, \
+                mock.patch('distutils.dir_util.copy_tree') as mock_copytree:
             mock_listdir.return_value = ['DUMMY']
 
             with self.assertRaises(GoogkitError):

@@ -1,5 +1,5 @@
 import os
-import path
+import lib.path
 
 
 PLUGIN_DIR = 'plugins'

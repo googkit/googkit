@@ -1,21 +1,12 @@
 import os
-from error import GoogkitError
+import os.path
+from lib.error import GoogkitError
 
 
 PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
-DEFAULT_CONFIG = 'config/default.cfg'
-
-
-def googkit_root():
-    googkit_home_path = os.environ.get('GOOGKIT_HOME')
-    if googkit_home_path is None:
-        raise GoogkitError('Missing environment variable: "GOOGKIT_HOME"')
-
-    if not os.path.exists(googkit_home_path):
-        raise GoogkitError('googkit directory is not found: %s' % googkit_home_path)
-
-    return os.path.expanduser(googkit_home_path)
+GOOGKIT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
 
 
 def project_root():
@@ -59,10 +50,7 @@ def user_config():
 
 
 def default_config():
-    googkit_home_path = googkit_root()
-    default_config = os.path.join(googkit_home_path, DEFAULT_CONFIG)
-
-    if not os.path.exists(default_config):
+    if not os.path.exists(DEFAULT_CONFIG):
         raise GoogkitError('Default config file is not found: %s' % default_config)
 
-    return default_config
+    return DEFAULT_CONFIG

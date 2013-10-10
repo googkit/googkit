@@ -27,13 +27,15 @@ from lib.environment import Environment
 
 class TestEnvironmtnt(unittest.TestCase):
     def test_init(self):
-        args = mock.MagicMock()
-        config = mock.MagicMock()
+        mock_args = mock.MagicMock()
+        mock_config = mock.MagicMock()
+        mock_tree = mock.MagicMock()
 
-        env = Environment(args, config)
+        env = Environment(mock_args, mock_tree, mock_config)
 
-        self.assertEqual(env.args, args)
-        self.assertEqual(env.config, config)
+        self.assertEqual(env.args, mock_args)
+        self.assertEqual(env.tree, mock_tree)
+        self.assertEqual(env.config, mock_config)
 
 
 if __name__ == '__main__':

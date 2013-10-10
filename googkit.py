@@ -2,15 +2,15 @@ import os
 import sys
 import lib.path
 import lib.plugin
-from lib.command import CommandTree
+from lib.command_tree import CommandTree
 from lib.config import Config
 from lib.environment import Environment
 from lib.error import GoogkitError
 
 
+GOOGKIT_ROOT = os.path.dirname(os.path.abspath(__file__))
 PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
-GOOGKIT_ROOT = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
 
 

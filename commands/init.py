@@ -1,7 +1,7 @@
 import distutils.core
 import os
 import shutil
-from command.base_command import BaseCommand
+from commands.base_command import BaseCommand
 from lib.error import GoogkitError
 
 

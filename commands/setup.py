@@ -3,7 +3,7 @@ import shutil
 import lib.clone
 import lib.download
 import lib.unzip
-from command.base_command import BaseCommand
+from commands.base_command import BaseCommand
 from lib.error import GoogkitError
 
 

@@ -23,7 +23,7 @@ except ImportError:
     import mock
 
 from lib.error import GoogkitError
-from command.base_command import BaseCommand
+from commands.base_command import BaseCommand
 
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment

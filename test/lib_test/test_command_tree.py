@@ -21,93 +21,99 @@ except ImportError:
     # Python 2.x or 3.2-
     import mock
 
-from lib.command_parser import CommandParser
+from lib.command_tree import CommandTree
 
 
 
-class TestCommandParser(unittest.TestCase):
+class TestCommandTree(unittest.TestCase):
+    cmd0 = mock.MagicMock()
+    cmd1 = mock.MagicMock()
+    cmd3 = mock.MagicMock()
+    cmd5 = mock.MagicMock()
+
     def setUp(self):
-        TestCommandParser.cmd0 = mock.MagicMock()
-        TestCommandParser.cmd1 = mock.MagicMock()
-        TestCommandParser.cmd3 = mock.MagicMock()
-        TestCommandParser.cmd5 = mock.MagicMock()
-
-        CommandParser.DICT = {
-            '_cmd0': [TestCommandParser.cmd0],
-            'cmd1': [TestCommandParser.cmd1],
+        CommandTree.DEFAULT_TREE = {
+            '_cmd0': [TestCommandTree.cmd0],
+            'cmd1': [TestCommandTree.cmd1],
             'cmd2': {
-                'cmd3': [TestCommandParser.cmd3],
+                'cmd3': [TestCommandTree.cmd3],
                 'cmd4': {
-                    'cmd5': [TestCommandParser.cmd5]
+                    'cmd5': [TestCommandTree.cmd5]
                 }
             }
         }
 
+        self.tree = CommandTree()
+
+
+    def test_init(self):
+        self.assertEqual(self.tree._tree, CommandTree.DEFAULT_TREE)
+
 
     def test_right_commands_with_no_cmd(self):
-        result = CommandParser.right_commands([])
+        result = self.tree.right_commands([])
         self.assertEqual(len(result), 0)
 
 
     def test_right_commands_with_garbage(self):
-        result = CommandParser.right_commands(['cmd99'])
+        result = self.tree.right_commands(['cmd99'])
         self.assertEqual(len(result), 0)
 
 
     def test_right_commands_with_main_cmd(self):
-        result = CommandParser.right_commands(['cmd1'])
+        result = self.tree.right_commands(['cmd1'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd1')
 
 
     def test_right_commands_with_main_cmd_with_garbage(self):
-        result = CommandParser.right_commands(['cmd1', 'cmd99'])
+        result = self.tree.right_commands(['cmd1', 'cmd99'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd1')
 
 
     def test_right_commands_with_cmd_has_sub_one(self):
-        result = CommandParser.right_commands(['cmd2'])
+        result = self.tree.right_commands(['cmd2'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd2')
 
 
     def test_right_commands_with_cmd_has_sub_one_with_garbage(self):
-        result = CommandParser.right_commands(['cmd2', 'cmd99'])
+        result = self.tree.right_commands(['cmd2', 'cmd99'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd2')
 
 
     def test_right_commands_with_sub_cmd(self):
-        result = CommandParser.right_commands(['cmd2', 'cmd3'])
+        result = self.tree.right_commands(['cmd2', 'cmd3'])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd3')
 
 
     def test_right_commands_with_sub_cmd_with_garbage(self):
-        result = CommandParser.right_commands(['cmd2', 'cmd3', 'cmd99'])
+        result = self.tree.right_commands(['cmd2', 'cmd3', 'cmd99'])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd3')
 
 
     def test_right_commands_with_sub_cmd_has_sub_one(self):
-        result = CommandParser.right_commands(['cmd2', 'cmd4'])
+        result = self.tree.right_commands(['cmd2', 'cmd4'])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd4')
 
 
     def test_right_commands_with_sub_cmd_has_sub_one_with_garbage(self):
-        result = CommandParser.right_commands(['cmd2', 'cmd4', 'cmd99'])
+        result = self.tree.right_commands(['cmd2', 'cmd4', 'cmd99'])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd4')
 
 
     def test_right_commands_with_sub_sub_cmd(self):
-        result = CommandParser.right_commands(['cmd2', 'cmd4', 'cmd5'])
+        result = self.tree.right_commands(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 3)
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd4')
@@ -115,92 +121,92 @@ class TestCommandParser(unittest.TestCase):
 
 
     def test_is_internal_command(self):
-        self.assertTrue(CommandParser.is_internal_command('_cmd0'))
+        self.assertTrue(CommandTree.is_internal_command('_cmd0'))
 
-        self.assertFalse(CommandParser.is_internal_command('cmd1'))
+        self.assertFalse(CommandTree.is_internal_command('cmd1'))
 
 
     def test_available_commands_with_no_cmd(self):
-        result = CommandParser.available_commands([])
+        result = self.tree.available_commands([])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd1')
         self.assertEqual(result[1], 'cmd2')
 
 
     def test_available_commands_with_main_cmd(self):
-        result = CommandParser.available_commands(['cmd1'])
+        result = self.tree.available_commands(['cmd1'])
         self.assertEqual(len(result), 0)
 
 
     def test_available_commands_with_cmd_has_sub_one(self):
-        result = CommandParser.available_commands(['cmd2'])
+        result = self.tree.available_commands(['cmd2'])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd3')
         self.assertEqual(result[1], 'cmd4')
 
 
     def test_available_commands_with_sub_cmd(self):
-        result = CommandParser.available_commands(['cmd2', 'cmd3'])
+        result = self.tree.available_commands(['cmd2', 'cmd3'])
         self.assertEqual(len(result), 0)
 
 
     def test_available_commands_with_sub_cmd_has_sub_one(self):
-        result = CommandParser.available_commands(['cmd2', 'cmd4'])
+        result = self.tree.available_commands(['cmd2', 'cmd4'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd5')
 
 
     def test_available_commands_with_sub_sub_cmd(self):
-        result = CommandParser.available_commands(['cmd2', 'cmd4', 'cmd5'])
+        result = self.tree.available_commands(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 0)
 
 
     def test_command_classes_with_no_cmd(self):
-        self.assertEqual(CommandParser.command_classes([]), None)
+        self.assertEqual(self.tree.command_classes([]), None)
 
     def test_command_classes_with_garbage(self):
-        self.assertEqual(CommandParser.command_classes(['cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd99']), None)
 
     def test_command_classes_with_main_cmd(self):
-        result = CommandParser.command_classes(['cmd1'])
+        result = self.tree.command_classes(['cmd1'])
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0], TestCommandParser.cmd1)
+        self.assertEqual(result[0], TestCommandTree.cmd1)
 
 
     def test_command_classes_with_main_cmd_with_garbage(self):
-        self.assertEqual(CommandParser.command_classes(['cmd1', 'cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd1', 'cmd99']), None)
 
 
     def test_command_classes_with_cmd_has_sub_one(self):
-        self.assertEqual(CommandParser.command_classes(['cmd2']), None)
+        self.assertEqual(self.tree.command_classes(['cmd2']), None)
 
 
     def test_command_classes_with_cmd_has_sub_one_with_garbage(self):
-        self.assertEqual(CommandParser.command_classes(['cmd2', 'cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd99']), None)
 
 
     def test_command_classes_with_sub_cmd(self):
-        result = CommandParser.command_classes(['cmd2', 'cmd3'])
+        result = self.tree.command_classes(['cmd2', 'cmd3'])
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0], TestCommandParser.cmd3)
+        self.assertEqual(result[0], TestCommandTree.cmd3)
 
 
     def test_command_classes_with_sub_cmd_with_garbage(self):
-        self.assertEqual(CommandParser.command_classes(['cmd2', 'cmd3', 'cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd3', 'cmd99']), None)
 
 
     def test_command_classes_with_sub_cmd_has_sub_one(self):
-        self.assertEqual(CommandParser.command_classes(['cmd2', 'cmd4']), None)
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4']), None)
 
 
     def test_command_classes_with_sub_cmd_has_sub_one_with_garbage(self):
-        self.assertEqual(CommandParser.command_classes(['cmd2', 'cmd4', 'cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4', 'cmd99']), None)
 
 
     def test_command_classes_with_sub_sub_cmd(self):
-        result = CommandParser.command_classes(['cmd2', 'cmd4', 'cmd5'])
+        result = self.tree.command_classes(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0], TestCommandParser.cmd5)
+        self.assertEqual(result[0], TestCommandTree.cmd5)
 
 
 if __name__ == '__main__':

@@ -24,7 +24,7 @@ except ImportError:
     import mock
 
 from lib.error import GoogkitError
-from command.build import BuildCommand
+from commands.build import BuildCommand
 
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
@@ -81,7 +81,8 @@ DUMMY
         mock_fp.__iter__.return_value = iter([(line + '\n') for line in read_data.split('\n')])
 
         # Switch to the mock_open from the original open
-        with mock.patch.object(os, 'sep', new = '/'), mock.patch('command.build.open', mock_open, create = True):
+        with mock.patch.object(os, 'sep', new = '/'), \
+                mock.patch('commands.build.open', mock_open, create = True):
             self.cmd.compile_resource(tgt_path, 'REQUIRE_MAIN')
 
         # Expected the target file was opened twice for reading and writing
@@ -98,7 +99,9 @@ DUMMY
         self.env.config = StubConfigOnStubProject()
         self.cmd.compile_resource = mock.MagicMock()
 
-        with mock.patch.object(BuildCommand, 'rmtree_silent') as mock_rmtree_silent, mock.patch.object(BuildCommand, 'ignore_dirs') as mock_ignore_dirs, mock.patch('shutil.copytree') as mock_copytree:
+        with mock.patch.object(BuildCommand, 'rmtree_silent') as mock_rmtree_silent, \
+                mock.patch.object(BuildCommand, 'ignore_dirs') as mock_ignore_dirs, \
+                mock.patch('shutil.copytree') as mock_copytree:
             mock_ignore_dirs.return_value = 'IGNORE'
 
             self.cmd.setup_files(PRODUCTION_DIR_IN_STUB_PROJECT)
@@ -203,7 +206,8 @@ DUMMY
 
         mock_open = mock.mock_open()
 
-        with mock.patch('command.build.json') as mock_json, mock.patch('command.build.open', new = mock_open, create = True):
+        with mock.patch('commands.build.json') as mock_json, \
+                mock.patch('commands.build.open', new = mock_open, create = True):
             mock_open.return_value.__enter__.return_value = 'DUMMY'
             mock_json.load.return_value = stub_source_map
 

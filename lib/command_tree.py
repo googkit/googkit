@@ -1,9 +1,9 @@
-from command.apply_config import ApplyConfigCommand
-from command.build import BuildCommand
-from command.commands import CommandsCommand
-from command.init import InitCommand
-from command.setup import SetupCommand
-from command.update_deps import UpdateDepsCommand
+from commands.apply_config import ApplyConfigCommand
+from commands.build import BuildCommand
+from commands.commands import CommandsCommand
+from commands.init import InitCommand
+from commands.setup import SetupCommand
+from commands.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):
@@ -69,6 +69,7 @@ class CommandTree(object):
 
     def command_classes(self, args):
         value = self._tree
+        last_value = None
 
         for arg in args:
             # a garbage found next to a right command
@@ -92,7 +93,7 @@ class CommandTree(object):
 
             value = next_value
 
-        return None
+        return last_value
 
 
     def register(self, names, commands):

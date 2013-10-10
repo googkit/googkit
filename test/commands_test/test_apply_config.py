@@ -24,7 +24,7 @@ except ImportError:
 
 
 from lib.error import GoogkitError
-from command.apply_config import ApplyConfigCommand
+from commands.apply_config import ApplyConfigCommand
 
 from test.stub_stdout import StubStdout
 
@@ -33,6 +33,11 @@ from test.stub_config import *
 
 
 class TestApplyConfigCommand(unittest.TestCase):
+    def setUp(self):
+        self.env = StubEnvironment()
+        self.env.config = StubConfig()
+        self.cmd = ApplyConfigCommand(self.env)
+
     def test_html_path(self):
         with mock.patch.object(os, 'sep', new = '/'):
             self.assertEqual(
@@ -57,39 +62,27 @@ class TestApplyConfigCommand(unittest.TestCase):
 
 
     def test_update_base_js(self):
-        env = StubEnvironment()
-        env.config = StubConfig()
-        cmd = ApplyConfigCommand(env)
-
         s = '<script type="text/javascript" src="{src}"></script>'
         expected = s.format(src = os.path.relpath(BASE_JS, DEVELOPMENT_DIR))
         line = '<script type="text/javascript" src="link"></script>'
 
-        self.assertEqual(cmd.update_base_js(line, DEVELOPMENT_DIR), expected)
+        self.assertEqual(self.cmd.update_base_js(line, DEVELOPMENT_DIR), expected)
 
 
     def test_update_deps_js(self):
-        env = StubEnvironment()
-        env.config = StubConfig()
-        cmd = ApplyConfigCommand(env)
-
         s = '<script type="text/javascript" src="{src}"></script>'
         expected = s.format(src = os.path.relpath(DEPS_JS, DEVELOPMENT_DIR))
         line = '<script type="text/javascript" src="link"></script>'
 
-        self.assertEqual(cmd.update_deps_js(line, DEVELOPMENT_DIR), expected)
+        self.assertEqual(self.cmd.update_deps_js(line, DEVELOPMENT_DIR), expected)
 
 
     def test_multitestrunner_css(self):
-        env = StubEnvironment()
-        env.config = StubConfig()
-        cmd = ApplyConfigCommand(env)
-
         s = '<link rel="stylesheet" type="text/css" href="{href}">'
         expected = s.format(href = os.path.relpath(MULTI_TEST_RUNNER_CSS, DEVELOPMENT_DIR))
         line = '<link rel="stylesheet" type="text/css" href="link">'
 
-        self.assertEqual(cmd.update_multitestrunner_css(line, DEVELOPMENT_DIR), expected)
+        self.assertEqual(self.cmd.update_multitestrunner_css(line, DEVELOPMENT_DIR), expected)
 
 
     def test_apply_config(self):
@@ -110,16 +103,13 @@ class TestApplyConfigCommand(unittest.TestCase):
         tgt_path = os.path.join(DEVELOPMENT_DIR, 'target.html')
         base_js_rel = os.path.relpath(BASE_JS, DEVELOPMENT_DIR)
         deps_js_rel = os.path.relpath(DEPS_JS, DEVELOPMENT_DIR)
-        env = StubEnvironment()
-        env.config = StubConfig()
 
-        cmd = ApplyConfigCommand(env)
-        cmd.update_deps_js = mock.MagicMock()
-        cmd.update_deps_js.return_value = 'DEPS_JS'
-        cmd.update_base_js = mock.MagicMock()
-        cmd.update_base_js.return_value = 'BASE_JS'
-        cmd.update_multitestrunner_css = mock.MagicMock()
-        cmd.update_multitestrunner_css.return_value = 'MULTI_TEST_RUNNER_CSS'
+        self.cmd.update_deps_js = mock.MagicMock()
+        self.cmd.update_deps_js.return_value = 'DEPS_JS'
+        self.cmd.update_base_js = mock.MagicMock()
+        self.cmd.update_base_js.return_value = 'BASE_JS'
+        self.cmd.update_multitestrunner_css = mock.MagicMock()
+        self.cmd.update_multitestrunner_css.return_value = 'MULTI_TEST_RUNNER_CSS'
 
         # Data will be given by for-in statement with open()
         read_data = '''\
@@ -147,8 +137,9 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
         mock_fp.__iter__.return_value = iter([(line + '\n') for line in read_data.split('\n')])
 
         # Switch to the mock_open from the original open
-        with mock.patch.object(os, 'sep', new = '/'), mock.patch('command.apply_config.open', mock_open, create = True):
-            cmd.apply_config(tgt_path)
+        with mock.patch.object(os, 'sep', new = '/'), \
+                mock.patch('commands.apply_config.open', mock_open, create = True):
+            self.cmd.apply_config(tgt_path)
 
         # Expected the target file was opened twice for reading and writing
         mock_open.assert_any_call(tgt_path)
@@ -160,18 +151,15 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
             [mock.call(line + '\n',) for line in expected.split('\n')])
 
         # Expect updaters was called when for each marker was found
-        cmd.update_multitestrunner_css.assert_called_once_with('<!--@multitestrunner_css@-->\n', DEVELOPMENT_DIR)
-        cmd.update_base_js.assert_called_once_with(' <!--@base_js@-->\n', DEVELOPMENT_DIR)
-        cmd.update_deps_js.assert_called_once_with('  <!--@deps_js@-->\n', DEVELOPMENT_DIR)
+        self.cmd.update_multitestrunner_css.assert_called_once_with('<!--@multitestrunner_css@-->\n', DEVELOPMENT_DIR)
+        self.cmd.update_base_js.assert_called_once_with(' <!--@base_js@-->\n', DEVELOPMENT_DIR)
+        self.cmd.update_deps_js.assert_called_once_with('  <!--@deps_js@-->\n', DEVELOPMENT_DIR)
 
 
     def test_apply_config_all(self):
-        env = StubEnvironment()
-        env.config = StubConfigOnStubProject()
-
-        cmd = ApplyConfigCommand(env)
-        cmd.apply_config = mock.MagicMock()
-        cmd.apply_config_all()
+        self.env.config = StubConfigOnStubProject()
+        self.cmd.apply_config = mock.MagicMock()
+        self.cmd.apply_config_all()
 
         expected_calls = [os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, path) for path in [
             'index.html',
@@ -183,20 +171,17 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
         ]]
 
         for expected_call in expected_calls:
-            cmd.apply_config.assert_any_call(expected_call)
+            self.cmd.apply_config.assert_any_call(expected_call)
 
 
     def test_run_internal(self):
         with mock.patch('sys.stdout', new_callable = StubStdout):
             base_js_rel = os.path.relpath(BASE_JS, DEVELOPMENT_DIR)
             deps_js_rel = os.path.relpath(DEPS_JS, DEVELOPMENT_DIR)
-            env = StubEnvironment()
-            env.config = StubConfig()
 
-            cmd = ApplyConfigCommand(env)
-            cmd.apply_config_all = mock.MagicMock()
-            cmd.run()
-            cmd.apply_config_all.assert_called_once_with()
+            self.cmd.apply_config_all = mock.MagicMock()
+            self.cmd.run()
+            self.cmd.apply_config_all.assert_called_once_with()
 
 
 if __name__ == '__main__':

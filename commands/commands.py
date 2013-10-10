@@ -1,4 +1,4 @@
-from command.base_command import BaseCommand
+from commands.base_command import BaseCommand
 
 class CommandsCommand(BaseCommand):
     def __init__(self, env):

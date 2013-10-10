@@ -24,7 +24,7 @@ except ImportError:
 
 
 from lib.error import GoogkitError
-from command.setup import SetupCommand
+from commands.setup import SetupCommand
 
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
@@ -43,7 +43,8 @@ class TestSetupCommand(unittest.TestCase):
 
 
     def test_safe_mkdirs(self):
-        with mock.patch('os.makedirs') as mock_makedirs, mock.patch('shutil.rmtree') as mock_rmtree:
+        with mock.patch('os.makedirs') as mock_makedirs, \
+                mock.patch('shutil.rmtree') as mock_rmtree:
             SetupCommand.safe_mkdirs('/tmp/foo/bar')
 
         mock_rmtree.assert_called_once_with('/tmp/foo/bar', True)
@@ -54,11 +55,16 @@ class TestSetupCommand(unittest.TestCase):
         with mock.patch('lib.clone') as mock_clone:
             self.cmd.setup_closure_library()
 
-        mock_clone.run.assert_called_once_with('https://code.google.com/p/closure-library/', LIBRARRY_ROOT)
+        mock_clone.run.assert_called_once_with(
+                'https://code.google.com/p/closure-library/',
+                LIBRARRY_ROOT)
 
 
     def test_setup_closure_compiler(self):
-        with mock.patch('lib.download') as mock_download, mock.patch('lib.unzip') as mock_unzip, mock.patch.object(SetupCommand, 'safe_mkdirs') as mock_mkdirs, mock.patch('shutil.rmtree') as mock_rmtree:
+        with mock.patch('lib.download') as mock_download, \
+                mock.patch('lib.unzip') as mock_unzip, \
+                mock.patch.object(SetupCommand, 'safe_mkdirs') as mock_mkdirs, \
+                mock.patch('shutil.rmtree') as mock_rmtree:
             self.cmd.setup_closure_compiler()
 
         # Expected temporary directory was created and removed
@@ -66,7 +72,9 @@ class TestSetupCommand(unittest.TestCase):
         mock_rmtree.assert_any_call('tmp')
 
         mock_unzip.run.assert_called_once_with(os.path.join('tmp', 'compiler.zip'), COMPILER_ROOT)
-        mock_download.run.assert_called_once_with('http://closure-compiler.googlecode.com/files/compiler-latest.zip', os.path.join('tmp', 'compiler.zip'))
+        mock_download.run.assert_called_once_with(
+                'http://closure-compiler.googlecode.com/files/compiler-latest.zip',
+                os.path.join('tmp', 'compiler.zip'))
 
 
     def test_run_internal(self):
