@@ -13,6 +13,9 @@ PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
 DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
 
+# It makes unit-testing easy
+GLOBAL = { 'ENV': os.environ }
+
 
 def print_help(tree, args=[]):
     right_commands = tree.right_commands(args)
