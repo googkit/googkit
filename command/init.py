@@ -13,9 +13,14 @@ class InitCommand(BaseCommand):
         super(InitCommand, self).__init__(env)
 
 
-    def copy_template(self, dst_dir):
+    def template_dir(self):
         script_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
         template_dir = os.path.join(script_dir, InitCommand.TEMPLATE_DIR)
+        return template_dir
+
+
+    def copy_template(self, dst_dir):
+        template_dir = self.template_dir()
 
         if os.listdir(dst_dir):
             raise GoogkitError('Directory is not empty: ' + dst_dir)
