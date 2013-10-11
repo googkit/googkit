@@ -113,7 +113,9 @@ DUMMY
 
         mock_rmtree_silent.assert_called_once_with(PRODUCTION_DIR_IN_STUB_PROJECT)
 
-        self.cmd.compile_resource.assert_any_call(os.path.join(PRODUCTION_DIR_IN_STUB_PROJECT, 'index.html'), COMPILED_JS_IN_STUB_PROJECT)
+        self.cmd.compile_resource.assert_any_call(
+                os.path.join(PRODUCTION_DIR_IN_STUB_PROJECT, 'index.html'),
+                COMPILED_JS_IN_STUB_PROJECT)
 
 
     def test_compile_scripts_with_debug_enabled(self):
@@ -131,8 +133,6 @@ DUMMY
 
         # In debug mode, expected that setup_files was called twice
         self.assertEqual(self.cmd.setup_files.call_count, 2)
-
-
 
         arg_format_dict = {
             'source_map': COMPILED_JS + '.map',
@@ -155,11 +155,11 @@ DUMMY
             '--compiler_jar={compiler_path}',
             '--compiler_flags=--compilation_level=%COMPILATION_LEVEL%',
             '--compiler_flags=--define=goog.DEBUG=false',
-            '--output_file={compiled_js_path}']).format(**arg_format_dict)
-
+            '--output_file={compiled_js_path}'
+        ]).format(**arg_format_dict)
 
         mock_system.assert_any_call(expected)
-
+        self.cmd.setup_files.assert_any_call(PRODUCTION_DIR)
 
         arg_format_dict_on_debug = {
             'source_map': COMPILED_JS + '.map',
@@ -184,12 +184,55 @@ DUMMY
             '--compiler_flags=--source_map_format=V3',
             '--compiler_flags=--create_source_map={source_map_path}',
             '--compiler_flags=--output_wrapper="%output%//# sourceMappingURL={source_map}"',
-            '--output_file={compiled_js_path}']).format(**arg_format_dict_on_debug)
+            '--output_file={compiled_js_path}'
+        ]).format(**arg_format_dict_on_debug)
 
         mock_system.assert_any_call(expected_on_debug)
-
-        self.cmd.setup_files.assert_any_call(PRODUCTION_DIR)
         self.cmd.setup_files.assert_any_call(DEBUG_DIR)
+
+
+    def test_compile_scripts(self):
+        self.env.config.is_debug_enabled = mock.MagicMock()
+        self.env.config.is_debug_enabled.return_value = False
+
+        self.cmd.setup_files = mock.MagicMock()
+        self.cmd.modify_source_map = mock.MagicMock()
+
+        with mock.patch('os.system') as mock_system:
+            self.cmd.compile_scripts()
+
+        # Expected that os.system was called twice
+        self.assertEqual(mock_system.call_count, 1)
+
+        # Expected that setup_files was called twice
+        self.assertEqual(self.cmd.setup_files.call_count, 1)
+
+        arg_format_dict = {
+            'source_map': COMPILED_JS + '.map',
+            'source_map_path': os.path.join(PRODUCTION_DIR, COMPILED_JS + '.map'),
+            'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
+            'js_dev_path': JS_DEV_DIR,
+            'library': LIBRARRY_ROOT,
+            'compiler_path': COMPILER,
+            'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
+            'closurebuilder_path': CLOSUREBUILDER
+        }
+
+        expected = ' '.join([
+            'python',
+            '{closurebuilder_path}',
+            '--root={library}',
+            '--root={js_dev_path}',
+            '--namespace=main',
+            '--output_mode=compiled',
+            '--compiler_jar={compiler_path}',
+            '--compiler_flags=--compilation_level=%COMPILATION_LEVEL%',
+            '--compiler_flags=--define=goog.DEBUG=false',
+            '--output_file={compiled_js_path}'
+        ]).format(**arg_format_dict)
+
+        mock_system.assert_called_once_with(expected)
+        self.cmd.setup_files.assert_called_once_with(PRODUCTION_DIR)
 
 
     def test_modify_source_map(self):

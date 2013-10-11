@@ -59,14 +59,24 @@ class TestUpdateDepsCommand(unittest.TestCase):
             'deps_js_path': DEPS_JS
         }
 
-        expected = 'python {depswriter_path} --root_with_prefix="{js_dev_path} {relpath_from_base_js_to_js_dev}" --output_file="{deps_js_path}"'.format(**arg_format_dict)
+        expected = ' '.join([
+            'python',
+            '{depswriter_path}',
+            '--root_with_prefix="{js_dev_path}',
+            '{relpath_from_base_js_to_js_dev}"',
+            '--output_file="{deps_js_path}"'
+        ]).format(**arg_format_dict)
 
         mock_system.assert_called_once_with(expected)
 
 
     def test_update_tests(self):
-        self.assertEqual(self.cmd.update_tests('DUMMY', [ 'dummy1', 'dummy2' ]), 'var testFiles = [\'dummy1\',\'dummy2\'];')
-        self.assertEqual(self.cmd.update_tests('DUMMY', []), 'var testFiles = [];')
+        self.assertEqual(
+                self.cmd.update_tests('DUMMY', [ 'dummy1', 'dummy2' ]),
+                'var testFiles = [\'dummy1\',\'dummy2\'];')
+        self.assertEqual(
+                self.cmd.update_tests('DUMMY', []),
+                'var testFiles = [];')
 
 
     def test_update_testrunner(self):
@@ -105,7 +115,9 @@ DUMMY
 
         # Expected the path is a related path from all_tests.html to js_dev/example_test.html
         expected_file = os.path.join('js_dev', 'example_test.html')
-        self.cmd.update_tests.assert_called_once_with(' change me/*@test_files@*/\n', [expected_file])
+        self.cmd.update_tests.assert_called_once_with(
+                ' change me/*@test_files@*/\n',
+                [expected_file])
 
         # Expected open was called twice (for reading and writing)
         mock_open.assert_any_call(TESTRUNNER_IN_STUB_PROJECT)

@@ -71,7 +71,9 @@ class TestSetupCommand(unittest.TestCase):
         mock_mkdirs.assert_any_call('tmp')
         mock_rmtree.assert_any_call('tmp')
 
-        mock_unzip.run.assert_called_once_with(os.path.join('tmp', 'compiler.zip'), COMPILER_ROOT)
+        mock_unzip.run.assert_called_once_with(
+                os.path.join('tmp', 'compiler.zip'),
+                COMPILER_ROOT)
         mock_download.run.assert_called_once_with(
                 'http://closure-compiler.googlecode.com/files/compiler-latest.zip',
                 os.path.join('tmp', 'compiler.zip'))
