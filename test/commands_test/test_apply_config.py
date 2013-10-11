@@ -186,5 +186,3 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
 
 if __name__ == '__main__':
     unittest.main()
-
-# vim: fdm=marker

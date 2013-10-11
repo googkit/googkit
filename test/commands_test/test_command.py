@@ -30,7 +30,7 @@ from test.stub_environment import StubEnvironment
 
 
 class TestCommand(unittest.TestCase):
-    def test_run_on_cmd(self):
+    def test_run(self):
         class ConcreteCommand(Command):
             pass
 
@@ -78,5 +78,3 @@ class TestCommand(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-# vim: fdm=marker
