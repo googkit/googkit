@@ -197,7 +197,7 @@ class TestGoogkit(unittest.TestCase):
         mock_print_help.assert_called_once_with(MockTree.return_value)
 
 
-    def test_run_with_invalied_args(self):
+    def test_run_with_invalid_args(self):
         with mock.patch('os.chdir') as mock_chdir, \
                 mock.patch('sys.argv', new = ['/DUMMY.py', 'dummy']), \
                 mock.patch('googkit.print_help') as mock_print_help, \
@@ -210,7 +210,6 @@ class TestGoogkit(unittest.TestCase):
                 googkit.run()
 
         mock_print_help.assert_called_once_with(MockTree.return_value, ['dummy'])
-
 
 
 if __name__ == '__main__':
