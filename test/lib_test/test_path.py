@@ -169,3 +169,8 @@ class TestPath(unittest.TestCase):
                 mock.patch('lib.path.googkit_root', return_value = '/dummy/usr/local/googkit'):
             with self.assertRaises(GoogkitError):
                 lib.path.default_config()
+
+
+    def test_googkit_root(self):
+        with mock.patch('lib.path.__file__', new = '/dummy/googkit/lib/path.py'):
+            self.assertEqual(lib.path.googkit_root(), '/dummy/googkit')
