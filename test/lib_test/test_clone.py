@@ -13,7 +13,6 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
-import os
 
 try:
     # Python 3.3 or later
@@ -27,36 +26,26 @@ import lib.clone
 
 class TestClone(unittest.TestCase):
     def test_run(self):
-        os.getcwd = mock.MagicMock()
-        os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
+        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', return_value = True), \
+                mock.patch('os.chdir') as mock_chdir, \
+                mock.patch('os.system') as mock_system:
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.return_value = True
+            lib.clone.run('https://exmaple.com/example.git', '/dir1/dir2')
 
-        os.chdir = mock.MagicMock()
-
-        os.system = mock.MagicMock()
-
-        lib.clone.run('https://exmaple.com/example.git', '/dir1/dir2')
-
-        os.chdir.assert_any_call('/dir1/dir2')
-        os.chdir.assert_any_call('/dir1/dir2/dir3/dir4')
-        os.system.assert_called_once_with('git pull')
+        mock_chdir.assert_any_call('/dir1/dir2')
+        mock_chdir.assert_any_call('/dir1/dir2/dir3/dir4')
+        mock_system.assert_called_once_with('git pull')
 
 
     def test_run_with_no_target_dir(self):
-        os.getcwd = mock.MagicMock()
-        os.getcwd.return_value = '/dir1/dir2/dir3/dir4'
+        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', return_value = False), \
+                mock.patch('os.chdir') as mock_chdir, \
+                mock.patch('os.system') as mock_system:
+            lib.clone.run('https://example.com/example.git', '/dir1/dir2')
 
-        os.path.exists = mock.MagicMock()
-        os.path.exists.return_value = False
-
-        os.chdir = mock.MagicMock()
-        os.system = mock.MagicMock()
-
-        lib.clone.run('https://example.com/example.git', '/dir1/dir2')
-
-        os.system.assert_called_once_with('git clone https://example.com/example.git /dir1/dir2')
+        mock_system.assert_called_once_with('git clone https://example.com/example.git /dir1/dir2')
 
 
 if __name__ == '__main__':
