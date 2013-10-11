@@ -5,12 +5,11 @@ from lib.error import GoogkitError
 
 PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
-GOOGKIT_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
+DEFAULT_CONFIG = os.path.join('config', 'default.cfg')
 
 
 def googkit_root():
-    return GOOGKIT_ROOT
+    return os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
 
 def project_root():
@@ -54,7 +53,8 @@ def user_config():
 
 
 def default_config():
-    if not os.path.exists(DEFAULT_CONFIG):
-        raise GoogkitError('Default config file is not found: %s' % default_config)
+    path = os.path.join(googkit_root(), DEFAULT_CONFIG)
+    if not os.path.exists(path):
+        raise GoogkitError('Default config file is not found: %s' % path)
 
-    return DEFAULT_CONFIG
+    return path

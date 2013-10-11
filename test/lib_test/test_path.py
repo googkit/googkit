@@ -139,29 +139,33 @@ class TestPath(unittest.TestCase):
         def side_effect_exists(path):
             exists = [
                 '/',
-                '/usr',
-                '/usr/local',
-                '/usr/local/googkit',
-                '/usr/local/googkit/config',
-                '/usr/local/googkit/config/default.cfg']
+                '/dummy',
+                '/dummy/usr',
+                '/dummy/usr/local',
+                '/dummy/usr/local/googkit',
+                '/dummy/usr/local/googkit/config',
+                '/dummy/usr/local/googkit/config/default.cfg']
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.path.exists', side_effect = side_effect_exists):
-            self.assertEqual(lib.path.default_config(), '/usr/local/googkit/config/default.cfg')
+        with mock.patch('os.path.exists', side_effect = side_effect_exists), \
+                mock.patch('lib.path.googkit_root', return_value = '/dummy/usr/local/googkit'):
+            self.assertEqual(lib.path.default_config(), '/dummy/usr/local/googkit/config/default.cfg')
 
 
     def test_default_config_with_file_missing(self):
         def side_effect_exists(path):
             exists = [
                 '/',
-                '/usr',
-                '/usr/local',
-                '/usr/local/googkit',
-                '/usr/local/googkit/config']
+                '/dummy',
+                '/dummy/usr',
+                '/dummy/usr/local',
+                '/dummy/usr/local/googkit',
+                '/dummy/usr/local/googkit/config']
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.path.exists', side_effect = side_effect_exists):
+        with mock.patch('os.path.exists', side_effect = side_effect_exists), \
+                mock.patch('lib.path.googkit_root', return_value = '/dummy/usr/local/googkit'):
             with self.assertRaises(GoogkitError):
                 lib.path.default_config()
