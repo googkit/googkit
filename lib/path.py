@@ -6,6 +6,7 @@ from lib.error import GoogkitError
 PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
 DEFAULT_CONFIG = os.path.join('config', 'default.cfg')
+PLUGIN_DIR = 'plugins'
 
 
 def googkit_root():
@@ -58,3 +59,11 @@ def default_config():
         raise GoogkitError('Default config file is not found: %s' % path)
 
     return path
+
+
+def plugin():
+    plugin_dir = os.path.join(googkit_root(), PLUGIN_DIR)
+    if not os.path.isdir(plugin_dir):
+        raise GoogkitError('Plugins directory is not found.')
+
+    return plugin_dir

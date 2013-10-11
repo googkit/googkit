@@ -14,7 +14,6 @@
 
 import unittest
 import os
-import re
 
 try:
     # Python 3.3 or later
@@ -131,12 +130,15 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.print_help') as mock_print_help, \
                 mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value = 'dummy_env') as MockEnv, \
-                mock.patch('googkit.CommandTree') as MockTree:
+                mock.patch('googkit.CommandTree') as MockTree, \
+                mock.patch('lib.plugin.load') as mock_load:
             MockTree.return_value.command_classes.return_value = [mock_cmd1, mock_cmd2]
 
             googkit.run()
 
         MockTree.return_value.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
+
+        mock_load.assert_called_once_with(MockTree.return_value)
 
         mock_cmd1.assert_called_once_with('dummy_env')
         mock_cmd2.assert_called_once_with('dummy_env')
@@ -162,12 +164,15 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.print_help') as mock_print_help, \
                 mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value = 'dummy_env') as MockEnv, \
-                mock.patch('googkit.CommandTree') as MockTree:
+                mock.patch('googkit.CommandTree') as MockTree, \
+                mock.patch('lib.plugin.load') as mock_load:
             MockTree.return_value.command_classes.return_value = [mock_cmd1, mock_cmd2]
 
             googkit.run()
 
         MockTree.return_value.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
+
+        mock_load.assert_called_once_with(MockTree.return_value)
 
         mock_cmd1.assert_called_once_with('dummy_env')
         mock_cmd2.assert_called_once_with('dummy_env')
@@ -188,7 +193,8 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.print_help') as mock_print_help, \
                 mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
-                mock.patch('googkit.CommandTree') as MockTree:
+                mock.patch('googkit.CommandTree') as MockTree, \
+                mock.patch('lib.plugin.load') as mock_load:
             MockTree.return_value.command_classes.return_value = None
 
             with self.assertRaises(SystemExit):
@@ -203,7 +209,8 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.print_help') as mock_print_help, \
                 mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
-                mock.patch('googkit.CommandTree') as MockTree:
+                mock.patch('googkit.CommandTree') as MockTree, \
+                mock.patch('lib.plugin.load') as mock_load:
             MockTree.return_value.command_classes.return_value = None
 
             with self.assertRaises(SystemExit):

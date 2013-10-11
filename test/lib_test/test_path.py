@@ -174,3 +174,19 @@ class TestPath(unittest.TestCase):
     def test_googkit_root(self):
         with mock.patch('lib.path.__file__', new = '/dummy/googkit/lib/path.py'):
             self.assertEqual(lib.path.googkit_root(), '/dummy/googkit')
+
+
+    def test_plugin(self):
+        def side_effect(path):
+            return os.path.abspath(path) == '/dummy/usr/local/googkit/plugins'
+
+        with mock.patch('lib.path.googkit_root', return_value = '/dummy/usr/local/googkit'), \
+                mock.patch('os.path.isdir', side_effect = side_effect):
+            self.assertEqual(lib.path.plugin(), '/dummy/usr/local/googkit/plugins')
+
+
+    def test_plugin_with_directory_missing(self):
+        with mock.patch('lib.path.googkit_root', return_value = '/dummy/usr/local/googkit'), \
+                mock.patch('os.path.isdir', return_value = False):
+            with self.assertRaises(GoogkitError):
+                self.assertEqual(lib.path.plugin(), '/dummy/usr/local/googkit/plugins')
