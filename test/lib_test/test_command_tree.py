@@ -56,7 +56,7 @@ class TestCommandTree(unittest.TestCase):
 
 
     def test_right_commands_with_garbage(self):
-        result = self.tree.right_commands(['cmd99'])
+        result = self.tree.right_commands(['cmd999'])
         self.assertEqual(len(result), 0)
 
 
@@ -67,7 +67,7 @@ class TestCommandTree(unittest.TestCase):
 
 
     def test_right_commands_with_main_cmd_with_garbage(self):
-        result = self.tree.right_commands(['cmd1', 'cmd99'])
+        result = self.tree.right_commands(['cmd1', 'cmd999'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd1')
 
@@ -79,7 +79,7 @@ class TestCommandTree(unittest.TestCase):
 
 
     def test_right_commands_with_cmd_has_sub_one_with_garbage(self):
-        result = self.tree.right_commands(['cmd2', 'cmd99'])
+        result = self.tree.right_commands(['cmd2', 'cmd999'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd2')
 
@@ -92,7 +92,7 @@ class TestCommandTree(unittest.TestCase):
 
 
     def test_right_commands_with_sub_cmd_with_garbage(self):
-        result = self.tree.right_commands(['cmd2', 'cmd3', 'cmd99'])
+        result = self.tree.right_commands(['cmd2', 'cmd3', 'cmd999'])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd3')
@@ -106,7 +106,7 @@ class TestCommandTree(unittest.TestCase):
 
 
     def test_right_commands_with_sub_cmd_has_sub_one_with_garbage(self):
-        result = self.tree.right_commands(['cmd2', 'cmd4', 'cmd99'])
+        result = self.tree.right_commands(['cmd2', 'cmd4', 'cmd999'])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd4')
@@ -165,7 +165,7 @@ class TestCommandTree(unittest.TestCase):
         self.assertEqual(self.tree.command_classes([]), None)
 
     def test_command_classes_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd999']), None)
 
     def test_command_classes_with_main_cmd(self):
         result = self.tree.command_classes(['cmd1'])
@@ -174,7 +174,7 @@ class TestCommandTree(unittest.TestCase):
 
 
     def test_command_classes_with_main_cmd_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd1', 'cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd1', 'cmd999']), None)
 
 
     def test_command_classes_with_cmd_has_sub_one(self):
@@ -182,7 +182,7 @@ class TestCommandTree(unittest.TestCase):
 
 
     def test_command_classes_with_cmd_has_sub_one_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd999']), None)
 
 
     def test_command_classes_with_sub_cmd(self):
@@ -192,7 +192,7 @@ class TestCommandTree(unittest.TestCase):
 
 
     def test_command_classes_with_sub_cmd_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd3', 'cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd3', 'cmd999']), None)
 
 
     def test_command_classes_with_sub_cmd_has_sub_one(self):
@@ -200,13 +200,24 @@ class TestCommandTree(unittest.TestCase):
 
 
     def test_command_classes_with_sub_cmd_has_sub_one_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4', 'cmd99']), None)
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4', 'cmd999']), None)
 
 
     def test_command_classes_with_sub_sub_cmd(self):
         result = self.tree.command_classes(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], TestCommandTree.cmd5)
+
+
+    def test_register(self):
+        cmd100 = mock.MagicMock()
+        cmd101 = mock.MagicMock()
+
+        self.tree.register(['sub', 'subsub', 'subsubsub'], [cmd100, cmd101])
+        self.assertTrue('sub' in  self.tree._tree)
+        self.assertTrue('subsub' in  self.tree._tree['sub'])
+        self.assertTrue('subsubsub' in  self.tree._tree['sub']['subsub'])
+        self.assertEqual(self.tree._tree['sub']['subsub']['subsubsub'], [cmd100, cmd101])
 
 
 if __name__ == '__main__':
