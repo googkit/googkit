@@ -1,5 +1,5 @@
 import os
-import path
+import lib.path
 
 
 PLUGIN_DIR = 'plugins'
@@ -8,7 +8,7 @@ COMMAND_FILE = 'command.py'
 
 
 def load(tree):
-    base_dir = os.path.join(path.googkit_root(), PLUGIN_DIR)
+    base_dir = os.path.join(lib.path.googkit_root(), PLUGIN_DIR)
 
     for filename in os.listdir(base_dir):
         plugin_dir = os.path.join(base_dir, filename)

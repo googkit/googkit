@@ -2,7 +2,7 @@ import os
 import re
 import shutil
 import json
-from command import Command
+from cmds.command import Command
 from lib.error import GoogkitError
 
 
@@ -40,19 +40,20 @@ class BuildCommand(Command):
     def compile_resource(self, path, compiled_js_path):
         lines = []
 
-        for line in open(path):
-            # Remove lines that requires unneeded scripts
-            if line.find('<!--@base_js@-->') >= 0:
-                continue
-            if line.find('<!--@deps_js@-->') >= 0:
-                continue
+        with open(path) as f:
+            for line in f:
+                # Remove lines that requires unneeded scripts
+                if line.find('<!--@base_js@-->') >= 0:
+                    continue
+                if line.find('<!--@deps_js@-->') >= 0:
+                    continue
 
-            # Replace deps.js by a compiled script
-            if line.find('<!--@require_main@-->') >= 0:
-                indent = BuildCommand.line_indent(line)
-                line = '%s<script type="text/javascript" src="%s"></script>\n' % (indent, compiled_js_path)
+                # Replace deps.js by a compiled script
+                if line.find('<!--@require_main@-->') >= 0:
+                    indent = BuildCommand.line_indent(line)
+                    line = '%s<script type="text/javascript" src="%s"></script>\n' % (indent, compiled_js_path)
 
-            lines.append(line)
+                lines.append(line)
 
         with open(path, 'w') as f:
             for line in lines:
@@ -145,13 +146,12 @@ class BuildCommand(Command):
         source_map = self.env.config.compiled_js() + '.map'
         debug_source_map = os.path.join(debug_dir, source_map)
 
-        with open(debug_source_map, 'r+') as source_map_file:
+        with open(debug_source_map) as source_map_file:
             source_map_content = json.load(source_map_file)
             source_map_content['sourceRoot'] = '../'
 
-            source_map_file.seek(0)
+        with open(debug_source_map, 'w') as source_map_file:
             json.dump(source_map_content, source_map_file)
-            source_map_file.truncate()
 
 
     def run_internal(self):

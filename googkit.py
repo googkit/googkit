@@ -2,10 +2,19 @@ import os
 import sys
 import lib.path
 import lib.plugin
-from lib.command import CommandTree
+from lib.command_tree import CommandTree
 from lib.config import Config
 from lib.environment import Environment
 from lib.error import GoogkitError
+
+
+GOOGKIT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROJECT_CONFIG = 'googkit.cfg'
+USER_CONFIG = '.googkit'
+DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
+
+# It makes unit-testing easy
+GLOBAL = { 'ENV': os.environ }
 
 
 def print_help(tree, args=[]):
@@ -33,7 +42,7 @@ def find_config():
     return config
 
 
-if __name__ == '__main__':
+def run():
     tree = CommandTree()
     lib.plugin.load(tree)
 
@@ -51,10 +60,15 @@ if __name__ == '__main__':
         config = None
         for cls in classes:
             if config is None and cls.needs_config():
+                os.chdir(lib.path.project_root())
                 config = find_config()
 
             env = Environment(args, tree, config)
             command = cls(env)
             command.run()
-    except GoogkitError, e:
+    except GoogkitError as e:
         sys.exit('[ERROR] ' + str(e))
+
+
+if __name__ == '__main__':
+    run()

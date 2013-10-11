@@ -1,6 +1,6 @@
 import os
 import re
-from command import Command
+from cmds.command import Command
 from lib.error import GoogkitError
 
 

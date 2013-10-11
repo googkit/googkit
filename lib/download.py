@@ -1,15 +1,16 @@
 import sys
+import urllib
 
-urllib_urlretrieve = None
-try:
+_urllib = None
+
+if hasattr(urllib, 'urlretrieve'):
     # Python 2.x
-    import urllib
-    urllib_urlretrieve = urllib.urlretrieve
-except ImportError:
+    _urllib = urllib
+else:
     # Python 3.x or later
     import urllib.request
-    urllib_urlretrieve = urllib.request.urlretrieve
+    _urllib = urllib.request
 
 
 def run(url, target_path):
-    urllib_urlretrieve(url, target_path)
+    _urllib.urlretrieve(url, target_path)

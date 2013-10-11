@@ -1,0 +1,213 @@
+# Run the following command to test:
+#
+#     (in /usr/local/googkit)
+#     $ python -m {test_module_name}
+#
+# See also: http://docs.python.org/3.3/library/unittest.html#command-line-interfacejjkkjj
+#
+# We cannot use unittest.mock on python 2.x!
+# Please install the Mock module when you use Python 2.x.
+#
+#     $ easy_install -U Mock
+#
+# See also: http://www.voidspace.org.uk/python/mock/#installing
+
+import unittest
+
+try:
+    # Python 3.3 or later
+    import unittest.mock as mock
+except ImportError:
+    # Python 2.x or 3.2-
+    import mock
+
+from lib.command_tree import CommandTree
+
+
+
+class TestCommandTree(unittest.TestCase):
+    cmd0 = mock.MagicMock()
+    cmd1 = mock.MagicMock()
+    cmd3 = mock.MagicMock()
+    cmd5 = mock.MagicMock()
+
+    def setUp(self):
+        CommandTree.DEFAULT_TREE = {
+            '_cmd0': [TestCommandTree.cmd0],
+            'cmd1': [TestCommandTree.cmd1],
+            'cmd2': {
+                'cmd3': [TestCommandTree.cmd3],
+                'cmd4': {
+                    'cmd5': [TestCommandTree.cmd5]
+                }
+            }
+        }
+
+        self.tree = CommandTree()
+
+
+    def test_init(self):
+        self.assertEqual(self.tree._tree, CommandTree.DEFAULT_TREE)
+
+
+    def test_right_commands_with_no_cmd(self):
+        result = self.tree.right_commands([])
+        self.assertEqual(len(result), 0)
+
+
+    def test_right_commands_with_garbage(self):
+        result = self.tree.right_commands(['cmd99'])
+        self.assertEqual(len(result), 0)
+
+
+    def test_right_commands_with_main_cmd(self):
+        result = self.tree.right_commands(['cmd1'])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], 'cmd1')
+
+
+    def test_right_commands_with_main_cmd_with_garbage(self):
+        result = self.tree.right_commands(['cmd1', 'cmd99'])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], 'cmd1')
+
+
+    def test_right_commands_with_cmd_has_sub_one(self):
+        result = self.tree.right_commands(['cmd2'])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], 'cmd2')
+
+
+    def test_right_commands_with_cmd_has_sub_one_with_garbage(self):
+        result = self.tree.right_commands(['cmd2', 'cmd99'])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], 'cmd2')
+
+
+    def test_right_commands_with_sub_cmd(self):
+        result = self.tree.right_commands(['cmd2', 'cmd3'])
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0], 'cmd2')
+        self.assertEqual(result[1], 'cmd3')
+
+
+    def test_right_commands_with_sub_cmd_with_garbage(self):
+        result = self.tree.right_commands(['cmd2', 'cmd3', 'cmd99'])
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0], 'cmd2')
+        self.assertEqual(result[1], 'cmd3')
+
+
+    def test_right_commands_with_sub_cmd_has_sub_one(self):
+        result = self.tree.right_commands(['cmd2', 'cmd4'])
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0], 'cmd2')
+        self.assertEqual(result[1], 'cmd4')
+
+
+    def test_right_commands_with_sub_cmd_has_sub_one_with_garbage(self):
+        result = self.tree.right_commands(['cmd2', 'cmd4', 'cmd99'])
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0], 'cmd2')
+        self.assertEqual(result[1], 'cmd4')
+
+
+    def test_right_commands_with_sub_sub_cmd(self):
+        result = self.tree.right_commands(['cmd2', 'cmd4', 'cmd5'])
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0], 'cmd2')
+        self.assertEqual(result[1], 'cmd4')
+        self.assertEqual(result[2], 'cmd5')
+
+
+    def test_is_internal_command(self):
+        self.assertTrue(CommandTree.is_internal_command('_cmd0'))
+
+        self.assertFalse(CommandTree.is_internal_command('cmd1'))
+
+
+    def test_available_commands_with_no_cmd(self):
+        result = self.tree.available_commands([])
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0], 'cmd1')
+        self.assertEqual(result[1], 'cmd2')
+
+
+    def test_available_commands_with_main_cmd(self):
+        result = self.tree.available_commands(['cmd1'])
+        self.assertEqual(len(result), 0)
+
+
+    def test_available_commands_with_cmd_has_sub_one(self):
+        result = self.tree.available_commands(['cmd2'])
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0], 'cmd3')
+        self.assertEqual(result[1], 'cmd4')
+
+
+    def test_available_commands_with_sub_cmd(self):
+        result = self.tree.available_commands(['cmd2', 'cmd3'])
+        self.assertEqual(len(result), 0)
+
+
+    def test_available_commands_with_sub_cmd_has_sub_one(self):
+        result = self.tree.available_commands(['cmd2', 'cmd4'])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], 'cmd5')
+
+
+    def test_available_commands_with_sub_sub_cmd(self):
+        result = self.tree.available_commands(['cmd2', 'cmd4', 'cmd5'])
+        self.assertEqual(len(result), 0)
+
+
+    def test_command_classes_with_no_cmd(self):
+        self.assertEqual(self.tree.command_classes([]), None)
+
+    def test_command_classes_with_garbage(self):
+        self.assertEqual(self.tree.command_classes(['cmd99']), None)
+
+    def test_command_classes_with_main_cmd(self):
+        result = self.tree.command_classes(['cmd1'])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], TestCommandTree.cmd1)
+
+
+    def test_command_classes_with_main_cmd_with_garbage(self):
+        self.assertEqual(self.tree.command_classes(['cmd1', 'cmd99']), None)
+
+
+    def test_command_classes_with_cmd_has_sub_one(self):
+        self.assertEqual(self.tree.command_classes(['cmd2']), None)
+
+
+    def test_command_classes_with_cmd_has_sub_one_with_garbage(self):
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd99']), None)
+
+
+    def test_command_classes_with_sub_cmd(self):
+        result = self.tree.command_classes(['cmd2', 'cmd3'])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], TestCommandTree.cmd3)
+
+
+    def test_command_classes_with_sub_cmd_with_garbage(self):
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd3', 'cmd99']), None)
+
+
+    def test_command_classes_with_sub_cmd_has_sub_one(self):
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4']), None)
+
+
+    def test_command_classes_with_sub_cmd_has_sub_one_with_garbage(self):
+        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4', 'cmd99']), None)
+
+
+    def test_command_classes_with_sub_sub_cmd(self):
+        result = self.tree.command_classes(['cmd2', 'cmd4', 'cmd5'])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], TestCommandTree.cmd5)
+
+
+if __name__ == '__main__':
+    unittest.main()

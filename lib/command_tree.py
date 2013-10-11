@@ -1,9 +1,9 @@
-from commands.apply_config import ApplyConfigCommand
-from commands.build import BuildCommand
-from commands.commands import CommandsCommand
-from commands.init import InitCommand
-from commands.setup import SetupCommand
-from commands.update_deps import UpdateDepsCommand
+from cmds.apply_config import ApplyConfigCommand
+from cmds.build import BuildCommand
+from cmds.commands import CommandsCommand
+from cmds.init import InitCommand
+from cmds.setup import SetupCommand
+from cmds.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):
@@ -36,6 +36,10 @@ class CommandTree(object):
                 break
 
             result.append(arg)
+
+            if not isinstance(next_dict, dict):
+                break
+
             command_dict = next_dict
 
         return result
@@ -65,19 +69,31 @@ class CommandTree(object):
 
     def command_classes(self, args):
         value = self._tree
+        last_value = None
 
         for arg in args:
+            # a garbage found next to a right command
+            if last_value is not None:
+                return None
+
             next_value = value.get(arg)
 
-            if next_value is None:
-                return None
+            if isinstance(next_value, list):
+                last_value = next_value
+                continue
+
+            if isinstance(next_value, dict):
+                value = next_value
+                continue
+
+            return None
 
             if isinstance(next_value, list):
                 return next_value
 
             value = next_value
 
-        return None
+        return last_value
 
 
     def register(self, names, commands):

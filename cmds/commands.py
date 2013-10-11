@@ -1,6 +1,4 @@
-from command import Command
-import lib.command
-
+from cmds.command import Command
 
 class CommandsCommand(Command):
     def __init__(self, env):
@@ -12,6 +10,7 @@ class CommandsCommand(Command):
 
 
     def run_internal(self):
+        from lib.command_tree import CommandTree
         args = self.env.args[1:]
         commands = self.env.tree.available_commands(args)
         print('\n'.join(commands))
