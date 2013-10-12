@@ -3,7 +3,7 @@ import os.path
 # Expected following directory structure:
 #
 # dir1
-# |-- dir2 
+# |-- dir2
 # |   +-- DEVELOPMENT
 # |       +-- JS_DEV
 # |           +-- DEPS.JS

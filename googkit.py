@@ -13,16 +13,13 @@ PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
 DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
 
-# It makes unit-testing easy
-GLOBAL = { 'ENV': os.environ }
-
 
 def print_help(tree, args=[]):
     right_commands = tree.right_commands(args)
     if len(right_commands) == 0:
         print('Usage: googkit <command>')
     else:
-        print('Usage: googkit %s <command>' % (' '.join(right_commands)))
+        print('Usage: googkit {cmd} <command>'.format(cmd=' '.join(right_commands)))
 
     print('')
     print('Available commands:')
@@ -36,7 +33,6 @@ def find_config():
     default_config = lib.path.default_config()
     user_config = lib.path.user_config()
     project_config = lib.path.project_config()
-
     config = Config()
     config.load(project_config, user_config, default_config)
     return config

@@ -28,7 +28,7 @@ def load(tree):
         module = __import__(module_name, fromlist=['command'])
         if not hasattr(module, 'register'):
             msg = 'Invalid plugin {module_name} do not have register method.'.format(
-                    module_name=module_name)
+                module_name=module_name)
             raise GoogkitError(msg)
 
         module.register(tree)

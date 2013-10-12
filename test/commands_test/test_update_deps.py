@@ -13,7 +13,6 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
-import sys
 
 try:
     # Python 3.3 or later
@@ -23,7 +22,6 @@ except ImportError:
     import mock
 
 
-from lib.error import GoogkitError
 from cmds.update_deps import UpdateDepsCommand
 
 from test.stub_stdout import StubStdout
@@ -72,11 +70,12 @@ class TestUpdateDepsCommand(unittest.TestCase):
 
     def test_update_tests(self):
         self.assertEqual(
-                self.cmd.update_tests('DUMMY', [ 'dummy1', 'dummy2' ]),
-                'var testFiles = [\'dummy1\',\'dummy2\'];')
+            self.cmd.update_tests('DUMMY', ['dummy1', 'dummy2']),
+            'var testFiles = [\'dummy1\',\'dummy2\'];')
+
         self.assertEqual(
-                self.cmd.update_tests('DUMMY', []),
-                'var testFiles = [];')
+            self.cmd.update_tests('DUMMY', []),
+            'var testFiles = [];')
 
 
     def test_update_testrunner(self):
@@ -99,7 +98,7 @@ DUMMY
   DUMMY'''
 
         # Use mock_open
-        mock_open = mock.mock_open(read_data = read_data)
+        mock_open = mock.mock_open(read_data=read_data)
 
         # Context Manager is a return value of the mock_open.__enter__
         mock_fp = mock_open.return_value.__enter__.return_value
@@ -107,7 +106,7 @@ DUMMY
         # Read lines has "\n" at each last
         mock_fp.__iter__.return_value = iter([(line + '\n') for line in read_data.split('\n')])
 
-        with mock.patch('cmds.update_deps.open', mock_open, create = True), \
+        with mock.patch('cmds.update_deps.open', mock_open, create=True), \
                 mock.patch('os.path.exists') as mock_exists:
             mock_exists.return_value = True
 
@@ -116,8 +115,8 @@ DUMMY
         # Expected the path is a related path from all_tests.html to js_dev/example_test.html
         expected_file = os.path.join('js_dev', 'example_test.html')
         self.cmd.update_tests.assert_called_once_with(
-                ' change me/*@test_files@*/\n',
-                [expected_file])
+            ' change me/*@test_files@*/\n',
+            [expected_file])
 
         # Expected open was called twice (for reading and writing)
         mock_open.assert_any_call(TESTRUNNER_IN_STUB_PROJECT)
@@ -131,7 +130,7 @@ DUMMY
 
 
     def test_run_internal(self):
-        with mock.patch('sys.stdout', new_callable = StubStdout):
+        with mock.patch('sys.stdout', new_callable=StubStdout):
             self.cmd.update_deps = mock.MagicMock()
             self.cmd.update_testrunner = mock.MagicMock()
 

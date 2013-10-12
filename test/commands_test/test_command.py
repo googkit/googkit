@@ -13,7 +13,6 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
-import sys
 
 try:
     # Python 3.3 or later
@@ -34,7 +33,7 @@ class TestCommand(unittest.TestCase):
         class ConcreteCommand(Command):
             pass
 
-        with mock.patch('sys.stdout', new_callable = StubStdout):
+        with mock.patch('sys.stdout', new_callable=StubStdout):
             env1 = StubEnvironment()
             env1.config = mock.MagicMock()
 
@@ -58,7 +57,7 @@ class TestCommand(unittest.TestCase):
             def needs_config(cls):
                 return True
 
-        with mock.patch('sys.stdout', new_callable = StubStdout):
+        with mock.patch('sys.stdout', new_callable=StubStdout):
             env1 = StubEnvironment()
             env1.config = mock.MagicMock()
 

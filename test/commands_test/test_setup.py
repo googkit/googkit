@@ -13,7 +13,6 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
-import sys
 
 try:
     # Python 3.3 or later
@@ -23,7 +22,6 @@ except ImportError:
     import mock
 
 
-from lib.error import GoogkitError
 from cmds.setup import SetupCommand
 
 from test.stub_stdout import StubStdout
@@ -56,8 +54,8 @@ class TestSetupCommand(unittest.TestCase):
             self.cmd.setup_closure_library()
 
         mock_clone.run.assert_called_once_with(
-                'https://code.google.com/p/closure-library/',
-                LIBRARRY_ROOT)
+            'https://code.google.com/p/closure-library/',
+            LIBRARRY_ROOT)
 
 
     def test_setup_closure_compiler(self):
@@ -72,15 +70,16 @@ class TestSetupCommand(unittest.TestCase):
         mock_rmtree.assert_any_call('tmp')
 
         mock_unzip.run.assert_called_once_with(
-                os.path.join('tmp', 'compiler.zip'),
-                COMPILER_ROOT)
+            os.path.join('tmp', 'compiler.zip'),
+            COMPILER_ROOT)
+
         mock_download.run.assert_called_once_with(
-                'http://closure-compiler.googlecode.com/files/compiler-latest.zip',
-                os.path.join('tmp', 'compiler.zip'))
+            'http://closure-compiler.googlecode.com/files/compiler-latest.zip',
+            os.path.join('tmp', 'compiler.zip'))
 
 
     def test_run_internal(self):
-        with mock.patch('sys.stdout', new_callable = StubStdout):
+        with mock.patch('sys.stdout', new_callable=StubStdout):
             self.cmd.setup_closure_compiler = mock.MagicMock()
             self.cmd.setup_closure_library = mock.MagicMock()
 

@@ -1,17 +1,13 @@
-import glob
 import os
 import re
 from cmds.command import Command
-from lib.error import GoogkitError
 
 
 class ApplyConfigCommand(Command):
     CONFIG_TARGET_EXT = ('.html', '.xhtml', '.js', '.css')
 
-
     def __init__(self, env):
         super(ApplyConfigCommand, self).__init__(env)
-
 
     @classmethod
     def needs_config(cls):
@@ -37,29 +33,29 @@ class ApplyConfigCommand(Command):
         path = self.env.config.base_js()
         relpath = os.path.relpath(path, dirpath)
 
-        return '<script type="text/javascript" src="%s"></script>' % ApplyConfigCommand.html_path(relpath)
+        return '<script type="text/javascript" src="{href}"></script>'.format(href=ApplyConfigCommand.html_path(relpath))
 
 
     def update_deps_js(self, line, dirpath):
         path = self.env.config.deps_js()
         relpath = os.path.relpath(path, dirpath)
 
-        return '<script type="text/javascript" src="%s"></script>' % ApplyConfigCommand.html_path(relpath)
+        return '<script type="text/javascript" src="{src}"></script>'.format(src=ApplyConfigCommand.html_path(relpath))
 
 
     def update_multitestrunner_css(self, line, dirpath):
         path = self.env.config.multitestrunner_css()
         relpath = os.path.relpath(path, dirpath)
 
-        return '<link rel="stylesheet" type="text/css" href="%s">' % ApplyConfigCommand.html_path(relpath)
+        return '<link rel="stylesheet" type="text/css" href="{href}">'.format(href=ApplyConfigCommand.html_path(relpath))
 
 
     def apply_config(self, path):
         lines = []
         updaters = {
-                '<!--@base_js@-->': self.update_base_js,
-                '<!--@deps_js@-->': self.update_deps_js,
-                '<!--@multitestrunner_css@-->': self.update_multitestrunner_css}
+            '<!--@base_js@-->': self.update_base_js,
+            '<!--@deps_js@-->': self.update_deps_js,
+            '<!--@multitestrunner_css@-->': self.update_multitestrunner_css}
         markers = updaters.keys()
         dirpath = os.path.dirname(path)
 
@@ -81,8 +77,8 @@ class ApplyConfigCommand(Command):
 
         # If library_root is in development_dir, we should avoid to walk into the library_root.
         ignores = (
-                self.env.config.library_root(),
-                self.env.config.compiler_root())
+            self.env.config.library_root(),
+            self.env.config.compiler_root())
 
         for root, dirs, files in os.walk(devel_dir):
             for filename in files:

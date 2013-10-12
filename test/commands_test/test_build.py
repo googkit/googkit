@@ -13,8 +13,6 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
-import sys
-import json
 
 try:
     # Python 3.3 or later
@@ -23,10 +21,8 @@ except ImportError:
     # Python 2.x or 3.2-
     import mock
 
-from lib.error import GoogkitError
 from cmds.build import BuildCommand
 
-from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 from test.stub_config import *
 
@@ -72,7 +68,7 @@ DUMMY
    <!--@dummy_marker@-->'''
 
         # Use mock_open
-        mock_open = mock.mock_open(read_data = read_data)
+        mock_open = mock.mock_open(read_data=read_data)
 
         # Context Manager is a return value of the mock_open.__enter__
         mock_fp = mock_open.return_value.__enter__.return_value
@@ -81,8 +77,8 @@ DUMMY
         mock_fp.__iter__.return_value = iter([(line + '\n') for line in read_data.split('\n')])
 
         # Switch to the mock_open from the original open
-        with mock.patch.object(os, 'sep', new = '/'), \
-                mock.patch('cmds.build.open', mock_open, create = True):
+        with mock.patch.object(os, 'sep', new='/'), \
+                mock.patch('cmds.build.open', mock_open, create=True):
             self.cmd.compile_resource(tgt_path, 'REQUIRE_MAIN')
 
         # Expected the target file was opened twice for reading and writing
@@ -107,15 +103,15 @@ DUMMY
             self.cmd.setup_files(PRODUCTION_DIR_IN_STUB_PROJECT)
 
         mock_copytree.assert_called_once_with(
-                DEVELOPMENT_DIR_IN_STUB_PROJECT,
-                PRODUCTION_DIR_IN_STUB_PROJECT,
-                ignore = 'IGNORE')
+            DEVELOPMENT_DIR_IN_STUB_PROJECT,
+            PRODUCTION_DIR_IN_STUB_PROJECT,
+            ignore='IGNORE')
 
         mock_rmtree_silent.assert_called_once_with(PRODUCTION_DIR_IN_STUB_PROJECT)
 
         self.cmd.compile_resource.assert_any_call(
-                os.path.join(PRODUCTION_DIR_IN_STUB_PROJECT, 'index.html'),
-                COMPILED_JS_IN_STUB_PROJECT)
+            os.path.join(PRODUCTION_DIR_IN_STUB_PROJECT, 'index.html'),
+            COMPILED_JS_IN_STUB_PROJECT)
 
 
     def test_compile_scripts_with_debug_enabled(self):
@@ -250,7 +246,7 @@ DUMMY
         mock_open = mock.mock_open()
 
         with mock.patch('cmds.build.json') as mock_json, \
-                mock.patch('cmds.build.open', new = mock_open, create = True):
+                mock.patch('cmds.build.open', new=mock_open, create=True):
             mock_open.return_value.__enter__.return_value = 'DUMMY'
             mock_json.load.return_value = stub_source_map
 
