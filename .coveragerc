@@ -1,0 +1,8 @@
+[run]
+branch=True
+
+[report]
+omit=*/site-packages/*
+
+[html]
+directory=coverage-html

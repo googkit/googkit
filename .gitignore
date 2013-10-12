@@ -2,7 +2,9 @@
 *.pyc
 __pycache__
 deps.js
+.coverage
 
 /closure/
 /production/
 /debug/
+/coverage-html/
