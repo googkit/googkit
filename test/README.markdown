@@ -2,7 +2,14 @@ Requirements
 ============
 When you are using python 3.2 or ealier, you should install the [mock](http://www.voidspace.org.uk/python/mock/) module.
 
-	$ easy_install -U Mock
+	$ easy_install -U mock
+	$ easy_install coverage
+
+or, even:
+
+	$ pip install -U mock
+	$ pip install coverage
+	
 
 
 How to Test
@@ -20,7 +27,28 @@ How to Test
 
 	You can try to test on python 3.x
 
-		$ python3 -m unittest discover
+	 	$ python3 -m unittest discover
+
+
+How to measure test coverage
+============================
+1. Run a unit test by coverage
+
+		(in /usr/local/googkit)
+		$ coverage run -m unittest discover
+
+
+2. Display report
+
+	* on terminal
+
+			$ coverage report
+
+
+	* on web browser (you can see more detail)
+
+			$ coverage html
+			$ open ./coverage-html/index.html
 
 
 How to Add Test
