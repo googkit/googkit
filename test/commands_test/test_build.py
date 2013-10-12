@@ -118,7 +118,8 @@ DUMMY
         self.cmd.setup_files = mock.MagicMock()
         self.cmd.modify_source_map = mock.MagicMock()
 
-        with mock.patch('os.system') as mock_system:
+        with mock.patch('os.system') as mock_system, \
+                mock.patch('lib.path.project_root', return_value='/dir1'):
             self.cmd.compile_scripts()
 
         # In debug mode, expected that os.system was called twice
@@ -135,7 +136,7 @@ DUMMY
             'source_map_path': os.path.join(PRODUCTION_DIR, COMPILED_JS + '.map'),
             'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
             'js_dev_path': JS_DEV_DIR,
-            'library': LIBRARRY_ROOT,
+            'library': os.path.relpath(LIBRARRY_ROOT, PROJECT_DIR),
             'compiler_path': COMPILER,
             'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
             'closurebuilder_path': CLOSUREBUILDER
@@ -162,7 +163,7 @@ DUMMY
             'source_map_path': os.path.join(DEBUG_DIR, COMPILED_JS + '.map'),
             'compiled_js_path': os.path.join(DEBUG_DIR, COMPILED_JS),
             'js_dev_path': JS_DEV_DIR,
-            'library': LIBRARRY_ROOT,
+            'library': os.path.relpath(LIBRARRY_ROOT, PROJECT_DIR),
             'compiler_path': COMPILER,
             'compiled_js_path': os.path.join(DEBUG_DIR, COMPILED_JS),
             'closurebuilder_path': CLOSUREBUILDER
@@ -194,7 +195,8 @@ DUMMY
         self.cmd.setup_files = mock.MagicMock()
         self.cmd.modify_source_map = mock.MagicMock()
 
-        with mock.patch('os.system') as mock_system:
+        with mock.patch('os.system') as mock_system, \
+                mock.patch('lib.path.project_root', return_value='/dir1'):
             self.cmd.compile_scripts()
 
         # Expected that os.system was called twice
@@ -208,7 +210,7 @@ DUMMY
             'source_map_path': os.path.join(PRODUCTION_DIR, COMPILED_JS + '.map'),
             'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
             'js_dev_path': JS_DEV_DIR,
-            'library': LIBRARRY_ROOT,
+            'library': os.path.relpath(LIBRARRY_ROOT, PROJECT_DIR),
             'compiler_path': COMPILER,
             'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
             'closurebuilder_path': CLOSUREBUILDER
