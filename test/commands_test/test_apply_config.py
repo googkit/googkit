@@ -28,7 +28,7 @@ from cmds.apply_config import ApplyConfigCommand
 from test.stub_stdout import StubStdout
 
 from test.stub_environment import StubEnvironment
-from test.stub_config import *
+from test.stub_config import StubConfig, StubConfigOnStubProject
 
 
 class TestApplyConfigCommand(unittest.TestCase):
@@ -62,26 +62,26 @@ class TestApplyConfigCommand(unittest.TestCase):
 
     def test_update_base_js(self):
         s = '<script type="text/javascript" src="{src}"></script>'
-        expected = s.format(src=os.path.relpath(BASE_JS, DEVELOPMENT_DIR))
+        expected = s.format(src=os.path.relpath(StubConfig.BASE_JS, StubConfig.DEVELOPMENT_DIR))
         line = '<script type="text/javascript" src="link"></script>'
 
-        self.assertEqual(self.cmd.update_base_js(line, DEVELOPMENT_DIR), expected)
+        self.assertEqual(self.cmd.update_base_js(line, StubConfig.DEVELOPMENT_DIR), expected)
 
 
     def test_update_deps_js(self):
         s = '<script type="text/javascript" src="{src}"></script>'
-        expected = s.format(src=os.path.relpath(DEPS_JS, DEVELOPMENT_DIR))
+        expected = s.format(src=os.path.relpath(StubConfig.DEPS_JS, StubConfig.DEVELOPMENT_DIR))
         line = '<script type="text/javascript" src="link"></script>'
 
-        self.assertEqual(self.cmd.update_deps_js(line, DEVELOPMENT_DIR), expected)
+        self.assertEqual(self.cmd.update_deps_js(line, StubConfig.DEVELOPMENT_DIR), expected)
 
 
     def test_multitestrunner_css(self):
         s = '<link rel="stylesheet" type="text/css" href="{href}">'
-        expected = s.format(href=os.path.relpath(MULTI_TEST_RUNNER_CSS, DEVELOPMENT_DIR))
+        expected = s.format(href=os.path.relpath(StubConfig.MULTI_TEST_RUNNER_CSS, StubConfig.DEVELOPMENT_DIR))
         line = '<link rel="stylesheet" type="text/css" href="link">'
 
-        self.assertEqual(self.cmd.update_multitestrunner_css(line, DEVELOPMENT_DIR), expected)
+        self.assertEqual(self.cmd.update_multitestrunner_css(line, StubConfig.DEVELOPMENT_DIR), expected)
 
 
     def test_apply_config(self):
@@ -99,7 +99,7 @@ class TestApplyConfigCommand(unittest.TestCase):
         #             |-- goog
         #                 +-- base.js
         #
-        tgt_path = os.path.join(DEVELOPMENT_DIR, 'target.html')
+        tgt_path = os.path.join(StubConfig.DEVELOPMENT_DIR, 'target.html')
 
         self.cmd.update_deps_js = mock.MagicMock()
         self.cmd.update_deps_js.return_value = 'DEPS_JS'
@@ -148,9 +148,9 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
             [mock.call(line + '\n',) for line in expected.split('\n')])
 
         # Expect updaters was called when for each marker was found
-        self.cmd.update_multitestrunner_css.assert_called_once_with('<!--@multitestrunner_css@-->\n', DEVELOPMENT_DIR)
-        self.cmd.update_base_js.assert_called_once_with(' <!--@base_js@-->\n', DEVELOPMENT_DIR)
-        self.cmd.update_deps_js.assert_called_once_with('  <!--@deps_js@-->\n', DEVELOPMENT_DIR)
+        self.cmd.update_multitestrunner_css.assert_called_once_with('<!--@multitestrunner_css@-->\n', StubConfig.DEVELOPMENT_DIR)
+        self.cmd.update_base_js.assert_called_once_with(' <!--@base_js@-->\n', StubConfig.DEVELOPMENT_DIR)
+        self.cmd.update_deps_js.assert_called_once_with('  <!--@deps_js@-->\n', StubConfig.DEVELOPMENT_DIR)
 
 
     def test_apply_config_all(self):
@@ -158,7 +158,7 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
         self.cmd.apply_config = mock.MagicMock()
         self.cmd.apply_config_all()
 
-        expected_calls = [os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, path) for path in [
+        expected_calls = [os.path.join(StubConfigOnStubProject.DEVELOPMENT_DIR, path) for path in [
             'index.html',
             'all_tests.html',
             'style.css',

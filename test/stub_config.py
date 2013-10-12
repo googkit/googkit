@@ -1,169 +1,266 @@
 import os.path
 
-# Expected following directory structure:
+# This stub simulates:
 #
 # dir1
 # |-- dir2
-# |   +-- DEVELOPMENT
-# |       +-- JS_DEV
-# |           +-- DEPS.JS
+# |   |-- DEVELOPMENT
+# |   |   |-- ALL_TESTS.HTML
+# |   |   +-- JS_DEV
+# |   |       +-- DEPS.JS
+# |   |
+# |   |-- DEBUG
+# |   |   |-- SCRIPT.MIN.JS
+# |   |   +-- SCRIPT.MIN.JS.map
+# |   |
+# |   +-- PRODUCTION
+# |       |-- SCRIPT.MIN.JS
+# |       +-- SCRIPT.MIN.JS.map
+# |
 # +-- CLOSURE
 #     |-- COMPILER
 #     +-- LIBRARY
 #         +-- CLOSURE
 #             |-- GOOG
 #             |   +-- BASE.JS
+#             |
 #             +-- CSS
 #                 +-- MULTITESTRUNNER.CSS
 #
-PROJECT_DIR = os.path.join(os.sep, 'dir1')
-
-LIBRARRY_ROOT = os.path.join(PROJECT_DIR, 'CLOSURE', 'LIBRARY')
-COMPILER_ROOT = os.path.join(PROJECT_DIR, 'CLOSURE', 'COMPILER')
-
-DEVELOPMENT_DIR = os.path.join(PROJECT_DIR, 'dir2', 'DEVELOPMENT')
-DEBUG_DIR = os.path.join(PROJECT_DIR, 'dir2', 'DEBUG')
-PRODUCTION_DIR = os.path.join(PROJECT_DIR, 'dir2', 'PRODUCTION')
-
-JS_DEV_DIR = os.path.join(DEVELOPMENT_DIR, 'JS_DEV')
-TESTRUNNER = os.path.join(DEVELOPMENT_DIR, 'ALL_TESTS.HTML')
-
-DEPS_JS = os.path.join(JS_DEV_DIR, 'DEPS.JS')
-
-BASE_JS = os.path.join(LIBRARRY_ROOT, 'CLOSURE', 'GOOG', 'BASE.JS')
-CLOSUREBUILDER = os.path.join(LIBRARRY_ROOT, 'CLOSURE', 'BIN', 'BUILD', 'CLOSUREBUILDER.PY')
-MULTI_TEST_RUNNER_CSS = os.path.join(LIBRARRY_ROOT, 'CLOSURE', 'CSS', 'MULTITESTRUNNER.CSS')
-
-COMPILER = os.path.join(COMPILER_ROOT, 'compiler.jar')
-
-TEST_FILE_PATTERN = '_TEST\.(HTML|XHTML)$'
-COMPILED_JS = '%COMPILED_JS%'
-COMPILATION_LEVEL = '%COMPILATION_LEVEL%'
-
-DEPSWRITER = os.path.join(LIBRARRY_ROOT, 'CLOSURE', 'BIN', 'BUILD', 'DEPSWRITER.PY')
-
-
 class StubConfig(object):
     def __init__(self):
         pass
 
     def development_dir(self):
-        return DEVELOPMENT_DIR
+        return StubConfig.DEVELOPMENT_DIR
 
     def debug_dir(self):
-        return DEBUG_DIR
+        return StubConfig.DEBUG_DIR
 
     def production_dir(self):
-        return PRODUCTION_DIR
+        return StubConfig.PRODUCTION_DIR
 
     def compiled_js(self):
-        return COMPILED_JS
+        return StubConfig.COMPILED_JS
 
     def test_file_pattern(self):
-        return TEST_FILE_PATTERN
+        return StubConfig.TEST_FILE_PATTERN
 
     def is_debug_enabled(self):
         return True
 
     def library_root(self):
-        return LIBRARRY_ROOT
+        return StubConfig.LIBRARRY_ROOT
 
     def closurebuilder(self):
-        return CLOSUREBUILDER
+        return StubConfig.CLOSUREBUILDER
 
     def depswriter(self):
-        return DEPSWRITER
+        return StubConfig.DEPSWRITER
 
     def compiler_root(self):
-        return COMPILER_ROOT
+        return StubConfig.COMPILER_ROOT
 
     def base_js(self):
-        return BASE_JS
+        return StubConfig.BASE_JS
 
     def multitestrunner_css(self):
-        return MULTI_TEST_RUNNER_CSS
+        return StubConfig.MULTI_TEST_RUNNER_CSS
 
     def js_dev_dir(self):
-        return JS_DEV_DIR
+        return StubConfig.JS_DEV_DIR
 
     def deps_js(self):
-        return DEPS_JS
+        return StubConfig.DEPS_JS
 
     def testrunner(self):
-        return TESTRUNNER
+        return StubConfig.TESTRUNNER
 
     def compiler(self):
-        return COMPILER
+        return StubConfig.COMPILER
 
     def compilation_level(seld):
-        return COMPILATION_LEVEL
+        return StubConfig.COMPILATION_LEVEL
 
 
-STUB_PROJECT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fixture', 'stub_project'))
-DEVELOPMENT_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'development')
-DEBUG_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'debug')
-PRODUCTION_DIR_IN_STUB_PROJECT = os.path.join(STUB_PROJECT, 'production')
+StubConfig.PROJECT_DIR = os.path.join(os.sep, 'dir1')
 
-JS_DEV_DIR_IN_STUB_PROJECT = os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, 'js_dev')
-TESTRUNNER_IN_STUB_PROJECT = os.path.join(DEVELOPMENT_DIR_IN_STUB_PROJECT, 'all_tests.html')
+StubConfig.LIBRARRY_ROOT = os.path.join(
+    StubConfig.PROJECT_DIR, 'CLOSURE', 'LIBRARY')
 
-DEPS_JS_IN_STUB_PROJECT = os.path.join(JS_DEV_DIR_IN_STUB_PROJECT, 'deps.js')
-COMPILED_JS_IN_STUB_PROJECT = 'script.min.js'
+StubConfig.COMPILER_ROOT = os.path.join(
+    StubConfig.PROJECT_DIR, 'CLOSURE', 'COMPILER')
 
-TEST_FILE_PATTERN_IN_STUB_PROJECT = '_test\.(html|xhtml)$'
+StubConfig.DEVELOPMENT_DIR = os.path.join(
+    StubConfig.PROJECT_DIR, 'dir2', 'DEVELOPMENT')
+
+StubConfig.DEBUG_DIR = os.path.join(
+    StubConfig.PROJECT_DIR, 'dir2', 'DEBUG')
+
+StubConfig.PRODUCTION_DIR = os.path.join(
+    StubConfig.PROJECT_DIR, 'dir2', 'PRODUCTION')
+
+StubConfig.JS_DEV_DIR = os.path.join(
+    StubConfig.DEVELOPMENT_DIR, 'JS_DEV')
+
+StubConfig.TESTRUNNER = os.path.join(
+    StubConfig.DEVELOPMENT_DIR, 'ALL_TESTS.HTML')
+
+StubConfig.DEPS_JS = os.path.join(
+    StubConfig.JS_DEV_DIR, 'DEPS.JS')
+
+StubConfig.BASE_JS = os.path.join(
+    StubConfig.LIBRARRY_ROOT, 'CLOSURE', 'GOOG', 'BASE.JS')
+
+StubConfig.MULTI_TEST_RUNNER_CSS = os.path.join(
+    StubConfig.LIBRARRY_ROOT, 'CLOSURE', 'CSS', 'MULTITESTRUNNER.CSS')
+
+StubConfig.CLOSUREBUILDER = os.path.join(
+    StubConfig.LIBRARRY_ROOT, 'CLOSURE', 'BIN', 'BUILD', 'CLOSUREBUILDER.PY')
+
+StubConfig.DEPSWRITER = os.path.join(
+    StubConfig.LIBRARRY_ROOT, 'CLOSURE', 'BIN', 'BUILD', 'DEPSWRITER.PY')
+
+StubConfig.COMPILER = os.path.join(
+    StubConfig.COMPILER_ROOT, 'compiler.jar')
+
+StubConfig.TEST_FILE_PATTERN = '_TEST\.(HTML|XHTML)$'
+StubConfig.COMPILED_JS = 'SCRIPT.MIN.JS'
+StubConfig.COMPILATION_LEVEL = 'COMPILATION_LEVEL'
 
 
+# This stub is useful when test target includes "os.walk()".
+# os.walk is hard to make the mock, so instead to use stub and
+# walking into "googkit/test/stub_project".
+#
+# This stub simulates:
+#
+# googkit
+# +-- test
+#     +-- fixture
+#         +-- stub_project
+#             |
+#             |-- development
+#             |   |-- all_tests.html
+#             |   +-- js_dev
+#             |       +-- deps.js
+#             |
+#             |-- debug
+#             |   |-- script.min.js
+#             |   +-- script.min.js.map
+#             |
+#             |-- production
+#             |   |-- script.min.js
+#             |   +-- script.min.js.map
+#             |
+#             +-- closure
+#                 |-- compiler
+#                 +-- library
+#                     +-- closure
+#                         |-- goog
+#                         |   +-- base.js
+#                         |
+#                         +-- css
+#                             +-- multitestrunner.css
+#
 class StubConfigOnStubProject(object):
     def __init__(self):
         pass
 
     def development_dir(self):
-        return DEVELOPMENT_DIR_IN_STUB_PROJECT
+        return StubConfigOnStubProject.DEVELOPMENT_DIR
 
     def debug_dir(self):
-        return DEBUG_DIR_IN_STUB_PROJECT
+        return StubConfigOnStubProject.DEBUG_DIR
 
     def production_dir(self):
-        return PRODUCTION_DIR_IN_STUB_PROJECT
+        return StubConfigOnStubProject.PRODUCTION_DIR
 
     def compiled_js(self):
-        return COMPILED_JS_IN_STUB_PROJECT
+        return StubConfigOnStubProject.COMPILED_JS
 
     def test_file_pattern(self):
-        return TEST_FILE_PATTERN_IN_STUB_PROJECT
+        return StubConfigOnStubProject.TEST_FILE_PATTERN
 
     def is_debug_enabled(self):
         return True
 
     def library_root(self):
-        return LIBRARRY_ROOT
+        return StubConfigOnStubProject.LIBRARRY_ROOT
 
     def closurebuilder(self):
-        return CLOSUREBUILDER
+        return StubConfigOnStubProject.CLOSUREBUILDER
 
     def depswriter(self):
-        return DEPSWRITER
+        return StubConfigOnStubProject.DEPSWRITER
 
     def compiler_root(self):
-        return COMPILER_ROOT
+        return StubConfigOnStubProject.COMPILER_ROOT
 
     def base_js(self):
-        return BASE_JS
+        return StubConfigOnStubProject.BASE_JS
 
     def multitestrunner_css(self):
-        return MULTI_TEST_RUNNER_CSS
+        return StubConfigOnStubProject.MULTI_TEST_RUNNER_CSS
 
     def js_dev_dir(self):
-        return JS_DEV_DIR_IN_STUB_PROJECT
+        return StubConfigOnStubProject.JS_DEV_DIR
 
     def deps_js(self):
-        return DEPS_JS_IN_STUB_PROJECT
+        return StubConfigOnStubProject.DEPS_JS
 
     def testrunner(self):
-        return TESTRUNNER_IN_STUB_PROJECT
+        return StubConfigOnStubProject.TESTRUNNER
 
     def compiler(self):
-        return COMPILER
+        return StubConfigOnStubProject.COMPILER
 
     def compilation_level(self):
-        return COMPILATION_LEVEL
+        return StubConfigOnStubProject.COMPILATION_LEVEL
+
+
+StubConfigOnStubProject.PROJECT_DIR = os.path.normpath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fixture', 'stub_project'))
+
+StubConfigOnStubProject.LIBRARRY_ROOT = os.path.join(
+    StubConfigOnStubProject.PROJECT_DIR, 'CLOSURE', 'LIBRARY')
+
+StubConfigOnStubProject.COMPILER_ROOT = os.path.join(
+    StubConfigOnStubProject.PROJECT_DIR, 'CLOSURE', 'COMPILER')
+
+StubConfigOnStubProject.DEVELOPMENT_DIR = os.path.join(
+    StubConfigOnStubProject.PROJECT_DIR, 'development')
+
+StubConfigOnStubProject.DEBUG_DIR = os.path.join(
+    StubConfigOnStubProject.PROJECT_DIR, 'debug')
+
+StubConfigOnStubProject.PRODUCTION_DIR = os.path.join(
+    StubConfigOnStubProject.PROJECT_DIR, 'production')
+
+StubConfigOnStubProject.JS_DEV_DIR = os.path.join(
+    StubConfigOnStubProject.DEVELOPMENT_DIR, 'js_dev')
+
+StubConfigOnStubProject.TESTRUNNER = os.path.join(
+    StubConfigOnStubProject.DEVELOPMENT_DIR, 'all_tests.html')
+
+StubConfigOnStubProject.DEPS_JS = os.path.join(
+    StubConfigOnStubProject.JS_DEV_DIR, 'deps.js')
+
+StubConfigOnStubProject.BASE_JS = os.path.join(
+    StubConfigOnStubProject.LIBRARRY_ROOT, 'CLOSURE', 'GOOG', 'BASE.JS')
+
+StubConfigOnStubProject.MULTI_TEST_RUNNER_CSS = os.path.join(
+    StubConfigOnStubProject.LIBRARRY_ROOT, 'CLOSURE', 'CSS', 'MULTITESTRUNNER.CSS')
+
+StubConfigOnStubProject.CLOSUREBUILDER = os.path.join(
+    StubConfigOnStubProject.LIBRARRY_ROOT, 'CLOSURE', 'BIN', 'BUILD', 'CLOSUREBUILDER.PY')
+
+StubConfigOnStubProject.DEPSWRITER = os.path.join(
+    StubConfigOnStubProject.LIBRARRY_ROOT, 'CLOSURE', 'BIN', 'BUILD', 'DEPSWRITER.PY')
+
+StubConfigOnStubProject.COMPILER = os.path.join(
+    StubConfigOnStubProject.COMPILER_ROOT, 'compiler.jar')
+
+StubConfigOnStubProject.COMPILED_JS = 'script.min.js'
+StubConfigOnStubProject.TEST_FILE_PATTERN = '_test\.(html|xhtml)$'
+StubConfigOnStubProject.COMPILATION_LEVEL = '%COMPILATION_LEVEL%'

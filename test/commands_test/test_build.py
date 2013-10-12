@@ -21,10 +21,11 @@ except ImportError:
     # Python 2.x or 3.2-
     import mock
 
-from cmds.build import BuildCommand
-
+import os
 from test.stub_environment import StubEnvironment
-from test.stub_config import *
+from test.stub_config import StubConfig, StubConfigOnStubProject
+
+from cmds.build import BuildCommand
 
 
 class TestBuildCommand(unittest.TestCase):
@@ -77,7 +78,7 @@ DUMMY
         mock_fp.__iter__.return_value = iter([(line + '\n') for line in read_data.split('\n')])
 
         # Switch to the mock_open from the original open
-        with mock.patch.object(os, 'sep', new='/'), \
+        with mock.patch('os.sep', new='/'), \
                 mock.patch('cmds.build.open', mock_open, create=True):
             self.cmd.compile_resource(tgt_path, 'REQUIRE_MAIN')
 
@@ -100,18 +101,18 @@ DUMMY
                 mock.patch('shutil.copytree') as mock_copytree:
             mock_ignore_dirs.return_value = 'IGNORE'
 
-            self.cmd.setup_files(PRODUCTION_DIR_IN_STUB_PROJECT)
+            self.cmd.setup_files(StubConfigOnStubProject.PRODUCTION_DIR)
 
         mock_copytree.assert_called_once_with(
-            DEVELOPMENT_DIR_IN_STUB_PROJECT,
-            PRODUCTION_DIR_IN_STUB_PROJECT,
+            StubConfigOnStubProject.DEVELOPMENT_DIR,
+            StubConfigOnStubProject.PRODUCTION_DIR,
             ignore='IGNORE')
 
-        mock_rmtree_silent.assert_called_once_with(PRODUCTION_DIR_IN_STUB_PROJECT)
+        mock_rmtree_silent.assert_called_once_with(StubConfigOnStubProject.PRODUCTION_DIR)
 
         self.cmd.compile_resource.assert_any_call(
-            os.path.join(PRODUCTION_DIR_IN_STUB_PROJECT, 'index.html'),
-            COMPILED_JS_IN_STUB_PROJECT)
+            os.path.join(StubConfigOnStubProject.PRODUCTION_DIR, 'index.html'),
+            StubConfigOnStubProject.COMPILED_JS)
 
 
     def test_compile_scripts_with_debug_enabled(self):
@@ -132,14 +133,14 @@ DUMMY
         self.assertEqual(self.cmd.setup_files.call_count, 2)
 
         arg_format_dict = {
-            'source_map': COMPILED_JS + '.map',
-            'source_map_path': os.path.join(PRODUCTION_DIR, COMPILED_JS + '.map'),
-            'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
-            'js_dev_path': JS_DEV_DIR,
-            'library': os.path.relpath(LIBRARRY_ROOT, PROJECT_DIR),
-            'compiler_path': COMPILER,
-            'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
-            'closurebuilder_path': CLOSUREBUILDER
+            'source_map': StubConfig.COMPILED_JS + '.map',
+            'source_map_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS + '.map'),
+            'compiled_js_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS),
+            'js_dev_path': StubConfig.JS_DEV_DIR,
+            'library': os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR),
+            'compiler_path': StubConfig.COMPILER,
+            'compiled_js_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS),
+            'closurebuilder_path': StubConfig.CLOSUREBUILDER
         }
 
         expected = ' '.join([
@@ -150,23 +151,23 @@ DUMMY
             '--namespace=main',
             '--output_mode=compiled',
             '--compiler_jar={compiler_path}',
-            '--compiler_flags=--compilation_level=%COMPILATION_LEVEL%',
+            '--compiler_flags=--compilation_level=COMPILATION_LEVEL',
             '--compiler_flags=--define=goog.DEBUG=false',
             '--output_file={compiled_js_path}'
         ]).format(**arg_format_dict)
 
         mock_system.assert_any_call(expected)
-        self.cmd.setup_files.assert_any_call(PRODUCTION_DIR)
+        self.cmd.setup_files.assert_any_call(StubConfig.PRODUCTION_DIR)
 
         arg_format_dict_on_debug = {
-            'source_map': COMPILED_JS + '.map',
-            'source_map_path': os.path.join(DEBUG_DIR, COMPILED_JS + '.map'),
-            'compiled_js_path': os.path.join(DEBUG_DIR, COMPILED_JS),
-            'js_dev_path': JS_DEV_DIR,
-            'library': os.path.relpath(LIBRARRY_ROOT, PROJECT_DIR),
-            'compiler_path': COMPILER,
-            'compiled_js_path': os.path.join(DEBUG_DIR, COMPILED_JS),
-            'closurebuilder_path': CLOSUREBUILDER
+            'source_map': StubConfig.COMPILED_JS + '.map',
+            'source_map_path': os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'),
+            'compiled_js_path': os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS),
+            'js_dev_path': StubConfig.JS_DEV_DIR,
+            'library': os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR),
+            'compiler_path': StubConfig.COMPILER,
+            'compiled_js_path': os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS),
+            'closurebuilder_path': StubConfig.CLOSUREBUILDER
         }
 
         expected_on_debug = ' '.join([
@@ -177,7 +178,7 @@ DUMMY
             '--namespace=main',
             '--output_mode=compiled',
             '--compiler_jar={compiler_path}',
-            '--compiler_flags=--compilation_level=%COMPILATION_LEVEL%',
+            '--compiler_flags=--compilation_level=COMPILATION_LEVEL',
             '--compiler_flags=--source_map_format=V3',
             '--compiler_flags=--create_source_map={source_map_path}',
             '--compiler_flags=--output_wrapper="%output%//# sourceMappingURL={source_map}"',
@@ -185,7 +186,7 @@ DUMMY
         ]).format(**arg_format_dict_on_debug)
 
         mock_system.assert_any_call(expected_on_debug)
-        self.cmd.setup_files.assert_any_call(DEBUG_DIR)
+        self.cmd.setup_files.assert_any_call(StubConfig.DEBUG_DIR)
 
 
     def test_compile_scripts(self):
@@ -206,14 +207,14 @@ DUMMY
         self.assertEqual(self.cmd.setup_files.call_count, 1)
 
         arg_format_dict = {
-            'source_map': COMPILED_JS + '.map',
-            'source_map_path': os.path.join(PRODUCTION_DIR, COMPILED_JS + '.map'),
-            'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
-            'js_dev_path': JS_DEV_DIR,
-            'library': os.path.relpath(LIBRARRY_ROOT, PROJECT_DIR),
-            'compiler_path': COMPILER,
-            'compiled_js_path': os.path.join(PRODUCTION_DIR, COMPILED_JS),
-            'closurebuilder_path': CLOSUREBUILDER
+            'source_map': StubConfig.COMPILED_JS + '.map',
+            'source_map_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS + '.map'),
+            'compiled_js_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS),
+            'js_dev_path': StubConfig.JS_DEV_DIR,
+            'library': os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR),
+            'compiler_path': StubConfig.COMPILER,
+            'compiled_js_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS),
+            'closurebuilder_path': StubConfig.CLOSUREBUILDER
         }
 
         expected = ' '.join([
@@ -224,13 +225,13 @@ DUMMY
             '--namespace=main',
             '--output_mode=compiled',
             '--compiler_jar={compiler_path}',
-            '--compiler_flags=--compilation_level=%COMPILATION_LEVEL%',
+            '--compiler_flags=--compilation_level=COMPILATION_LEVEL',
             '--compiler_flags=--define=goog.DEBUG=false',
             '--output_file={compiled_js_path}'
         ]).format(**arg_format_dict)
 
         mock_system.assert_called_once_with(expected)
-        self.cmd.setup_files.assert_called_once_with(PRODUCTION_DIR)
+        self.cmd.setup_files.assert_called_once_with(StubConfig.PRODUCTION_DIR)
 
 
     def test_modify_source_map(self):

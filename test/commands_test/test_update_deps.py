@@ -22,11 +22,12 @@ except ImportError:
     import mock
 
 
-from cmds.update_deps import UpdateDepsCommand
-
+import os
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
-from test.stub_config import *
+from test.stub_config import StubConfig, StubConfigOnStubProject
+
+from cmds.update_deps import UpdateDepsCommand
 
 
 class TestUpdateDepsCommand(unittest.TestCase):
@@ -51,10 +52,10 @@ class TestUpdateDepsCommand(unittest.TestCase):
             self.cmd.update_deps()
 
         arg_format_dict = {
-            'depswriter_path': DEPSWRITER,
-            'js_dev_path': JS_DEV_DIR,
-            'relpath_from_base_js_to_js_dev': os.path.relpath(JS_DEV_DIR, os.path.dirname(BASE_JS)),
-            'deps_js_path': DEPS_JS
+            'depswriter_path': StubConfig.DEPSWRITER,
+            'js_dev_path': StubConfig.JS_DEV_DIR,
+            'relpath_from_base_js_to_js_dev': os.path.relpath(StubConfig.JS_DEV_DIR, os.path.dirname(StubConfig.BASE_JS)),
+            'deps_js_path': StubConfig.DEPS_JS
         }
 
         expected = ' '.join([
@@ -119,8 +120,8 @@ DUMMY
             [expected_file])
 
         # Expected open was called twice (for reading and writing)
-        mock_open.assert_any_call(TESTRUNNER_IN_STUB_PROJECT)
-        mock_open.assert_any_call(TESTRUNNER_IN_STUB_PROJECT, 'w')
+        mock_open.assert_any_call(StubConfigOnStubProject.TESTRUNNER)
+        mock_open.assert_any_call(StubConfigOnStubProject.TESTRUNNER, 'w')
         self.assertEqual(mock_open.call_count, 2)
 
         # Expected correct data was wrote

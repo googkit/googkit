@@ -8,7 +8,7 @@
 # We cannot use unittest.mock on python 2.x!
 # Please install the Mock module when you use Python 2.x.
 #
-#     $ easy_install -U Mock
+#     $ easy_install -StubConfig.U Mock
 #
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
@@ -22,11 +22,12 @@ except ImportError:
     import mock
 
 
-from cmds.setup import SetupCommand
-
+import os
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
-from test.stub_config import *
+from test.stub_config import StubConfig
+
+from cmds.setup import SetupCommand
 
 
 class TestSetupCommand(unittest.TestCase):
@@ -55,7 +56,7 @@ class TestSetupCommand(unittest.TestCase):
 
         mock_clone.run.assert_called_once_with(
             'https://code.google.com/p/closure-library/',
-            LIBRARRY_ROOT)
+            StubConfig.LIBRARRY_ROOT)
 
 
     def test_setup_closure_compiler(self):
@@ -71,7 +72,7 @@ class TestSetupCommand(unittest.TestCase):
 
         mock_unzip.run.assert_called_once_with(
             os.path.join('tmp', 'compiler.zip'),
-            COMPILER_ROOT)
+            StubConfig.COMPILER_ROOT)
 
         mock_download.run.assert_called_once_with(
             'http://closure-compiler.googlecode.com/files/compiler-latest.zip',
