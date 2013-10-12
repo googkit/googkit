@@ -2,6 +2,7 @@ import os
 import re
 import shutil
 import json
+import lib.path
 from cmds.command import Command
 
 
@@ -96,6 +97,11 @@ class BuildCommand(Command):
         js_dev_dir = config.js_dev_dir()
         compiled_js = config.compiled_js()
 
+        # The library path should be a relative path from the project root.
+        # Because "sources" in the source map becomes absolute if an absolute path was
+        # specified by "--root".Then, the absolute path creates a problem on http scheme.
+        lib_path = os.path.relpath(config.library_root(), lib.path.project_root())
+
         if config.is_debug_enabled():
             self.setup_files(config.debug_dir())
 
@@ -105,7 +111,7 @@ class BuildCommand(Command):
             debug_compiled_js = os.path.join(debug_dir, compiled_js)
 
             debug_args = ' '.join([
-                '--root=' + config.library_root(),
+                '--root=' + lib_path,
                 '--root=' + js_dev_dir,
                 '--namespace=main',
                 '--output_mode=compiled',
@@ -131,7 +137,7 @@ class BuildCommand(Command):
         prod_dir = config.production_dir()
         prod_compiled_js = os.path.join(prod_dir, compiled_js)
         prod_args = ' '.join([
-            '--root=' + config.library_root(),
+            '--root=' + lib_path,
             '--root=' + js_dev_dir,
             '--namespace=main',
             '--output_mode=compiled',
