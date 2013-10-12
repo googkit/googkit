@@ -41,41 +41,50 @@ class TestInitCommand(unittest.TestCase):
 
     def test_copy_templates(self):
         dst_path = '/tmp/foo/bar'
-        self.cmd.template_dir = mock.MagicMock()
-        self.cmd.template_dir.return_value = 'dummy'
+        template_dir = '/tmp/dummy'
 
-        with mock.patch('os.listdir') as mock_listdir, \
+        def listdir(path):
+            if path == dst_path:
+                return ['dummy1', 'dummy2']
+            elif path == template_dir:
+                return ['dummy3']
+            else:
+                self.failed('Unexpected path: ' + path)
+
+        with mock.patch('os.listdir', side_effect=listdir) as mock_listdir, \
                 mock.patch('distutils.dir_util.copy_tree') as mock_copytree, \
-                mock.patch.object(InitCommand, 'TEMPLATE_DIR', new='dummy'):
-            mock_listdir.return_value = []
-
+                mock.patch('lib.path.template', return_value=template_dir):
             self.cmd.copy_template(dst_path)
 
-        mock_copytree.assert_called_once_with('dummy', dst_path)
+        mock_copytree.assert_called_once_with(template_dir, dst_path)
 
 
-    def test_copy_templates_on_unempty_dir(self):
+    def test_copy_templates_with_conflict(self):
         dst_path = '/tmp/foo/bar'
-        self.cmd.template_dir = mock.MagicMock()
-        self.cmd.template_dir.return_value = 'dummy'
+        template_dir = '/tmp/dummy'
 
-        with mock.patch('os.listdir') as mock_listdir, \
-                mock.patch('distutils.dir_util.copy_tree'):
-            mock_listdir.return_value = ['DUMMY']
+        def listdir(path):
+            if path == dst_path:
+                return ['dummy1', 'dummy2', 'conflicted']
+            elif path == template_dir:
+                return ['dummy3', 'conflicted']
+            else:
+                self.failed('Unexpected path: ' + path)
 
+        with mock.patch('os.listdir', side_effect=listdir) as mock_listdir, \
+                mock.patch('distutils.dir_util.copy_tree'), \
+                mock.patch('lib.path.template', return_value=template_dir):
             with self.assertRaises(GoogkitError):
                 self.cmd.copy_template(dst_path)
 
 
     def test_run_internal(self):
-        with mock.patch('os.getcwd') as mock_getcwd:
-            mock_getcwd.return_value = 'DUMMY'
-            self.cmd.copy_template = mock.MagicMock()
+        self.cmd.copy_template = mock.MagicMock()
 
+        with mock.patch('os.getcwd', return_value='dummy'):
             self.cmd.run_internal()
 
-            mock_getcwd.assert_called_once_with()
-            self.cmd.copy_template.assert_called_once_with('DUMMY')
+        self.cmd.copy_template.assert_called_once_with('dummy')
 
 
 if __name__ == '__main__':

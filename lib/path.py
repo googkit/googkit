@@ -7,6 +7,7 @@ PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
 DEFAULT_CONFIG = os.path.join('config', 'default.cfg')
 PLUGIN_DIR = 'plugins'
+TEMPLATE_DIR = 'template'
 
 
 def googkit_root():
@@ -65,6 +66,16 @@ def default_config():
 def plugin():
     plugin_dir = os.path.join(googkit_root(), PLUGIN_DIR)
     if not os.path.isdir(plugin_dir):
-        raise GoogkitError('Plugins directory is not found.')
+        msg = 'Plugins directory is not found: {path}'.format(path=plugin_dir)
+        raise GoogkitError(msg)
 
     return plugin_dir
+
+
+def template():
+    template_dir = os.path.join(googkit_root(), TEMPLATE_DIR)
+    if not os.path.isdir(template_dir):
+        msg = 'Template directory is not found: {path}'.format(path=template_dir)
+        raise GoogkitError(msg)
+
+    return template_dir
