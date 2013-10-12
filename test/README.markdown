@@ -40,15 +40,15 @@ How to measure test coverage
 
 2. Display report
 
-	* on terminal
+   * on terminal
 
-			$ coverage report
+   		$ coverage report
 
 
-	* on web browser (you can see more detail)
+   * on web browser (you can see more detail)
 
-			$ coverage html
-			$ open ./coverage-html/index.html
+   		$ coverage html
+   		$ open ./coverage-html/index.html
 
 
 How to Add Test

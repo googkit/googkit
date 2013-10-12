@@ -2,7 +2,9 @@
 branch=True
 
 [report]
-omit=*/site-packages/*
+omit=
+    */site-packages/*
+    */stub_*.py
 
 [html]
 directory=coverage-html
