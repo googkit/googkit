@@ -3,7 +3,6 @@ import re
 import shutil
 import json
 from cmds.command import Command
-from lib.error import GoogkitError
 
 
 class BuildCommand(Command):
@@ -51,7 +50,7 @@ class BuildCommand(Command):
                 # Replace deps.js by a compiled script
                 if line.find('<!--@require_main@-->') >= 0:
                     indent = BuildCommand.line_indent(line)
-                    line = '%s<script type="text/javascript" src="%s"></script>\n' % (indent, compiled_js_path)
+                    line = indent + '<script type="text/javascript" src="{src}"></script>\n'.format(src=compiled_js_path)
 
                 lines.append(line)
 
@@ -74,13 +73,13 @@ class BuildCommand(Command):
 
         # Avoid to copy unnecessary files for production
         ignores = (
-                config.testrunner(),
-                config.library_root(),
-                config.compiler_root(),
-                config.js_dev_dir())
+            config.testrunner(),
+            config.library_root(),
+            config.compiler_root(),
+            config.js_dev_dir())
 
         BuildCommand.rmtree_silent(target_dir)
-        shutil.copytree(devel_dir, target_dir, ignore = BuildCommand.ignore_dirs(*ignores))
+        shutil.copytree(devel_dir, target_dir, ignore=BuildCommand.ignore_dirs(*ignores))
 
         for root, dirs, files in os.walk(target_dir):
             for file in files:
@@ -94,7 +93,6 @@ class BuildCommand(Command):
 
     def compile_scripts(self):
         config = self.env.config
-        devel_dir = config.development_dir()
         js_dev_dir = config.js_dev_dir()
         compiled_js = config.compiled_js()
 
@@ -105,18 +103,21 @@ class BuildCommand(Command):
             debug_dir = config.debug_dir()
             debug_source_map = os.path.join(debug_dir, source_map)
             debug_compiled_js = os.path.join(debug_dir, compiled_js)
-            debug_args = [
-                    '--root=' + config.library_root(),
-                    '--root=' + js_dev_dir,
-                    '--namespace=main',
-                    '--output_mode=compiled',
-                    '--compiler_jar=' + config.compiler(),
-                    '--compiler_flags=--compilation_level=' + config.compilation_level(),
-                    '--compiler_flags=--source_map_format=V3',
-                    '--compiler_flags=--create_source_map=' + debug_source_map,
-                    '--compiler_flags=--output_wrapper="%output%//# sourceMappingURL=' + source_map + '"',
-                    '--output_file=' + debug_compiled_js]
-            os.system('python %s %s' % (config.closurebuilder(), ' '.join(debug_args)))
+
+            debug_args = ' '.join([
+                '--root=' + config.library_root(),
+                '--root=' + js_dev_dir,
+                '--namespace=main',
+                '--output_mode=compiled',
+                '--compiler_jar=' + config.compiler(),
+                '--compiler_flags=--compilation_level=' + config.compilation_level(),
+                '--compiler_flags=--source_map_format=V3',
+                '--compiler_flags=--create_source_map=' + debug_source_map,
+                '--compiler_flags=--output_wrapper="%output%//# sourceMappingURL=' + source_map + '"',
+                '--output_file=' + debug_compiled_js])
+
+            cmd = 'python {builder} {args}'.format(builder=config.closurebuilder(), args=debug_args)
+            os.system(cmd)
 
             # In default, the source map file marks original sources to the same directory as "debug".
             # But the original sources are in "closure" or "development/js_dev", so we should set a source
@@ -129,16 +130,18 @@ class BuildCommand(Command):
 
         prod_dir = config.production_dir()
         prod_compiled_js = os.path.join(prod_dir, compiled_js)
-        prod_args = [
-                '--root=' + config.library_root(),
-                '--root=' + js_dev_dir,
-                '--namespace=main',
-                '--output_mode=compiled',
-                '--compiler_jar=' + config.compiler(),
-                '--compiler_flags=--compilation_level=' + config.compilation_level(),
-                '--compiler_flags=--define=goog.DEBUG=false',
-                '--output_file=' + prod_compiled_js]
-        os.system('python %s %s' % (config.closurebuilder(), ' '.join(prod_args)))
+        prod_args = ' '.join([
+            '--root=' + config.library_root(),
+            '--root=' + js_dev_dir,
+            '--namespace=main',
+            '--output_mode=compiled',
+            '--compiler_jar=' + config.compiler(),
+            '--compiler_flags=--compilation_level=' + config.compilation_level(),
+            '--compiler_flags=--define=goog.DEBUG=false',
+            '--output_file=' + prod_compiled_js])
+
+        cmd = 'python {builder} {args}'.format(builder=config.closurebuilder(), args=prod_args)
+        os.system(cmd)
 
 
     def modify_source_map(self):

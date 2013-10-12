@@ -8,4 +8,5 @@ def run(repos, target_path):
         os.system('git pull')
         os.chdir(cwd)
     else:
-        os.system('git clone %s %s' % (repos, target_path))
+        cmd = 'git clone {repos} {tgt}'.format(repos=repos, tgt=target_path)
+        os.system(cmd)

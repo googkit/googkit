@@ -26,8 +26,8 @@ import lib.clone
 
 class TestClone(unittest.TestCase):
     def test_run(self):
-        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', return_value = True), \
+        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', return_value=True), \
                 mock.patch('os.chdir') as mock_chdir, \
                 mock.patch('os.system') as mock_system:
 
@@ -39,9 +39,9 @@ class TestClone(unittest.TestCase):
 
 
     def test_run_with_no_target_dir(self):
-        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', return_value = False), \
-                mock.patch('os.chdir') as mock_chdir, \
+        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', return_value=False), \
+                mock.patch('os.chdir'), \
                 mock.patch('os.system') as mock_system:
             lib.clone.run('https://example.com/example.git', '/dir1/dir2')
 

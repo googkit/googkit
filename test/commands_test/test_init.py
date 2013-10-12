@@ -13,7 +13,6 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
-import sys
 
 try:
     # Python 3.3 or later
@@ -25,7 +24,6 @@ except ImportError:
 from lib.error import GoogkitError
 from cmds.init import InitCommand
 
-from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 from test.stub_config import *
 
@@ -48,7 +46,7 @@ class TestInitCommand(unittest.TestCase):
 
         with mock.patch('os.listdir') as mock_listdir, \
                 mock.patch('distutils.dir_util.copy_tree') as mock_copytree, \
-                mock.patch.object(InitCommand, 'TEMPLATE_DIR', new = 'dummy'):
+                mock.patch.object(InitCommand, 'TEMPLATE_DIR', new='dummy'):
             mock_listdir.return_value = []
 
             self.cmd.copy_template(dst_path)
@@ -62,7 +60,7 @@ class TestInitCommand(unittest.TestCase):
         self.cmd.template_dir.return_value = 'dummy'
 
         with mock.patch('os.listdir') as mock_listdir, \
-                mock.patch('distutils.dir_util.copy_tree') as mock_copytree:
+                mock.patch('distutils.dir_util.copy_tree'):
             mock_listdir.return_value = ['DUMMY']
 
             with self.assertRaises(GoogkitError):
@@ -73,7 +71,7 @@ class TestInitCommand(unittest.TestCase):
         with mock.patch('os.getcwd') as mock_getcwd:
             mock_getcwd.return_value = 'DUMMY'
             self.cmd.copy_template = mock.MagicMock()
-            
+
             self.cmd.run_internal()
 
             mock_getcwd.assert_called_once_with()
@@ -82,4 +80,3 @@ class TestInitCommand(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

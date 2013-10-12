@@ -56,7 +56,8 @@ def user_config():
 def default_config():
     path = os.path.join(googkit_root(), DEFAULT_CONFIG)
     if not os.path.exists(path):
-        raise GoogkitError('Default config file is not found: %s' % path)
+        msg = 'Default config file is not found: {path}'.format(path=path)
+        raise GoogkitError(msg)
 
     return path
 

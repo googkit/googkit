@@ -13,7 +13,6 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
-import os
 
 try:
     # Python 3.3 or later
@@ -24,7 +23,6 @@ except ImportError:
 
 
 import googkit
-from lib.error import GoogkitError
 from test.stub_stdout import StubStdout
 
 
@@ -34,8 +32,8 @@ class TestGoogkit(unittest.TestCase):
     #   * googkit.py get 2 argments ARG1, ARG2 (internally DUMMY1, DUMMY2)
     def test_print_help(self):
         # Mociking stdout
-        MockStdout = mock.MagicMock(spec = StubStdout)
-        with mock.patch('sys.stdout', new_callable = MockStdout) as mock_stdout:
+        MockStdout = mock.MagicMock(spec=StubStdout)
+        with mock.patch('sys.stdout', new_callable=MockStdout) as mock_stdout:
             # Mocking ConfigTree
             mock_tree = mock.MagicMock()
             mock_tree.right_commands.return_value = ['DUMMY1', 'DUMMY2']
@@ -58,8 +56,8 @@ class TestGoogkit(unittest.TestCase):
     #   * googkit.py get 2 argments ARG1, ARG2 but there are invalid
     def test_print_help_with_invalid_args(self):
         # Mociking stdout
-        MockStdout = mock.MagicMock(spec = StubStdout)
-        with mock.patch('sys.stdout', new_callable = MockStdout) as mock_stdout:
+        MockStdout = mock.MagicMock(spec=StubStdout)
+        with mock.patch('sys.stdout', new_callable=MockStdout) as mock_stdout:
             # Mocking ConfigTree
             mock_tree = mock.MagicMock()
             mock_tree.right_commands.return_value = []
@@ -81,8 +79,8 @@ class TestGoogkit(unittest.TestCase):
     #   * googkit.py get no argments
     def test_print_help_with_no_args(self):
         # Mociking stdout
-        MockStdout = mock.MagicMock(spec = StubStdout)
-        with mock.patch('sys.stdout', new_callable = MockStdout) as mock_stdout:
+        MockStdout = mock.MagicMock(spec=StubStdout)
+        with mock.patch('sys.stdout', new_callable=MockStdout) as mock_stdout:
             # Mocking ConfigTree
             mock_tree = mock.MagicMock()
             mock_tree.right_commands.return_value = []
@@ -122,14 +120,14 @@ class TestGoogkit(unittest.TestCase):
         mock_cmd2 = mock.MagicMock()
 
         mock_cmd1.needs_config.return_value = False
-        mock_cmd2.needs_config.return_value = False 
+        mock_cmd2.needs_config.return_value = False
 
         with mock.patch('os.chdir') as mock_chdir, \
-                mock.patch('sys.argv', new = ['/DUMMY.py', 'dummy1', 'dummy2']), \
-                mock.patch('lib.path.project_root', return_value = '/dir1/dir2'), \
-                mock.patch('googkit.print_help') as mock_print_help, \
-                mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
-                mock.patch('googkit.Environment', return_value = 'dummy_env') as MockEnv, \
+                mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
+                mock.patch('lib.path.project_root', return_value='/dir1/dir2'), \
+                mock.patch('googkit.print_help'), \
+                mock.patch('googkit.find_config', return_value='dummy_cfg'), \
+                mock.patch('googkit.Environment', return_value='dummy_env') as MockEnv, \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('lib.plugin.load') as mock_load:
             MockTree.return_value.command_classes.return_value = [mock_cmd1, mock_cmd2]
@@ -155,15 +153,15 @@ class TestGoogkit(unittest.TestCase):
         mock_cmd1 = mock.MagicMock()
         mock_cmd2 = mock.MagicMock()
 
-        mock_cmd1.needs_config.return_value = False 
-        mock_cmd2.needs_config.return_value = True 
+        mock_cmd1.needs_config.return_value = False
+        mock_cmd2.needs_config.return_value = True
 
         with mock.patch('os.chdir') as mock_chdir, \
-                mock.patch('sys.argv', new = ['/DUMMY.py', 'dummy1', 'dummy2']), \
-                mock.patch('lib.path.project_root', return_value = '/dir1/dir2'), \
-                mock.patch('googkit.print_help') as mock_print_help, \
-                mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
-                mock.patch('googkit.Environment', return_value = 'dummy_env') as MockEnv, \
+                mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
+                mock.patch('lib.path.project_root', return_value='/dir1/dir2'), \
+                mock.patch('googkit.print_help'), \
+                mock.patch('googkit.find_config', return_value='dummy_cfg'), \
+                mock.patch('googkit.Environment', return_value='dummy_env') as MockEnv, \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('lib.plugin.load') as mock_load:
             MockTree.return_value.command_classes.return_value = [mock_cmd1, mock_cmd2]
@@ -188,13 +186,13 @@ class TestGoogkit(unittest.TestCase):
 
 
     def test_run_with_empty_args(self):
-        with mock.patch('os.chdir') as mock_chdir, \
-                mock.patch('sys.argv', new = ['/DUMMY.py']), \
+        with mock.patch('os.chdir'), \
+                mock.patch('sys.argv', new=['/DUMMY.py']), \
                 mock.patch('googkit.print_help') as mock_print_help, \
-                mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
-                mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
+                mock.patch('googkit.find_config', return_value='dummy_cfg'), \
+                mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
-                mock.patch('lib.plugin.load') as mock_load:
+                mock.patch('lib.plugin.load'):
             MockTree.return_value.command_classes.return_value = None
 
             with self.assertRaises(SystemExit):
@@ -204,13 +202,13 @@ class TestGoogkit(unittest.TestCase):
 
 
     def test_run_with_invalid_args(self):
-        with mock.patch('os.chdir') as mock_chdir, \
-                mock.patch('sys.argv', new = ['/DUMMY.py', 'dummy']), \
+        with mock.patch('os.chdir'), \
+                mock.patch('sys.argv', new=['/DUMMY.py', 'dummy']), \
                 mock.patch('googkit.print_help') as mock_print_help, \
-                mock.patch('googkit.find_config', return_value = 'dummy_cfg'), \
-                mock.patch('googkit.Environment', return_value = 'dummy_env') as mock_env, \
+                mock.patch('googkit.find_config', return_value='dummy_cfg'), \
+                mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
-                mock.patch('lib.plugin.load') as mock_load:
+                mock.patch('lib.plugin.load'):
             MockTree.return_value.command_classes.return_value = None
 
             with self.assertRaises(SystemExit):

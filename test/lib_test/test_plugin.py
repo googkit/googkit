@@ -65,15 +65,15 @@ class TestPlugin(unittest.TestCase):
         mock_module = StubPlugin()
         mock_module.register = mock.MagicMock()
 
-        with mock.patch('os.listdir', return_value = ['dummy1', 'dummy2']), \
-               mock.patch('lib.path.plugin', return_value = '/dummy/plugins'), \
-               mock.patch('os.path.exists', side_effect = is_exists), \
-               mock.patch('os.path.isdir', side_effect = is_dir), \
-               mock.patch('lib.plugin.__import__', create = True, return_value = mock_module) as mock_import:
+        with mock.patch('os.listdir', return_value=['dummy1', 'dummy2']), \
+                mock.patch('lib.path.plugin', return_value='/dummy/plugins'), \
+                mock.patch('os.path.exists', side_effect=is_exists), \
+                mock.patch('os.path.isdir', side_effect=is_dir), \
+                mock.patch('lib.plugin.__import__', create=True, return_value=mock_module) as mock_import:
             lib.plugin.load(mock_tree)
 
-        mock_import.assert_any_call('plugins.dummy1.command', fromlist = ['command'])
-        mock_import.assert_any_call('plugins.dummy2.command', fromlist = ['command'])
+        mock_import.assert_any_call('plugins.dummy1.command', fromlist=['command'])
+        mock_import.assert_any_call('plugins.dummy2.command', fromlist=['command'])
         self.assertEqual(mock_import.call_count, 2)
 
         mock_module.register.assert_any_call(mock_tree)
@@ -91,11 +91,11 @@ class TestPlugin(unittest.TestCase):
         mock_module = StubPlugin()
         mock_module.register = mock.MagicMock()
 
-        with mock.patch('os.listdir', return_value = []), \
-               mock.patch('lib.path.plugin', return_value = '/dummy/plugins'), \
-               mock.patch('os.path.exists', side_effect = is_exists), \
-               mock.patch('os.path.isdir', return_value = False), \
-               mock.patch('lib.plugin.__import__', create = True, return_value = mock_module) as mock_import:
+        with mock.patch('os.listdir', return_value=[]), \
+                mock.patch('lib.path.plugin', return_value='/dummy/plugins'), \
+                mock.patch('os.path.exists', side_effect=is_exists), \
+                mock.patch('os.path.isdir', return_value=False), \
+                mock.patch('lib.plugin.__import__', create=True, return_value=mock_module) as mock_import:
             lib.plugin.load(mock_tree)
 
         self.assertFalse(mock_import.called)
@@ -124,11 +124,11 @@ class TestPlugin(unittest.TestCase):
         mock_tree = mock.MagicMock()
         mock_module = StubInvalidPlugin()
 
-        with mock.patch('os.listdir', return_value = ['invalid1', 'invalid2']), \
-               mock.patch('lib.path.plugin', return_value = '/dummy/plugins'), \
-               mock.patch('os.path.exists', side_effect = is_exists), \
-               mock.patch('os.path.isdir', side_effect = is_dir), \
-               mock.patch('lib.plugin.__import__', create = True, return_value = mock_module) as mock_import:
+        with mock.patch('os.listdir', return_value=['invalid1', 'invalid2']), \
+                mock.patch('lib.path.plugin', return_value='/dummy/plugins'), \
+                mock.patch('os.path.exists', side_effect=is_exists), \
+                mock.patch('os.path.isdir', side_effect=is_dir), \
+                mock.patch('lib.plugin.__import__', create=True, return_value=mock_module):
             with self.assertRaises(GoogkitError):
                 lib.plugin.load(mock_tree)
 
@@ -156,11 +156,11 @@ class TestPlugin(unittest.TestCase):
         mock_module = StubPlugin()
         mock_module.register = mock.MagicMock()
 
-        with mock.patch('os.listdir', return_value = ['no_init1', 'no_init2']), \
-               mock.patch('lib.path.plugin', return_value = '/dummy/plugins'), \
-               mock.patch('os.path.exists', side_effect = is_exists), \
-               mock.patch('os.path.isdir', side_effect = is_dir), \
-               mock.patch('lib.plugin.__import__', create = True, return_value = mock_module) as mock_import:
+        with mock.patch('os.listdir', return_value=['no_init1', 'no_init2']), \
+                mock.patch('lib.path.plugin', return_value='/dummy/plugins'), \
+                mock.patch('os.path.exists', side_effect=is_exists), \
+                mock.patch('os.path.isdir', side_effect=is_dir), \
+                mock.patch('lib.plugin.__import__', create=True, return_value=mock_module) as mock_import:
             with self.assertRaises(GoogkitError):
                 lib.plugin.load(mock_tree)
 

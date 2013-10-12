@@ -214,9 +214,9 @@ class TestCommandTree(unittest.TestCase):
         cmd101 = mock.MagicMock()
 
         self.tree.register(['sub', 'subsub', 'subsubsub'], [cmd100, cmd101])
-        self.assertTrue('sub' in  self.tree._tree)
-        self.assertTrue('subsub' in  self.tree._tree['sub'])
-        self.assertTrue('subsubsub' in  self.tree._tree['sub']['subsub'])
+        self.assertTrue('sub' in self.tree._tree)
+        self.assertTrue('subsub' in self.tree._tree['sub'])
+        self.assertTrue('subsubsub' in self.tree._tree['sub']['subsub'])
         self.assertEqual(self.tree._tree['sub']['subsub']['subsubsub'], [cmd100, cmd101])
 
 

@@ -1,7 +1,6 @@
 import os
 import re
 from cmds.command import Command
-from lib.error import GoogkitError
 
 
 class UpdateDepsCommand(Command):
@@ -32,12 +31,20 @@ class UpdateDepsCommand(Command):
         base_js_dir = os.path.dirname(config.base_js())
         js_dev_dir_rel = os.path.relpath(js_dev_dir, base_js_dir)
 
-        os.system('python %s --root_with_prefix="%s %s" --output_file="%s"' % (config.depswriter(), js_dev_dir, js_dev_dir_rel, deps_js))
+        arg_dict = {
+            'depswriter': config.depswriter(),
+            'js_dev': js_dev_dir,
+            'js_dev_rel': js_dev_dir_rel,
+            'deps_js': deps_js
+        }
+
+        cmd = 'python {depswriter} --root_with_prefix="{js_dev} {js_dev_rel}" --output_file="{deps_js}"'.format(**arg_dict)
+        os.system(cmd)
 
 
     def update_tests(self, line, tests):
-        joined = ','.join([('\'%s\'' % test_file) for test_file in tests])
-        return 'var testFiles = [%s];' % joined
+        joined = ','.join(['\'' + test_file + '\'' for test_file in tests])
+        return 'var testFiles = [{test_files}];'.format(test_files=joined)
 
 
     def update_testrunner(self):
@@ -67,7 +74,8 @@ class UpdateDepsCommand(Command):
         for line in open(testrunner):
             marker = '/*@test_files@*/'
             if line.find(marker) >= 0:
-                line = UpdateDepsCommand.line_indent(line) + self.update_tests(line, tests) + marker + '\n'
+                indent = UpdateDepsCommand.line_indent(line)
+                line = indent + self.update_tests(line, tests) + marker + '\n'
 
             lines.append(line)
 

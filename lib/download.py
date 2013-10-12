@@ -1,4 +1,3 @@
-import sys
 import urllib
 
 _urllib = None

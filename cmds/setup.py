@@ -4,7 +4,6 @@ import lib.clone
 import lib.download
 import lib.unzip
 from cmds.command import Command
-from lib.error import GoogkitError
 
 
 class SetupCommand(Command):
@@ -40,7 +39,7 @@ class SetupCommand(Command):
         compiler_root = self.env.config.compiler_root()
         SetupCommand.safe_mkdirs(compiler_root)
 
-        subtool_unzip = os.path.join('tools', 'sub', 'unzip.py')
+        os.path.join('tools', 'sub', 'unzip.py')
         lib.unzip.run(compiler_zip, compiler_root)
 
         shutil.rmtree('tmp')

@@ -21,7 +21,7 @@ class Command(object):
 
     def run_internal(self):
         # Override the method to change the behavior
-        pass 
+        pass
 
 
     def complete(self):

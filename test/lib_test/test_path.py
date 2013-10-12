@@ -26,7 +26,6 @@ except ImportError:
 
 import lib.path
 from lib.error import GoogkitError
-from test.stub_stdout import StubStdout
 
 
 class TestPath(unittest.TestCase):
@@ -43,25 +42,25 @@ class TestPath(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', side_effect = side_effect):
+        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', side_effect=side_effect):
             self.assertEqual(lib.path.project_root(), '/dir1/dir2')
 
 
     def test_project_root_on_current(self):
         def side_effect(path):
             if os.path.normpath(path) == '/dir1/dir2/dir3/dir4/googkit.cfg':
-                return True 
+                return True
             else:
                 return False
 
-        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', side_effect = side_effect):
+        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', side_effect=side_effect):
             self.assertEqual(lib.path.project_root(), '/dir1/dir2/dir3/dir4')
 
 
     def test_project_root_with_on_unrelated(self):
-        with mock.patch('os.path.exists', return_value = False):
+        with mock.patch('os.path.exists', return_value=False):
             self.assertEqual(lib.path.project_root(), None)
 
 
@@ -78,8 +77,8 @@ class TestPath(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', side_effect = side_effect):
+        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', side_effect=side_effect):
             self.assertEqual(lib.path.project_config(), '/dir1/dir2/googkit.cfg')
 
 
@@ -96,13 +95,13 @@ class TestPath(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.getcwd', return_value = '/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', side_effect = side_effect):
+        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
+                mock.patch('os.path.exists', side_effect=side_effect):
             self.assertEqual(lib.path.project_config(), '/dir1/dir2/dir3/dir4/googkit.cfg')
 
 
     def test_project_config_with_on_unrelated(self):
-        with mock.patch('os.path.exists', return_value = False):
+        with mock.patch('os.path.exists', return_value=False):
             with self.assertRaises(GoogkitError):
                 lib.path.project_config()
 
@@ -111,7 +110,7 @@ class TestPath(unittest.TestCase):
         def side_effect_expand_user(path):
             return re.sub(r'~', '/home/user', path)
 
-        with mock.patch('os.path.expanduser', side_effect = side_effect_expand_user), \
+        with mock.patch('os.path.expanduser', side_effect=side_effect_expand_user), \
                 mock.patch('os.path.exists'):
 
             self.assertEqual(lib.path.user_config(), '/home/user/.googkit')
@@ -130,8 +129,8 @@ class TestPath(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.path.expanduser', side_effect = side_effect_expand_user), \
-                mock.patch('os.path.exists', side_effect = side_effect_exists):
+        with mock.patch('os.path.expanduser', side_effect=side_effect_expand_user), \
+                mock.patch('os.path.exists', side_effect=side_effect_exists):
             self.assertEqual(lib.path.user_config(), '/home/user/.googkit')
 
 
@@ -148,8 +147,8 @@ class TestPath(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.path.exists', side_effect = side_effect_exists), \
-                mock.patch('lib.path.googkit_root', return_value = '/dummy/usr/local/googkit'):
+        with mock.patch('os.path.exists', side_effect=side_effect_exists), \
+                mock.patch('lib.path.googkit_root', return_value='/dummy/usr/local/googkit'):
             self.assertEqual(lib.path.default_config(), '/dummy/usr/local/googkit/config/default.cfg')
 
 
@@ -165,14 +164,14 @@ class TestPath(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.path.exists', side_effect = side_effect_exists), \
-                mock.patch('lib.path.googkit_root', return_value = '/dummy/usr/local/googkit'):
+        with mock.patch('os.path.exists', side_effect=side_effect_exists), \
+                mock.patch('lib.path.googkit_root', return_value='/dummy/usr/local/googkit'):
             with self.assertRaises(GoogkitError):
                 lib.path.default_config()
 
 
     def test_googkit_root(self):
-        with mock.patch('lib.path.__file__', new = '/dummy/googkit/lib/path.py'):
+        with mock.patch('lib.path.__file__', new='/dummy/googkit/lib/path.py'):
             self.assertEqual(lib.path.googkit_root(), '/dummy/googkit')
 
 
@@ -180,13 +179,13 @@ class TestPath(unittest.TestCase):
         def side_effect(path):
             return os.path.abspath(path) == '/dummy/usr/local/googkit/plugins'
 
-        with mock.patch('lib.path.googkit_root', return_value = '/dummy/usr/local/googkit'), \
-                mock.patch('os.path.isdir', side_effect = side_effect):
+        with mock.patch('lib.path.googkit_root', return_value='/dummy/usr/local/googkit'), \
+                mock.patch('os.path.isdir', side_effect=side_effect):
             self.assertEqual(lib.path.plugin(), '/dummy/usr/local/googkit/plugins')
 
 
     def test_plugin_with_directory_missing(self):
-        with mock.patch('lib.path.googkit_root', return_value = '/dummy/usr/local/googkit'), \
-                mock.patch('os.path.isdir', return_value = False):
+        with mock.patch('lib.path.googkit_root', return_value='/dummy/usr/local/googkit'), \
+                mock.patch('os.path.isdir', return_value=False):
             with self.assertRaises(GoogkitError):
                 self.assertEqual(lib.path.plugin(), '/dummy/usr/local/googkit/plugins')

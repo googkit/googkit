@@ -34,4 +34,4 @@ except TypeError:
 
     # Python 3.x
     from io import StringIO
-    StubStdout = StringIO 
+    StubStdout = StringIO

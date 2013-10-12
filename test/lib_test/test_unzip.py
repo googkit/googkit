@@ -13,7 +13,6 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
-import os
 
 try:
     # Python 3.3 or later
