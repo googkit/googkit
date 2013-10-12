@@ -7,3 +7,4 @@ deps.js
 /closure/
 /production/
 /debug/
+/coverage-html/
