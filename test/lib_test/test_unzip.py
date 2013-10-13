@@ -21,7 +21,7 @@ except ImportError:
     # Python 2.x or 3.2-
     import mock
 
-import lib.unzip
+import googkit.lib.unzip
 import zipfile
 
 
@@ -34,7 +34,7 @@ class TestClone(unittest.TestCase):
         zipfile.ZipFile.return_value.__enter__.return_value.extractall = self.extractall
 
     def test_run(self):
-        lib.unzip.run('/dir1/dir2/test.zip', '/dir1/dir2/dir3/dir4')
+        googkit.lib.unzip.run('/dir1/dir2/test.zip', '/dir1/dir2/dir3/dir4')
 
         self.ZipFile.assert_called_once_with('/dir1/dir2/test.zip')
         self.extractall.assert_called_once_with('/dir1/dir2/dir3/dir4')

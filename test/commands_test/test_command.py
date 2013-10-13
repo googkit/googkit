@@ -21,8 +21,8 @@ except ImportError:
     # Python 2.x or 3.2-
     import mock
 
-from lib.error import GoogkitError
-from cmds.command import Command
+from googkit.lib.error import GoogkitError
+from googkit.cmds.command import Command
 
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment

@@ -15,7 +15,7 @@
 import unittest
 import os
 
-from lib.config import Config
+from googkit.lib.config import Config
 
 
 _configparser = None

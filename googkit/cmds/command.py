@@ -1,4 +1,4 @@
-from lib.error import GoogkitError
+from googkit.lib.error import GoogkitError
 
 
 class Command(object):

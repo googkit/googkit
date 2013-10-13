@@ -35,13 +35,13 @@ else:
     _urllib = urllib.request
 
 
-import lib.download
+import googkit.lib.download
 
 
 class TestDownload(unittest.TestCase):
     def test_run(self):
         _urllib.urlretrieve = mock.MagicMock()
-        lib.download.run('https://exmaple.com/example.zip', '/dir1/dir2')
+        googkit.lib.download.run('https://exmaple.com/example.zip', '/dir1/dir2')
 
         _urllib.urlretrieve.assert_called_once_with('https://exmaple.com/example.zip', '/dir1/dir2')
 

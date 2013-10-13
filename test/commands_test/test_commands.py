@@ -22,8 +22,8 @@ except ImportError:
     import mock
 
 
-from cmds.commands import CommandsCommand
-from cmds.command import Command
+from googkit.cmds.commands import CommandsCommand
+from googkit.cmds.command import Command
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 from test.stub_config import *

@@ -22,7 +22,7 @@ except ImportError:
     import mock
 
 import subprocess
-import lib.clone
+import googkit.lib.clone
 
 
 class TestClone(unittest.TestCase):
@@ -34,7 +34,7 @@ class TestClone(unittest.TestCase):
                 mock.patch('os.path.exists', return_value=True), \
                 mock.patch('os.chdir') as mock_chdir, \
                 mock.patch('subprocess.Popen', new=MockPopen) as mock_popen:
-            lib.clone.run('https://exmaple.com/example.git', '/dir1/dir2')
+            googkit.lib.clone.run('https://exmaple.com/example.git', '/dir1/dir2')
 
         mock_chdir.assert_any_call('/dir1/dir2')
         mock_chdir.assert_any_call('/dir1/dir2/dir3/dir4')
@@ -49,7 +49,7 @@ class TestClone(unittest.TestCase):
                 mock.patch('os.path.exists', return_value=False), \
                 mock.patch('os.chdir'), \
                 mock.patch('subprocess.Popen', new=MockPopen) as mock_popen:
-            lib.clone.run('https://example.com/example.git', '/dir1/dir2')
+            googkit.lib.clone.run('https://example.com/example.git', '/dir1/dir2')
 
         mock_popen.assert_called_once_with(['git', 'clone', 'https://example.com/example.git', '/dir1/dir2'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 

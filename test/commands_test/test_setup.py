@@ -27,7 +27,7 @@ from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig
 
-from cmds.setup import SetupCommand
+from googkit.cmds.setup import SetupCommand
 
 
 class TestSetupCommand(unittest.TestCase):
@@ -42,7 +42,7 @@ class TestSetupCommand(unittest.TestCase):
 
 
     def test_setup_closure_library(self):
-        with mock.patch('lib.clone') as mock_clone:
+        with mock.patch('googkit.lib.clone') as mock_clone:
             self.cmd.setup_closure_library()
 
         mock_clone.run.assert_called_once_with(
@@ -52,8 +52,8 @@ class TestSetupCommand(unittest.TestCase):
 
     def test_setup_closure_compiler(self):
         tmp_path = '/tmp/dummy'
-        with mock.patch('lib.download') as mock_download, \
-                mock.patch('lib.unzip') as mock_unzip, \
+        with mock.patch('googkit.lib.download') as mock_download, \
+                mock.patch('googkit.lib.unzip') as mock_unzip, \
                 mock.patch('tempfile.mkdtemp', return_value=tmp_path) as mock_mkdtemp, \
                 mock.patch('shutil.rmtree') as mock_rmtree:
             self.cmd.setup_closure_compiler()

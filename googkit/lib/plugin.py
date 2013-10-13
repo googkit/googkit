@@ -1,6 +1,6 @@
 import os
-import lib.path
-from lib.error import GoogkitError
+import googkit.lib.path
+from googkit.lib.error import GoogkitError
 
 
 INIT_FILE = '__init__.py'
@@ -8,7 +8,7 @@ COMMAND_FILE = 'command.py'
 
 
 def load(tree):
-    base_dir = lib.path.plugin()
+    base_dir = googkit.lib.path.plugin()
 
     for filename in os.listdir(base_dir):
         plugin_dir = os.path.join(base_dir, filename)

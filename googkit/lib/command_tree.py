@@ -1,9 +1,9 @@
-from cmds.apply_config import ApplyConfigCommand
-from cmds.build import BuildCommand
-from cmds.commands import CommandsCommand
-from cmds.init import InitCommand
-from cmds.setup import SetupCommand
-from cmds.update_deps import UpdateDepsCommand
+from googkit.cmds.apply_config import ApplyConfigCommand
+from googkit.cmds.build import BuildCommand
+from googkit.cmds.commands import CommandsCommand
+from googkit.cmds.init import InitCommand
+from googkit.cmds.setup import SetupCommand
+from googkit.cmds.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):

@@ -2,11 +2,11 @@ import logging
 import os
 import shutil
 import tempfile
-import lib.clone
-import lib.download
-import lib.unzip
-from cmds.command import Command
-from lib.error import GoogkitError
+import googkit.lib.clone
+import googkit.lib.download
+import googkit.lib.unzip
+from googkit.cmds.command import Command
+from googkit.lib.error import GoogkitError
 
 
 class SetupCommand(Command):
@@ -25,7 +25,7 @@ class SetupCommand(Command):
 
     def setup_closure_library(self):
         try:
-            lib.clone.run(SetupCommand.LIBRARY_GIT_REPOS, self.env.config.library_root())
+            googkit.lib.clone.run(SetupCommand.LIBRARY_GIT_REPOS, self.env.config.library_root())
         except GoogkitError as e:
             raise Googkit('Dowloading Closure Library was failed: ' + str(e))
 
@@ -35,14 +35,14 @@ class SetupCommand(Command):
         compiler_zip = os.path.join(tmp_path, 'compiler.zip')
 
         try:
-            lib.download.run(SetupCommand.COMPILER_LATEST_ZIP, compiler_zip)
+            googkit.lib.download.run(SetupCommand.COMPILER_LATEST_ZIP, compiler_zip)
         except IOError as e:
             raise Googkit('Dowloading Closure Compiler was failed: ' + str(e))
 
         compiler_root = self.env.config.compiler_root()
 
         os.path.join('tools', 'sub', 'unzip.py')
-        lib.unzip.run(compiler_zip, compiler_root)
+        googkit.lib.unzip.run(compiler_zip, compiler_root)
 
         shutil.rmtree(tmp_path)
 
