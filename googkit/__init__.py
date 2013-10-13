@@ -66,7 +66,7 @@ def main():
                 os.chdir(googkit.lib.path.project_root())
                 config = find_config()
 
-            env = Environment(commands, tree, config)
+            env = Environment(parser, tree, config)
             command = cls(env)
             command.run()
     except GoogkitError as e:

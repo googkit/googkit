@@ -24,7 +24,7 @@ except ImportError:
 
 from googkit.cmds.commands import CommandsCommand
 from googkit.cmds.command import Command
-from test.stub_stdout import StubStdout
+from googkit.lib.argument_parser import ArgumentParser
 from test.stub_environment import StubEnvironment
 from test.stub_config import *
 
@@ -41,7 +41,10 @@ class TestCommandsCommand(unittest.TestCase):
 
 
     def test_run_internal(self):
-        self.env.args = ['remove_me', 'arg1', 'arg2']
+        parser = ArgumentParser()
+        parser.parse(['googkit.py', 'arg1', 'arg2'])
+
+        self.env.arg_parser = parser
         self.env.tree = mock.MagicMock()
         self.env.tree.available_commands.return_value = ['DUMMY1', 'DUMMY2']
 

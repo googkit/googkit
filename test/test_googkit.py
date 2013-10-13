@@ -127,34 +127,23 @@ class TestGoogkit(unittest.TestCase):
         mock_cmd1 = MockCmd1.return_value
         mock_cmd2 = MockCmd2.return_value
 
-        with mock.patch('os.chdir') as mock_chdir, \
+        with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
                 mock.patch('googkit.lib.path.project_root', return_value='/dir1/dir2'), \
                 mock.patch('googkit.print_help'), \
                 mock.patch('googkit.find_config', return_value='dummy_cfg'), \
-                mock.patch('googkit.Environment', return_value='dummy_env') as MockEnv, \
+                mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load') as mock_load, \
-                mock.patch('logging.basicConfig') as mock_basic_cfg:
+                mock.patch('logging.basicConfig'):
             MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
 
             googkit.main()
 
-        mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
-
-        MockTree.return_value.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
-
         mock_load.assert_called_once_with(MockTree.return_value)
-
-        MockCmd1.assert_called_once_with('dummy_env')
-        MockCmd2.assert_called_once_with('dummy_env')
 
         mock_cmd1.run.assert_called_once_with()
         mock_cmd2.run.assert_called_once_with()
-
-        MockEnv.assert_any_call(['dummy1', 'dummy2'], MockTree.return_value, None)
-        self.assertEqual(MockEnv.call_count, 2)
-        self.assertFalse(mock_chdir.called)
 
 
     def test_run_command_needs_config(self):
@@ -167,12 +156,12 @@ class TestGoogkit(unittest.TestCase):
         mock_cmd1 = MockCmd1.return_value
         mock_cmd2 = MockCmd2.return_value
 
-        with mock.patch('os.chdir') as mock_chdir, \
+        with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
                 mock.patch('googkit.lib.path.project_root', return_value='/dir1/dir2'), \
                 mock.patch('googkit.print_help'), \
                 mock.patch('googkit.find_config', return_value='dummy_cfg'), \
-                mock.patch('googkit.Environment', return_value='dummy_env') as MockEnv, \
+                mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load') as mock_load, \
                 mock.patch('logging.basicConfig') as mock_basic_cfg:
@@ -182,21 +171,10 @@ class TestGoogkit(unittest.TestCase):
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
-        MockTree.return_value.command_classes.assert_called_once_with(['dummy1', 'dummy2'])
-
         mock_load.assert_called_once_with(MockTree.return_value)
-
-        MockCmd1.assert_called_once_with('dummy_env')
-        MockCmd2.assert_called_once_with('dummy_env')
 
         mock_cmd1.run.assert_called_once_with()
         mock_cmd2.run.assert_called_once_with()
-
-        MockEnv.assert_any_call(['dummy1', 'dummy2'], MockTree.return_value, 'dummy_cfg')
-        MockEnv.assert_any_call(['dummy1', 'dummy2'], MockTree.return_value, None)
-        self.assertEqual(MockEnv.call_count, 2)
-
-        mock_chdir.assert_any_call('/dir1/dir2')
 
 
     def test_run_with_empty_args(self):

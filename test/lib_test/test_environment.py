@@ -13,7 +13,6 @@
 # See also: http://www.voidspace.org.uk/python/mock/#installing
 
 import unittest
-import os
 
 try:
     # Python 3.3 or later
@@ -27,13 +26,13 @@ from googkit.lib.environment import Environment
 
 class TestEnvironmtnt(unittest.TestCase):
     def test_init(self):
-        mock_args = mock.MagicMock()
+        mock_arg_parser = mock.MagicMock()
         mock_config = mock.MagicMock()
         mock_tree = mock.MagicMock()
 
-        env = Environment(mock_args, mock_tree, mock_config)
+        env = Environment(mock_arg_parser, mock_tree, mock_config)
 
-        self.assertEqual(env.args, mock_args)
+        self.assertEqual(env.arg_parser, mock_arg_parser)
         self.assertEqual(env.tree, mock_tree)
         self.assertEqual(env.config, mock_config)
 
