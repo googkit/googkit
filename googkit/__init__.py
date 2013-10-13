@@ -33,7 +33,7 @@ def print_help(tree, commands=[]):
 
 
 def print_version():
-    print 'googkit ' + VERSION
+    print('googkit ' + VERSION)
 
 
 def find_config():
