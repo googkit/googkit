@@ -14,7 +14,6 @@ class ApplyConfigCommand(Command):
     def needs_config(cls):
         return True
 
-
     @classmethod
     def line_indent(cls, line):
         indent = ''
@@ -24,11 +23,9 @@ class ApplyConfigCommand(Command):
 
         return indent
 
-
     @classmethod
     def html_path(cls, path):
         return '/'.join(path.split(os.sep))
-
 
     def update_base_js(self, line, dirpath):
         path = self.env.config.base_js()
@@ -36,20 +33,17 @@ class ApplyConfigCommand(Command):
 
         return '<script type="text/javascript" src="{href}"></script>'.format(href=ApplyConfigCommand.html_path(relpath))
 
-
     def update_deps_js(self, line, dirpath):
         path = self.env.config.deps_js()
         relpath = os.path.relpath(path, dirpath)
 
         return '<script type="text/javascript" src="{src}"></script>'.format(src=ApplyConfigCommand.html_path(relpath))
 
-
     def update_multitestrunner_css(self, line, dirpath):
         path = self.env.config.multitestrunner_css()
         relpath = os.path.relpath(path, dirpath)
 
         return '<link rel="stylesheet" type="text/css" href="{href}">'.format(href=ApplyConfigCommand.html_path(relpath))
-
 
     def apply_config(self, path):
         lines = []
@@ -73,7 +67,6 @@ class ApplyConfigCommand(Command):
             for line in lines:
                 fp.write(line)
 
-
     def apply_config_all(self):
         devel_dir = self.env.config.development_dir()
 
@@ -95,7 +88,6 @@ class ApplyConfigCommand(Command):
             for dirname in dirs:
                 if os.path.join(root, dirname) in ignores:
                     dirs.remove(dirname)
-
 
     def run_internal(self):
         logging.info('Applying config...')

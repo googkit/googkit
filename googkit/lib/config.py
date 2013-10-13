@@ -27,12 +27,10 @@ class Config(object):
                 # Python 3.1 or earlier
                 self.parser.readfp(fp)
 
-
     def load(self, project_path, user_path, default_path):
         self.__load_if_necessary(default_path)
         self.__load_if_necessary(user_path)
         self.__load_if_necessary(project_path)
-
 
     def development_dir(self):
         path = self.parser.get('project', 'development')

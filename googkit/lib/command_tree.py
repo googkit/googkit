@@ -21,10 +21,8 @@ class CommandTree(object):
         'setup': [SetupCommand, UpdateDepsCommand]
     }
 
-
     def __init__(self):
         self._tree = CommandTree.DEFAULT_TREE.copy()
-
 
     def right_commands(self, args):
         command_dict = self._tree
@@ -44,11 +42,9 @@ class CommandTree(object):
 
         return result
 
-
     @classmethod
     def is_internal_command(cls, name):
         return name[0] == '_'
-
 
     def available_commands(self, args=[]):
         command_dict = self._tree
@@ -65,7 +61,6 @@ class CommandTree(object):
 
         commands = command_dict.keys()
         return sorted([cmd for cmd in commands if not CommandTree.is_internal_command(cmd)])
-
 
     def command_classes(self, args):
         value = self._tree
@@ -98,7 +93,6 @@ class CommandTree(object):
             value = next_value
 
         return last_value
-
 
     def register(self, names, commands):
         command_dict = self._tree

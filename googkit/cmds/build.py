@@ -12,15 +12,12 @@ from googkit.lib.error import GoogkitError
 class BuildCommand(Command):
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
-
     def __init__(self, env):
         super(BuildCommand, self).__init__(env)
-
 
     @classmethod
     def needs_config(cls):
         return True
-
 
     @classmethod
     def rmtree_silent(cls, path):
@@ -28,7 +25,6 @@ class BuildCommand(Command):
             shutil.rmtree(path)
         except OSError:
             pass
-
 
     @classmethod
     def line_indent(cls, line):
@@ -38,7 +34,6 @@ class BuildCommand(Command):
             indent = m.group(1)
 
         return indent
-
 
     def compile_resource(self, path, compiled_js_path):
         lines = []
@@ -62,13 +57,11 @@ class BuildCommand(Command):
             for line in lines:
                 f.write(line)
 
-
     @classmethod
     def ignore_dirs(cls, *ignore_dirs):
         def ignoref(dirpath, files):
             return [filename for filename in files if (os.path.join(dirpath, filename) in ignore_dirs)]
         return ignoref
-
 
     def setup_files(self, target_dir):
         config = self.env.config
@@ -93,7 +86,6 @@ class BuildCommand(Command):
                     continue
 
                 self.compile_resource(path, compiled_js)
-
 
     def compile_scripts(self):
         config = self.env.config
@@ -137,7 +129,6 @@ class BuildCommand(Command):
             else:
                 logging.debug(result_debug[0])
 
-
             # In default, the source map file marks original sources to the same directory as "debug".
             # But the original sources are in "closure" or "development/js_dev", so we should set a source
             # map attribute as "sourceRoot" to fix the original source paths.
@@ -171,7 +162,6 @@ class BuildCommand(Command):
         else:
             logging.debug(result[0])
 
-
     def modify_source_map(self):
         debug_dir = self.env.config.debug_dir()
         source_map = self.env.config.compiled_js() + '.map'
@@ -183,7 +173,6 @@ class BuildCommand(Command):
 
         with open(debug_source_map, 'w') as source_map_file:
             json.dump(source_map_content, source_map_file)
-
 
     def run_internal(self):
         self.compile_scripts()

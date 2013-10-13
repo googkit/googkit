@@ -10,11 +10,9 @@ class UpdateDepsCommand(Command):
     def __init__(self, env):
         super(UpdateDepsCommand, self).__init__(env)
 
-
     @classmethod
     def needs_config(cls):
         return True
-
 
     @classmethod
     def line_indent(cls, line):
@@ -24,7 +22,6 @@ class UpdateDepsCommand(Command):
             indent = m.group(1)
 
         return indent
-
 
     def update_deps(self):
         config = self.env.config
@@ -60,11 +57,9 @@ class UpdateDepsCommand(Command):
         else:
             logging.debug(result[0])
 
-
     def update_tests(self, line, tests):
         joined = ','.join(['\'' + test_file + '\'' for test_file in tests])
         return 'var testFiles = [{test_files}];'.format(test_files=joined)
-
 
     def update_testrunner(self):
         config = self.env.config
@@ -104,7 +99,6 @@ class UpdateDepsCommand(Command):
         with open(testrunner, 'w') as f:
             for line in lines:
                 f.write(line)
-
 
     def run_internal(self):
         self.update_deps()
