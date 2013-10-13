@@ -1,38 +1,39 @@
-Requirements
-============
-When you are using python 3.2 or ealier, you should install the [mock](http://www.voidspace.org.uk/python/mock/) module.
+Unit-Testing Googkit
+====================
 
-	$ easy_install -U mock
+
+System Requirements
+-------------------
+`coverage` is required for measuring test coverage:
+
 	$ easy_install coverage
 
-or, even:
+If you are using python 3.2 or ealier, you should install [mock](http://www.voidspace.org.uk/python/mock/) module:
 
-	$ pip install -U mock
-	$ pip install coverage
-	
+	$ easy_install -U mock
 
 
-How to Test
-===========
-+ Run a unit test
+Running Unit Tests
+------------------
+* Running a specified unit test:
 
 		(in /usr/local/googkit)
 		$ python -m {test_module_name}
 
 
-* Run all unit tests
+* Running all unit tests:
 
 		(in /usr/local/googkit)
 		$ python -m unittest discover
 
-	You can try to test on python 3.x
+	If you want to run unit tests with python 3.x:
 
 	 	$ python3 -m unittest discover
 
 
-How to measure test coverage
-============================
-1. Run a unit test by coverage
+Measuring test coverage
+-----------------------
+1. Run all unit tests with `coverage`
 
 		(in /usr/local/googkit)
 		$ coverage run -m unittest discover
@@ -40,28 +41,23 @@ How to measure test coverage
 
 2. Display report
 
-   * on terminal
+	* on the terminal:
 
-   		$ coverage report
-
-
-   * on web browser (you can see more detail)
-
-   		$ coverage html
-   		$ open ./coverage-html/index.html
+		$ coverage report
 
 
-How to Add Test
-===============
-Add a test file to `test/` with the following template.
+	* on web browser (you can see detailed information):
+
+		$ coverage html
+		(then open ./coverage-html/index.html in your browser)
 
 
-Template for Unit Test
-----------------------
-This is an example to unit-test a sample module.
+Adding Test Case
+----------------
+Add a test file to `test/`.
+Following template may be useful:
 
-
-```
+```python
 # Run the following command to test:
 #
 #     (in /usr/local/googkit)
