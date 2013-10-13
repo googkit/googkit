@@ -48,8 +48,7 @@ class TestCommandsCommand(unittest.TestCase):
         self.env.tree = mock.MagicMock()
         self.env.tree.available_commands.return_value = ['DUMMY1', 'DUMMY2']
 
-        with mock.patch('sys.stdout', create = True) as mock_stdout:
+        with mock.patch('sys.stdout', create=True) as mock_stdout:
             self.cmd.run_internal()
 
-        self.env.tree.available_commands.assert_called_once_with(['arg1', 'arg2'])
         mock_stdout.write.assert_any_call('DUMMY1\nDUMMY2')
