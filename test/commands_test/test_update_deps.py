@@ -28,7 +28,7 @@ from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig, StubConfigOnStubProject
 
-from cmds.update_deps import UpdateDepsCommand
+from googkit.cmds.update_deps import UpdateDepsCommand
 
 
 class TestUpdateDepsCommand(unittest.TestCase):
@@ -111,7 +111,7 @@ DUMMY
         # Read lines has "\n" at each last
         mock_fp.__iter__.return_value = iter([(line + '\n') for line in read_data.split('\n')])
 
-        with mock.patch('cmds.update_deps.open', mock_open, create=True), \
+        with mock.patch('googkit.cmds.update_deps.open', mock_open, create=True), \
                 mock.patch('os.path.exists') as mock_exists:
             mock_exists.return_value = True
 

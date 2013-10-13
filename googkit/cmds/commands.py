@@ -1,4 +1,4 @@
-from cmds.command import Command
+from googkit.cmds.command import Command
 
 
 class CommandsCommand(Command):

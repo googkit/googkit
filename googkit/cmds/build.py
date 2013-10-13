@@ -4,9 +4,9 @@ import subprocess
 import re
 import shutil
 import json
-import lib.path
-from cmds.command import Command
-from lib.error import GoogkitError
+import googkit.lib.path
+from googkit.cmds.command import Command
+from googkit.lib.error import GoogkitError
 
 
 class BuildCommand(Command):
@@ -103,7 +103,7 @@ class BuildCommand(Command):
         # The library path should be a relative path from the project root.
         # Because "sources" in the source map becomes absolute if an absolute path was
         # specified by "--root".Then, the absolute path creates a problem on http scheme.
-        lib_path = os.path.relpath(config.library_root(), lib.path.project_root())
+        lib_path = os.path.relpath(config.library_root(), googkit.lib.path.project_root())
 
         if config.is_debug_enabled():
             logging.info('Copying resources for debug...')

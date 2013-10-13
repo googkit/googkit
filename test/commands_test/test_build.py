@@ -26,7 +26,7 @@ import subprocess
 from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig, StubConfigOnStubProject
 
-from cmds.build import BuildCommand
+from googkit.cmds.build import BuildCommand
 
 
 class TestBuildCommand(unittest.TestCase):
@@ -80,7 +80,7 @@ DUMMY
 
         # Switch to the mock_open from the original open
         with mock.patch('os.sep', new='/'), \
-                mock.patch('cmds.build.open', mock_open, create=True):
+                mock.patch('googkit.cmds.build.open', mock_open, create=True):
             self.cmd.compile_resource(tgt_path, 'REQUIRE_MAIN')
 
         # Expected the target file was opened twice for reading and writing
@@ -124,7 +124,7 @@ DUMMY
         MockPopen.return_value.returncode = 0
 
         with mock.patch('subprocess.Popen', new=MockPopen) as mock_popen, \
-                mock.patch('lib.path.project_root', return_value='/dir1'):
+                mock.patch('googkit.lib.path.project_root', return_value='/dir1'):
             self.cmd.compile_scripts()
 
         # In debug mode, expected that Popen was called twice
@@ -204,7 +204,7 @@ DUMMY
         MockPopen.return_value.returncode = 0
 
         with mock.patch('subprocess.Popen', new=MockPopen) as mock_popen, \
-                mock.patch('lib.path.project_root', return_value='/dir1'):
+                mock.patch('googkit.lib.path.project_root', return_value='/dir1'):
             self.cmd.compile_scripts()
 
         mock_popen.returncode = 0
@@ -257,8 +257,8 @@ DUMMY
 
         mock_open = mock.mock_open()
 
-        with mock.patch('cmds.build.json') as mock_json, \
-                mock.patch('cmds.build.open', new=mock_open, create=True):
+        with mock.patch('googkit.cmds.build.json') as mock_json, \
+                mock.patch('googkit.cmds.build.open', new=mock_open, create=True):
             mock_open.return_value.__enter__.return_value = 'DUMMY'
             mock_json.load.return_value = stub_source_map
 

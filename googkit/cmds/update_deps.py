@@ -2,8 +2,8 @@ import logging
 import os
 import re
 import subprocess
-from cmds.command import Command
-from lib.error import GoogkitError
+from googkit.cmds.command import Command
+from googkit.lib.error import GoogkitError
 
 
 class UpdateDepsCommand(Command):

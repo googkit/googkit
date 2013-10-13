@@ -24,7 +24,7 @@ except ImportError:
 
 import googkit
 import logging
-from lib.error import GoogkitError
+from googkit.lib.error import GoogkitError
 from test.stub_stdout import StubStdout
 
 
@@ -101,9 +101,9 @@ class TestGoogkit(unittest.TestCase):
 
     def test_find_config(self):
         # Mocking lib.path
-        with mock.patch('lib.path.user_config') as mock_usr_cfg, \
-                mock.patch('lib.path.default_config') as mock_def_cfg, \
-                mock.patch('lib.path.project_config') as mock_proj_cfg, \
+        with mock.patch('googkit.lib.path.user_config') as mock_usr_cfg, \
+                mock.patch('googkit.lib.path.default_config') as mock_def_cfg, \
+                mock.patch('googkit.lib.path.project_config') as mock_proj_cfg, \
                 mock.patch('googkit.Config') as mock_config:
             mock_usr_cfg.return_value = 'DUMMY_USR'
             mock_def_cfg.return_value = 'DUMMY_DEF'
@@ -129,12 +129,12 @@ class TestGoogkit(unittest.TestCase):
 
         with mock.patch('os.chdir') as mock_chdir, \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
-                mock.patch('lib.path.project_root', return_value='/dir1/dir2'), \
+                mock.patch('googkit.lib.path.project_root', return_value='/dir1/dir2'), \
                 mock.patch('googkit.print_help'), \
                 mock.patch('googkit.find_config', return_value='dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value='dummy_env') as MockEnv, \
                 mock.patch('googkit.CommandTree') as MockTree, \
-                mock.patch('lib.plugin.load') as mock_load, \
+                mock.patch('googkit.lib.plugin.load') as mock_load, \
                 mock.patch('logging.basicConfig') as mock_basic_cfg:
             MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
 
@@ -169,12 +169,12 @@ class TestGoogkit(unittest.TestCase):
 
         with mock.patch('os.chdir') as mock_chdir, \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
-                mock.patch('lib.path.project_root', return_value='/dir1/dir2'), \
+                mock.patch('googkit.lib.path.project_root', return_value='/dir1/dir2'), \
                 mock.patch('googkit.print_help'), \
                 mock.patch('googkit.find_config', return_value='dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value='dummy_env') as MockEnv, \
                 mock.patch('googkit.CommandTree') as MockTree, \
-                mock.patch('lib.plugin.load') as mock_load, \
+                mock.patch('googkit.lib.plugin.load') as mock_load, \
                 mock.patch('logging.basicConfig') as mock_basic_cfg:
             MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
 
@@ -206,7 +206,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.find_config', return_value='dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
-                mock.patch('lib.plugin.load'), \
+                mock.patch('googkit.lib.plugin.load'), \
                 mock.patch('logging.basicConfig') as mock_basic_cfg:
             MockTree.return_value.command_classes.return_value = None
 
@@ -227,7 +227,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.find_config', return_value='dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
-                mock.patch('lib.plugin.load'), \
+                mock.patch('googkit.lib.plugin.load'), \
                 mock.patch('logging.basicConfig') as mock_basic_cfg:
             MockTree.return_value.command_classes.return_value = None
 
@@ -254,7 +254,7 @@ class TestGoogkit(unittest.TestCase):
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
                 mock.patch('sys.stdout') as mock_stdout, \
-                mock.patch('lib.path.project_root', return_value='/dir1/dir2'), \
+                mock.patch('googkit.lib.path.project_root', return_value='/dir1/dir2'), \
                 mock.patch('googkit.print_help'), \
                 mock.patch('googkit.find_config', return_value='dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \

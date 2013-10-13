@@ -21,8 +21,8 @@ except ImportError:
     # Python 2.x or 3.2-
     import mock
 
-from lib.error import GoogkitError
-from cmds.init import InitCommand
+from googkit.lib.error import GoogkitError
+from googkit.cmds.init import InitCommand
 
 from test.stub_environment import StubEnvironment
 from test.stub_config import *
@@ -53,7 +53,7 @@ class TestInitCommand(unittest.TestCase):
 
         with mock.patch('os.listdir', side_effect=listdir) as mock_listdir, \
                 mock.patch('distutils.dir_util.copy_tree') as mock_copytree, \
-                mock.patch('lib.path.template', return_value=template_dir):
+                mock.patch('googkit.lib.path.template', return_value=template_dir):
             self.cmd.copy_template(dst_path)
 
         mock_copytree.assert_called_once_with(template_dir, dst_path)
@@ -73,7 +73,7 @@ class TestInitCommand(unittest.TestCase):
 
         with mock.patch('os.listdir', side_effect=listdir) as mock_listdir, \
                 mock.patch('distutils.dir_util.copy_tree'), \
-                mock.patch('lib.path.template', return_value=template_dir):
+                mock.patch('googkit.lib.path.template', return_value=template_dir):
             with self.assertRaises(GoogkitError):
                 self.cmd.copy_template(dst_path)
 

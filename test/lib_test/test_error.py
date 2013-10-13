@@ -14,7 +14,7 @@
 
 import unittest
 
-from lib.error import GoogkitError
+from googkit.lib.error import GoogkitError
 
 
 class TestClone(unittest.TestCase):

@@ -2,9 +2,9 @@ import distutils.core
 import logging
 import os
 import shutil
-import lib.path
-from cmds.command import Command
-from lib.error import GoogkitError
+import googkit.lib.path
+from googkit.cmds.command import Command
+from googkit.lib.error import GoogkitError
 
 
 class InitCommand(Command):
@@ -13,7 +13,7 @@ class InitCommand(Command):
 
 
     def copy_template(self, dst_dir):
-        template_dir = lib.path.template()
+        template_dir = googkit.lib.path.template()
 
         conflicted = set(os.listdir(dst_dir)) & set(os.listdir(template_dir))
         if conflicted:
