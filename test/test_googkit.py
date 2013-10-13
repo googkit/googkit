@@ -52,7 +52,6 @@ class TestGoogkit(unittest.TestCase):
             mock_stdout.write.assert_any_call('    dummy1')
             mock_stdout.write.assert_any_call('    dummy2')
 
-
     # This case simulate:
     #   * only 2 commands as dummy1 and dummy2 are available
     #   * googkit.py get 2 argments ARG1, ARG2 but there are invalid
@@ -74,7 +73,6 @@ class TestGoogkit(unittest.TestCase):
             mock_stdout.write.assert_any_call('Available commands:')
             mock_stdout.write.assert_any_call('    dummy1')
             mock_stdout.write.assert_any_call('    dummy2')
-
 
     # This case simulate:
     #   * only 2 commands as dummy1 and dummy2 are available
@@ -98,7 +96,6 @@ class TestGoogkit(unittest.TestCase):
             mock_stdout.write.assert_any_call('    dummy1')
             mock_stdout.write.assert_any_call('    dummy2')
 
-
     def test_find_config(self):
         # Mocking lib.path
         with mock.patch('googkit.lib.path.user_config') as mock_usr_cfg, \
@@ -115,7 +112,6 @@ class TestGoogkit(unittest.TestCase):
         mock_def_cfg.assert_called_once_with()
         mock_proj_cfg.assert_called_once_with()
         mock_config.return_value.load.assert_called_once_with('DUMMY_PROJ', 'DUMMY_USR', 'DUMMY_DEF')
-
 
     def test_run(self):
         MockCmd1 = mock.MagicMock()
@@ -144,7 +140,6 @@ class TestGoogkit(unittest.TestCase):
 
         mock_cmd1.run.assert_called_once_with()
         mock_cmd2.run.assert_called_once_with()
-
 
     def test_run_command_needs_config(self):
         MockCmd1 = mock.MagicMock()
@@ -176,7 +171,6 @@ class TestGoogkit(unittest.TestCase):
         mock_cmd1.run.assert_called_once_with()
         mock_cmd2.run.assert_called_once_with()
 
-
     def test_run_with_empty_args(self):
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py']), \
@@ -197,7 +191,6 @@ class TestGoogkit(unittest.TestCase):
 
         mock_print_help.assert_called_once_with(MockTree.return_value, [])
 
-
     def test_run_with_invalid_args(self):
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy']), \
@@ -217,7 +210,6 @@ class TestGoogkit(unittest.TestCase):
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
         mock_print_help.assert_called_once_with(MockTree.return_value, ['dummy'])
-
 
     def test_run_with_exception(self):
         MockCmd1 = mock.MagicMock()

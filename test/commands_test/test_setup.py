@@ -36,10 +36,8 @@ class TestSetupCommand(unittest.TestCase):
         self.env.config = StubConfig()
         self.cmd = SetupCommand(self.env)
 
-
     def test_needs_config(self):
         self.assertTrue(SetupCommand.needs_config())
-
 
     def test_setup_closure_library(self):
         with mock.patch('googkit.lib.clone') as mock_clone:
@@ -48,7 +46,6 @@ class TestSetupCommand(unittest.TestCase):
         mock_clone.run.assert_called_once_with(
             'https://code.google.com/p/closure-library/',
             StubConfig.LIBRARRY_ROOT)
-
 
     def test_setup_closure_compiler(self):
         tmp_path = '/tmp/dummy'
@@ -68,7 +65,6 @@ class TestSetupCommand(unittest.TestCase):
         mock_download.run.assert_called_once_with(
             'http://closure-compiler.googlecode.com/files/compiler-latest.zip',
             os.path.join(tmp_path, 'compiler.zip'))
-
 
     def test_run_internal(self):
         with mock.patch('sys.stdout', new_callable=StubStdout):

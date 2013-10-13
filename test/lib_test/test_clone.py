@@ -40,7 +40,6 @@ class TestClone(unittest.TestCase):
         mock_chdir.assert_any_call('/dir1/dir2/dir3/dir4')
         mock_popen.assert_called_once_with(['git', 'pull'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-
     def test_run_with_no_target_dir(self):
         MockPopen = mock.MagicMock()
         MockPopen.return_value.returncode = 0

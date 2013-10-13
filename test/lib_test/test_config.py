@@ -48,7 +48,6 @@ class TestConfig(unittest.TestCase):
                 # Python 3.1 or earlier
                 self.cfg.parser.readfp(fp)
 
-
     def test_load_with_no_user_config(self):
         cfg = Config()
         cfg.load(TEST_CONFIG_1, None, TEST_CONFIG_3)
@@ -58,7 +57,6 @@ class TestConfig(unittest.TestCase):
             cfg.parser.get('test2', 'test')
         self.assertEqual(cfg.parser.get('test3', 'test'), 'TEST3')
 
-
     def test_load(self):
         cfg = Config()
         cfg.load(TEST_CONFIG_1, TEST_CONFIG_2, TEST_CONFIG_3)
@@ -66,7 +64,6 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(cfg.parser.get('test1', 'test'), 'TEST1')
         self.assertEqual(cfg.parser.get('test2', 'test'), 'TEST2')
         self.assertEqual(cfg.parser.get('test3', 'test'), 'TEST3')
-
 
     # sample of config methods {{{
     def test_development_dir(self):

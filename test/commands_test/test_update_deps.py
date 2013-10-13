@@ -37,16 +37,13 @@ class TestUpdateDepsCommand(unittest.TestCase):
         self.env.config = StubConfig()
         self.cmd = UpdateDepsCommand(self.env)
 
-
     def test_needs_config(self):
         self.assertTrue(UpdateDepsCommand.needs_config())
-
 
     def test_line_indent(self):
         self.assertEqual(UpdateDepsCommand.line_indent('    '), '    ')
         self.assertEqual(UpdateDepsCommand.line_indent('     a    '), '     ')
         self.assertEqual(UpdateDepsCommand.line_indent('a    '), '')
-
 
     def test_update_deps_js(self):
         MockPopen = mock.MagicMock()
@@ -72,7 +69,6 @@ class TestUpdateDepsCommand(unittest.TestCase):
 
         mock_popen.assert_called_once_with(expected, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
-
     def test_update_tests(self):
         self.assertEqual(
             self.cmd.update_tests('DUMMY', ['dummy1', 'dummy2']),
@@ -81,7 +77,6 @@ class TestUpdateDepsCommand(unittest.TestCase):
         self.assertEqual(
             self.cmd.update_tests('DUMMY', []),
             'var testFiles = [];')
-
 
     def test_update_testrunner(self):
         # Use stub config for stub project directories.
@@ -132,7 +127,6 @@ DUMMY
         self.assertEqual(
             mock_fp.write.call_args_list,
             [mock.call(line + '\n',) for line in expected_wrote.split('\n')])
-
 
     def test_run_internal(self):
         with mock.patch('sys.stdout', new_callable=StubStdout):

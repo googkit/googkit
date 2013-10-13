@@ -35,22 +35,18 @@ class TestBuildCommand(unittest.TestCase):
         self.env.config = StubConfig()
         self.cmd = BuildCommand(self.env)
 
-
     def test_needs_config(self):
         self.assertTrue(BuildCommand.needs_config())
-
 
     def rmtree_silent(self):
         with mock.patch('shutil.rmtree') as mock_rmtree:
             BuildCommand.rmtree_silent('/tmp/foo/bar')
             mock_rmtree.assert_called_once_with('/tmp/foo/bar')
 
-
     def test_line_indent(self):
         self.assertEqual(BuildCommand.line_indent('    '), '    ')
         self.assertEqual(BuildCommand.line_indent('     a    '), '     ')
         self.assertEqual(BuildCommand.line_indent('a    '), '')
-
 
     def test_compile_resource(self):
         tgt_path = '/tmp/foo/bar'
@@ -92,7 +88,6 @@ DUMMY
             mock_fp.write.call_args_list,
             [mock.call(line + '\n',) for line in expected.split('\n')])
 
-
     def test_setup_files(self):
         self.env.config = StubConfigOnStubProject()
         self.cmd.compile_resource = mock.MagicMock()
@@ -114,7 +109,6 @@ DUMMY
         self.cmd.compile_resource.assert_any_call(
             os.path.join(StubConfigOnStubProject.PRODUCTION_DIR, 'index.html'),
             StubConfigOnStubProject.COMPILED_JS)
-
 
     def test_compile_scripts_with_debug_enabled(self):
         self.cmd.setup_files = mock.MagicMock()
@@ -192,7 +186,6 @@ DUMMY
         mock_popen.assert_any_call(expected_on_debug, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.cmd.setup_files.assert_any_call(StubConfig.DEBUG_DIR)
 
-
     def test_compile_scripts(self):
         self.env.config.is_debug_enabled = mock.MagicMock()
         self.env.config.is_debug_enabled.return_value = False
@@ -242,7 +235,6 @@ DUMMY
         mock_popen.assert_any_call(expected, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.cmd.setup_files.assert_called_once_with(StubConfig.PRODUCTION_DIR)
 
-
     def test_modify_source_map(self):
         # Data will be given by open()
         stub_source_map = {
@@ -267,7 +259,6 @@ DUMMY
         mock_json.load.assert_called_once_with('DUMMY')
         self.assertEqual(mock_json.dump.call_args[0][0], expected)
         self.assertEqual(mock_json.dump.call_count, 1)
-
 
     def test_run_internal(self):
         self.cmd.compile_scripts = mock.MagicMock()

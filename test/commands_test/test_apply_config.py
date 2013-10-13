@@ -43,22 +43,18 @@ class TestApplyConfigCommand(unittest.TestCase):
                 ApplyConfigCommand.html_path('/dir1/dir2/file.ext'),
                 '/dir1/dir2/file.ext')
 
-
         with mock.patch.object(os, 'sep', new='\\'):
             self.assertEqual(
                 ApplyConfigCommand.html_path('\\dir1\\dir2\\file.ext'),
                 '/dir1/dir2/file.ext')
-
 
     def test_line_indent(self):
         self.assertEqual(ApplyConfigCommand.line_indent('    '), '    ')
         self.assertEqual(ApplyConfigCommand.line_indent('     a    '), '     ')
         self.assertEqual(ApplyConfigCommand.line_indent('a    '), '')
 
-
     def test_needs_config(self):
         self.assertTrue(ApplyConfigCommand.needs_config())
-
 
     def test_update_base_js(self):
         s = '<script type="text/javascript" src="{src}"></script>'
@@ -67,7 +63,6 @@ class TestApplyConfigCommand(unittest.TestCase):
 
         self.assertEqual(self.cmd.update_base_js(line, StubConfig.DEVELOPMENT_DIR), expected)
 
-
     def test_update_deps_js(self):
         s = '<script type="text/javascript" src="{src}"></script>'
         expected = s.format(src=os.path.relpath(StubConfig.DEPS_JS, StubConfig.DEVELOPMENT_DIR))
@@ -75,14 +70,12 @@ class TestApplyConfigCommand(unittest.TestCase):
 
         self.assertEqual(self.cmd.update_deps_js(line, StubConfig.DEVELOPMENT_DIR), expected)
 
-
     def test_multitestrunner_css(self):
         s = '<link rel="stylesheet" type="text/css" href="{href}">'
         expected = s.format(href=os.path.relpath(StubConfig.MULTI_TEST_RUNNER_CSS, StubConfig.DEVELOPMENT_DIR))
         line = '<link rel="stylesheet" type="text/css" href="link">'
 
         self.assertEqual(self.cmd.update_multitestrunner_css(line, StubConfig.DEVELOPMENT_DIR), expected)
-
 
     def test_apply_config(self):
         # Expected following directory structure:
@@ -152,7 +145,6 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
         self.cmd.update_base_js.assert_called_once_with(' <!--@base_js@-->\n', StubConfig.DEVELOPMENT_DIR)
         self.cmd.update_deps_js.assert_called_once_with('  <!--@deps_js@-->\n', StubConfig.DEVELOPMENT_DIR)
 
-
     def test_apply_config_all(self):
         self.env.config = StubConfigOnStubProject()
         self.cmd.apply_config = mock.MagicMock()
@@ -169,7 +161,6 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
 
         for expected_call in expected_calls:
             self.cmd.apply_config.assert_any_call(expected_call)
-
 
     def test_run_internal(self):
         with mock.patch('sys.stdout', new_callable=StubStdout):

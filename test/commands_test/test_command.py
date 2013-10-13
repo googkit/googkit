@@ -50,7 +50,6 @@ class TestCommand(unittest.TestCase):
             cmd2.run()
             cmd2.run_internal.assert_called_once_with()
 
-
     def test_run_on_cmd_needs_config(self):
         class ConcreteCommandNeedsConfig(Command):
             @classmethod

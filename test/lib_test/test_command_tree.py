@@ -24,7 +24,6 @@ except ImportError:
 from googkit.lib.command_tree import CommandTree
 
 
-
 class TestCommandTree(unittest.TestCase):
     cmd0 = mock.MagicMock()
     cmd1 = mock.MagicMock()
@@ -45,44 +44,36 @@ class TestCommandTree(unittest.TestCase):
 
         self.tree = CommandTree()
 
-
     def test_init(self):
         self.assertEqual(self.tree._tree, CommandTree.DEFAULT_TREE)
-
 
     def test_right_commands_with_no_cmd(self):
         result = self.tree.right_commands([])
         self.assertEqual(len(result), 0)
 
-
     def test_right_commands_with_garbage(self):
         result = self.tree.right_commands(['cmd999'])
         self.assertEqual(len(result), 0)
-
 
     def test_right_commands_with_main_cmd(self):
         result = self.tree.right_commands(['cmd1'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd1')
 
-
     def test_right_commands_with_main_cmd_with_garbage(self):
         result = self.tree.right_commands(['cmd1', 'cmd999'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd1')
-
 
     def test_right_commands_with_cmd_has_sub_one(self):
         result = self.tree.right_commands(['cmd2'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd2')
 
-
     def test_right_commands_with_cmd_has_sub_one_with_garbage(self):
         result = self.tree.right_commands(['cmd2', 'cmd999'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd2')
-
 
     def test_right_commands_with_sub_cmd(self):
         result = self.tree.right_commands(['cmd2', 'cmd3'])
@@ -90,13 +81,11 @@ class TestCommandTree(unittest.TestCase):
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd3')
 
-
     def test_right_commands_with_sub_cmd_with_garbage(self):
         result = self.tree.right_commands(['cmd2', 'cmd3', 'cmd999'])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd3')
-
 
     def test_right_commands_with_sub_cmd_has_sub_one(self):
         result = self.tree.right_commands(['cmd2', 'cmd4'])
@@ -104,13 +93,11 @@ class TestCommandTree(unittest.TestCase):
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd4')
 
-
     def test_right_commands_with_sub_cmd_has_sub_one_with_garbage(self):
         result = self.tree.right_commands(['cmd2', 'cmd4', 'cmd999'])
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0], 'cmd2')
         self.assertEqual(result[1], 'cmd4')
-
 
     def test_right_commands_with_sub_sub_cmd(self):
         result = self.tree.right_commands(['cmd2', 'cmd4', 'cmd5'])
@@ -119,12 +106,10 @@ class TestCommandTree(unittest.TestCase):
         self.assertEqual(result[1], 'cmd4')
         self.assertEqual(result[2], 'cmd5')
 
-
     def test_is_internal_command(self):
         self.assertTrue(CommandTree.is_internal_command('_cmd0'))
 
         self.assertFalse(CommandTree.is_internal_command('cmd1'))
-
 
     def test_available_commands_with_no_cmd(self):
         result = self.tree.available_commands([])
@@ -132,11 +117,9 @@ class TestCommandTree(unittest.TestCase):
         self.assertEqual(result[0], 'cmd1')
         self.assertEqual(result[1], 'cmd2')
 
-
     def test_available_commands_with_main_cmd(self):
         result = self.tree.available_commands(['cmd1'])
         self.assertEqual(len(result), 0)
-
 
     def test_available_commands_with_cmd_has_sub_one(self):
         result = self.tree.available_commands(['cmd2'])
@@ -144,22 +127,18 @@ class TestCommandTree(unittest.TestCase):
         self.assertEqual(result[0], 'cmd3')
         self.assertEqual(result[1], 'cmd4')
 
-
     def test_available_commands_with_sub_cmd(self):
         result = self.tree.available_commands(['cmd2', 'cmd3'])
         self.assertEqual(len(result), 0)
-
 
     def test_available_commands_with_sub_cmd_has_sub_one(self):
         result = self.tree.available_commands(['cmd2', 'cmd4'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], 'cmd5')
 
-
     def test_available_commands_with_sub_sub_cmd(self):
         result = self.tree.available_commands(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 0)
-
 
     def test_command_classes_with_no_cmd(self):
         self.assertEqual(self.tree.command_classes([]), None)
@@ -172,42 +151,33 @@ class TestCommandTree(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], TestCommandTree.cmd1)
 
-
     def test_command_classes_with_main_cmd_with_garbage(self):
         self.assertEqual(self.tree.command_classes(['cmd1', 'cmd999']), None)
-
 
     def test_command_classes_with_cmd_has_sub_one(self):
         self.assertEqual(self.tree.command_classes(['cmd2']), None)
 
-
     def test_command_classes_with_cmd_has_sub_one_with_garbage(self):
         self.assertEqual(self.tree.command_classes(['cmd2', 'cmd999']), None)
-
 
     def test_command_classes_with_sub_cmd(self):
         result = self.tree.command_classes(['cmd2', 'cmd3'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], TestCommandTree.cmd3)
 
-
     def test_command_classes_with_sub_cmd_with_garbage(self):
         self.assertEqual(self.tree.command_classes(['cmd2', 'cmd3', 'cmd999']), None)
-
 
     def test_command_classes_with_sub_cmd_has_sub_one(self):
         self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4']), None)
 
-
     def test_command_classes_with_sub_cmd_has_sub_one_with_garbage(self):
         self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4', 'cmd999']), None)
-
 
     def test_command_classes_with_sub_sub_cmd(self):
         result = self.tree.command_classes(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], TestCommandTree.cmd5)
-
 
     def test_register(self):
         cmd100 = mock.MagicMock()

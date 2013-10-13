@@ -34,10 +34,8 @@ class TestInitCommand(unittest.TestCase):
         self.env.config = StubConfig()
         self.cmd = InitCommand(self.env)
 
-
     def test_needs_config(self):
         self.assertFalse(InitCommand.needs_config())
-
 
     def test_copy_templates(self):
         dst_path = '/tmp/foo/bar'
@@ -58,7 +56,6 @@ class TestInitCommand(unittest.TestCase):
 
         mock_copytree.assert_called_once_with(template_dir, dst_path)
 
-
     def test_copy_templates_with_conflict(self):
         dst_path = '/tmp/foo/bar'
         template_dir = '/tmp/dummy'
@@ -76,7 +73,6 @@ class TestInitCommand(unittest.TestCase):
                 mock.patch('googkit.lib.path.template', return_value=template_dir):
             with self.assertRaises(GoogkitError):
                 self.cmd.copy_template(dst_path)
-
 
     def test_run_internal(self):
         self.cmd.copy_template = mock.MagicMock()

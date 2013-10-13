@@ -35,10 +35,8 @@ class TestCommandsCommand(unittest.TestCase):
         self.env.config = StubConfig()
         self.cmd = CommandsCommand(self.env)
 
-
     def test_init(self):
         self.assertTrue(isinstance(self.cmd, Command))
-
 
     def test_run_internal(self):
         parser = ArgumentParser()

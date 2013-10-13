@@ -1,5 +1,6 @@
 import os.path
 
+
 # This stub simulates:
 #
 # dir1

@@ -30,7 +30,6 @@ class StubPlugin(object):
     def __init__(self):
         pass
 
-
     def register(self, tree):
         pass
 
@@ -79,7 +78,6 @@ class TestPlugin(unittest.TestCase):
         mock_module.register.assert_any_call(mock_tree)
         self.assertEqual(mock_module.register.call_count, 2)
 
-
     def test_load_with_no_plugins(self):
         def is_exists(path):
             exists = [
@@ -99,7 +97,6 @@ class TestPlugin(unittest.TestCase):
             googkit.lib.plugin.load(mock_tree)
 
         self.assertFalse(mock_import.called)
-
 
     def test_load_with_invalid_plugin(self):
         def is_exists(path):
@@ -131,7 +128,6 @@ class TestPlugin(unittest.TestCase):
                 mock.patch('googkit.lib.plugin.__import__', create=True, return_value=mock_module):
             with self.assertRaises(GoogkitError):
                 googkit.lib.plugin.load(mock_tree)
-
 
     def test_load_without_init_file(self):
         def is_exists(path):
