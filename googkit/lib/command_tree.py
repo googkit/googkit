@@ -71,6 +71,10 @@ class CommandTree(object):
         value = self._tree
         last_value = None
 
+        # TODO: is there a better way...?
+        if len(args) > 1 and args[0] == '_commands':
+            return self._tree['_commands']
+
         for arg in args:
             # a garbage found next to a right command
             if last_value is not None:
