@@ -1,5 +1,6 @@
 import os
 from setuptools import setup
+import googkit
 
 
 def data_files(data_dirs):
@@ -15,7 +16,7 @@ def data_files(data_dirs):
 
 setup(
     name='googkit',
-    version='0.0.0',
+    version=googkit.VERSION,
     author='cocopon & OrgaChem',
     author_email='cocopon@me.com',
     description='Easier way to develop your web app with Google Closure Library',

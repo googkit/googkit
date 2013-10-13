@@ -15,24 +15,26 @@ class TestArgumentParser(unittest.TestCase):
     def test_parse_with_no_args(self):
         self.parser.parse([])
         self.assertListEqual(self.parser.commands, [])
-        self.assertListEqual(self.parser.options, [])
+        self.assertEqual(len(self.parser.options.keys()), 0)
 
     def test_parse_with_commands(self):
         self.parser.parse(['googkit.py', 'cmd1', 'cmd2', 'cmd3'])
         self.assertListEqual(self.parser.commands, ['cmd1', 'cmd2', 'cmd3'])
-        self.assertListEqual(self.parser.options, [])
+        self.assertEqual(len(self.parser.options.keys()), 0)
 
     def test_parse_with_key_value_option(self):
         self.parser.parse(['googkit.py', '--opt1=value'])
         self.assertListEqual(self.parser.commands, [])
-        self.assertListEqual(self.parser.options, ['--opt1=value'])
+        self.assertEqual(self.parser.option('--opt1'), 'value')
 
     def test_parse_with_options(self):
-        self.parser.parse(['googkit.py', '--opt1', '--opt2', '--opt3'])
+        self.parser.parse(['googkit.py', '-o', '--opt2'])
         self.assertListEqual(self.parser.commands, [])
-        self.assertListEqual(self.parser.options, ['--opt1', '--opt2', '--opt3'])
+        self.assertTrue(self.parser.option('-o'))
+        self.assertTrue(self.parser.option('--opt2'))
 
     def test_parse_with_commands_and_options(self):
         self.parser.parse(['googkit.py', 'cmd1', '--opt1', 'cmd2', '--opt2', 'cmd3'])
         self.assertListEqual(self.parser.commands, ['cmd1', 'cmd2', 'cmd3'])
-        self.assertListEqual(self.parser.options, ['--opt1', '--opt2'])
+        self.assertTrue(self.parser.option('--opt1'))
+        self.assertTrue(self.parser.option('--opt2'))

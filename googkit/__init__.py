@@ -14,10 +14,11 @@ GOOGKIT_ROOT = os.path.dirname(os.path.abspath(__file__))
 PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
 DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
+VERSION = '0.0.0'
 
 
-def print_help(tree, args=[]):
-    right_commands = tree.right_commands(args)
+def print_help(tree, commands=[]):
+    right_commands = tree.right_commands(commands)
     if len(right_commands) == 0:
         print('Usage: googkit <command>')
     else:
@@ -29,6 +30,10 @@ def print_help(tree, args=[]):
     available_commands = tree.available_commands(right_commands)
     for name in available_commands:
         print('    ' + name)
+
+
+def print_version():
+    print 'googkit ' + VERSION
 
 
 def find_config():
@@ -47,15 +52,15 @@ def main():
 
     parser = ArgumentParser()
     parser.parse(sys.argv)
+    commands = parser.commands
 
-    args = parser.commands
-    if len(args) == 0:
-        print_help(tree)
+    if len(commands) == 0 and parser.option('--version'):
+        print_version()
         sys.exit()
 
-    classes = tree.command_classes(args)
+    classes = tree.command_classes(commands)
     if classes is None:
-        print_help(tree, args)
+        print_help(tree, commands)
         sys.exit()
 
     try:
@@ -65,7 +70,7 @@ def main():
                 os.chdir(googkit.lib.path.project_root())
                 config = find_config()
 
-            env = Environment(args, tree, config)
+            env = Environment(commands, tree, config)
             command = cls(env)
             command.run()
     except GoogkitError as e:
