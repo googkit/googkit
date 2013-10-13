@@ -1,15 +1,15 @@
 import urllib
 
-_urllib = None
+urllib_ = None
 
 if hasattr(urllib, 'urlretrieve'):
     # Python 2.x
-    _urllib = urllib
+    urllib_ = urllib
 else:
     # Python 3.x or later
     import urllib.request
-    _urllib = urllib.request
+    urllib_ = urllib.request
 
 
 def run(url, target_path):
-    _urllib.urlretrieve(url, target_path)
+    urllib_.urlretrieve(url, target_path)

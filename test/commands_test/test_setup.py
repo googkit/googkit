@@ -41,15 +41,6 @@ class TestSetupCommand(unittest.TestCase):
         self.assertTrue(SetupCommand.needs_config())
 
 
-    def test_safe_mkdirs(self):
-        with mock.patch('os.makedirs') as mock_makedirs, \
-                mock.patch('shutil.rmtree') as mock_rmtree:
-            SetupCommand.safe_mkdirs('/tmp/foo/bar')
-
-        mock_rmtree.assert_called_once_with('/tmp/foo/bar', True)
-        mock_makedirs.assert_called_once_with('/tmp/foo/bar')
-
-
     def test_setup_closure_library(self):
         with mock.patch('lib.clone') as mock_clone:
             self.cmd.setup_closure_library()
@@ -60,23 +51,23 @@ class TestSetupCommand(unittest.TestCase):
 
 
     def test_setup_closure_compiler(self):
+        tmp_path = '/tmp/dummy'
         with mock.patch('lib.download') as mock_download, \
                 mock.patch('lib.unzip') as mock_unzip, \
-                mock.patch.object(SetupCommand, 'safe_mkdirs') as mock_mkdirs, \
+                mock.patch('tempfile.mkdtemp', return_value=tmp_path) as mock_mkdtemp, \
                 mock.patch('shutil.rmtree') as mock_rmtree:
             self.cmd.setup_closure_compiler()
 
         # Expected temporary directory was created and removed
-        mock_mkdirs.assert_any_call('tmp')
-        mock_rmtree.assert_any_call('tmp')
+        mock_rmtree.assert_called_once_with(tmp_path)
 
         mock_unzip.run.assert_called_once_with(
-            os.path.join('tmp', 'compiler.zip'),
+            os.path.join(tmp_path, 'compiler.zip'),
             StubConfig.COMPILER_ROOT)
 
         mock_download.run.assert_called_once_with(
             'http://closure-compiler.googlecode.com/files/compiler-latest.zip',
-            os.path.join('tmp', 'compiler.zip'))
+            os.path.join(tmp_path, 'compiler.zip'))
 
 
     def test_run_internal(self):

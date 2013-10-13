@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 import lib.path
@@ -39,6 +40,7 @@ def find_config():
 
 
 def run():
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
     tree = CommandTree()
     lib.plugin.load(tree)
 
@@ -63,7 +65,8 @@ def run():
             command = cls(env)
             command.run()
     except GoogkitError as e:
-        sys.exit('[ERROR] ' + str(e))
+        logging.error('[Error] ' + str(e))
+        sys.exit(1)
 
 
 if __name__ == '__main__':

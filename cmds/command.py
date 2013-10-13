@@ -16,13 +16,8 @@ class Command(object):
             raise GoogkitError('No config file found.')
 
         self.run_internal()
-        self.complete()
 
 
     def run_internal(self):
         # Override the method to change the behavior
         pass
-
-
-    def complete(self):
-        print('Completed.')

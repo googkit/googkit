@@ -1,6 +1,9 @@
+import logging
 import os
 import re
+import subprocess
 from cmds.command import Command
+from lib.error import GoogkitError
 
 
 class UpdateDepsCommand(Command):
@@ -31,15 +34,31 @@ class UpdateDepsCommand(Command):
         base_js_dir = os.path.dirname(config.base_js())
         js_dev_dir_rel = os.path.relpath(js_dev_dir, base_js_dir)
 
-        arg_dict = {
-            'depswriter': config.depswriter(),
-            'js_dev': js_dev_dir,
-            'js_dev_rel': js_dev_dir_rel,
-            'deps_js': deps_js
-        }
+        args = [
+            'python',
+            config.depswriter(),
+            '--root_with_prefix="{js_dev} {js_dev_rel}"'.format(js_dev=js_dev_dir, js_dev_rel=js_dev_dir_rel),
+            '--output_file="{deps_js}"'.format(js_dev=js_dev_dir, js_dev_rel=js_dev_dir_rel, deps_js=deps_js)
+        ]
 
-        cmd = 'python {depswriter} --root_with_prefix="{js_dev} {js_dev_rel}" --output_file="{deps_js}"'.format(**arg_dict)
-        os.system(cmd)
+        logging.info('Updating dependency information...')
+
+        # depswriter.py does not work when Popen was given arguments includes space.
+        # For example,
+        #   it works:
+        #
+        #     $ python depswriter.py --root_with_prefix="path path"
+        #
+        #   but it does not work:
+        #
+        #     $ python depswriter.py "--root_with_prefix=\"path path\""
+        proc = subprocess.Popen(' '.join(args), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = proc.communicate()
+
+        if proc.returncode != 0:
+            raise GoogkitError('Updating dependencies failed: ' + result[1])
+        else:
+            logging.debug(result[0])
 
 
     def update_tests(self, line, tests):
@@ -55,6 +74,8 @@ class UpdateDepsCommand(Command):
         if not os.path.exists(testrunner):
             return
 
+        logging.info('Updating dependencies for unit-testing...')
+
         testrunner_dir = os.path.dirname(testrunner)
         test_file_pattern = config.test_file_pattern()
         tests = []
@@ -68,6 +89,7 @@ class UpdateDepsCommand(Command):
                 relpath = os.path.relpath(path, testrunner_dir)
 
                 tests.append(relpath)
+                logging.debug('Test case found: ' + path)
 
         lines = []
 
@@ -85,6 +107,5 @@ class UpdateDepsCommand(Command):
 
 
     def run_internal(self):
-        print('Updating dependency information...')
         self.update_deps()
         self.update_testrunner()
