@@ -46,7 +46,7 @@ Measuring test coverage
 		$ coverage report
 
 
-	* on web browser (you can see detailed information):
+	* on the web browser (you can see detailed information):
 
 		$ coverage html
 		(then open ./coverage-html/index.html in your browser)
