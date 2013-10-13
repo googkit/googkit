@@ -5,10 +5,10 @@ from googkit.lib.error import GoogkitError
 
 PROJECT_CONFIG = 'googkit.cfg'
 USER_CONFIG = '.googkit'
-DEFAULT_CONFIG = os.path.join('config', 'default.cfg')
+DEFAULT_CONFIG = os.path.join('etc', 'default.cfg')
 SCRIPT_DIR = 'googkit'
 PLUGIN_DIR = 'plugins'
-TEMPLATE_DIR = 'template'
+TEMPLATE_DIR = os.path.join('etc', 'template')
 
 
 def googkit_root():

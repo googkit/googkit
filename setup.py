@@ -42,8 +42,8 @@ setup(
     },
     zip_safe=False,
     data_files=data_files([
-        'config',
         'etc',
-        'template'
+        'etc/completion',
+        'etc/template'
     ])
 )
