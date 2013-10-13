@@ -24,7 +24,7 @@ class SetupCommand(Command):
         try:
             googkit.lib.clone.run(SetupCommand.LIBRARY_GIT_REPOS, self.env.config.library_root())
         except GoogkitError as e:
-            raise Googkit('Dowloading Closure Library was failed: ' + str(e))
+            raise GoogkitError('Dowloading Closure Library failed: ' + str(e))
 
     def setup_closure_compiler(self):
         tmp_path = tempfile.mkdtemp()
@@ -33,7 +33,7 @@ class SetupCommand(Command):
         try:
             googkit.lib.download.run(SetupCommand.COMPILER_LATEST_ZIP, compiler_zip)
         except IOError as e:
-            raise Googkit('Dowloading Closure Compiler was failed: ' + str(e))
+            raise GoogkitError('Dowloading Closure Compiler failed: ' + str(e))
 
         compiler_root = self.env.config.compiler_root()
 
