@@ -138,7 +138,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('logging.basicConfig') as mock_basic_cfg:
             MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
 
-            googkit.run()
+            googkit.main()
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
@@ -178,7 +178,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('logging.basicConfig') as mock_basic_cfg:
             MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
 
-            googkit.run()
+            googkit.main()
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
@@ -211,7 +211,7 @@ class TestGoogkit(unittest.TestCase):
             MockTree.return_value.command_classes.return_value = None
 
             with self.assertRaises(SystemExit):
-                googkit.run()
+                googkit.main()
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
@@ -232,7 +232,7 @@ class TestGoogkit(unittest.TestCase):
             MockTree.return_value.command_classes.return_value = None
 
             with self.assertRaises(SystemExit):
-                googkit.run()
+                googkit.main()
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
@@ -265,7 +265,7 @@ class TestGoogkit(unittest.TestCase):
             MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
 
             with self.assertRaises(SystemExit) as e:
-                googkit.run()
+                googkit.main()
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 

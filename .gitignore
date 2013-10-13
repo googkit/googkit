@@ -4,7 +4,10 @@ __pycache__
 deps.js
 .coverage
 
+/build/
 /closure/
-/production/
-/debug/
 /coverage-html/
+/debug/
+/dist/
+/Googkit.egg-info/
+/production/
