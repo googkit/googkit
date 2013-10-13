@@ -23,6 +23,7 @@ except ImportError:
 
 
 import os
+import subprocess
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig, StubConfigOnStubProject
@@ -48,7 +49,10 @@ class TestUpdateDepsCommand(unittest.TestCase):
 
 
     def test_update_deps_js(self):
-        with mock.patch('os.system') as mock_system:
+        MockPopen = mock.MagicMock()
+        MockPopen.return_value.returncode = 0
+
+        with mock.patch('subprocess.Popen', new=MockPopen) as mock_popen:
             self.cmd.update_deps()
 
         arg_format_dict = {
@@ -66,7 +70,7 @@ class TestUpdateDepsCommand(unittest.TestCase):
             '--output_file="{deps_js_path}"'
         ]).format(**arg_format_dict)
 
-        mock_system.assert_called_once_with(expected)
+        mock_popen.assert_called_once_with(expected, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
 
     def test_update_tests(self):

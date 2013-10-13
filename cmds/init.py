@@ -1,4 +1,5 @@
 import distutils.core
+import logging
 import os
 import shutil
 import lib.path

@@ -22,6 +22,7 @@ except ImportError:
     import mock
 
 import os
+import subprocess
 from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig, StubConfigOnStubProject
 
@@ -119,12 +120,15 @@ DUMMY
         self.cmd.setup_files = mock.MagicMock()
         self.cmd.modify_source_map = mock.MagicMock()
 
-        with mock.patch('os.system') as mock_system, \
+        MockPopen = mock.MagicMock()
+        MockPopen.return_value.returncode = 0
+
+        with mock.patch('subprocess.Popen', new=MockPopen) as mock_popen, \
                 mock.patch('lib.path.project_root', return_value='/dir1'):
             self.cmd.compile_scripts()
 
-        # In debug mode, expected that os.system was called twice
-        self.assertEqual(mock_system.call_count, 2)
+        # In debug mode, expected that Popen was called twice
+        self.assertEqual(mock_popen.call_count, 2)
 
         # In debug mode, expected that soource file was modified
         self.cmd.modify_source_map.assert_called_once_with()
@@ -143,7 +147,7 @@ DUMMY
             'closurebuilder_path': StubConfig.CLOSUREBUILDER
         }
 
-        expected = ' '.join([
+        expected = [str_.format(**arg_format_dict) for str_ in [
             'python',
             '{closurebuilder_path}',
             '--root={library}',
@@ -154,9 +158,9 @@ DUMMY
             '--compiler_flags=--compilation_level=COMPILATION_LEVEL',
             '--compiler_flags=--define=goog.DEBUG=false',
             '--output_file={compiled_js_path}'
-        ]).format(**arg_format_dict)
+        ]]
 
-        mock_system.assert_any_call(expected)
+        mock_popen.assert_any_call(expected, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.cmd.setup_files.assert_any_call(StubConfig.PRODUCTION_DIR)
 
         arg_format_dict_on_debug = {
@@ -170,7 +174,7 @@ DUMMY
             'closurebuilder_path': StubConfig.CLOSUREBUILDER
         }
 
-        expected_on_debug = ' '.join([
+        expected_on_debug = [str_.format(**arg_format_dict_on_debug) for str_ in [
             'python',
             '{closurebuilder_path}',
             '--root={library}',
@@ -183,9 +187,9 @@ DUMMY
             '--compiler_flags=--create_source_map={source_map_path}',
             '--compiler_flags=--output_wrapper="%output%//# sourceMappingURL={source_map}"',
             '--output_file={compiled_js_path}'
-        ]).format(**arg_format_dict_on_debug)
+        ]]
 
-        mock_system.assert_any_call(expected_on_debug)
+        mock_popen.assert_any_call(expected_on_debug, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.cmd.setup_files.assert_any_call(StubConfig.DEBUG_DIR)
 
 
@@ -196,12 +200,17 @@ DUMMY
         self.cmd.setup_files = mock.MagicMock()
         self.cmd.modify_source_map = mock.MagicMock()
 
-        with mock.patch('os.system') as mock_system, \
+        MockPopen = mock.MagicMock()
+        MockPopen.return_value.returncode = 0
+
+        with mock.patch('subprocess.Popen', new=MockPopen) as mock_popen, \
                 mock.patch('lib.path.project_root', return_value='/dir1'):
             self.cmd.compile_scripts()
 
-        # Expected that os.system was called twice
-        self.assertEqual(mock_system.call_count, 1)
+        mock_popen.returncode = 0
+
+        # Expected that Popen was called twice
+        self.assertEqual(mock_popen.call_count, 1)
 
         # Expected that setup_files was called twice
         self.assertEqual(self.cmd.setup_files.call_count, 1)
@@ -217,7 +226,7 @@ DUMMY
             'closurebuilder_path': StubConfig.CLOSUREBUILDER
         }
 
-        expected = ' '.join([
+        expected = [str_.format(**arg_format_dict) for str_ in [
             'python',
             '{closurebuilder_path}',
             '--root={library}',
@@ -228,9 +237,9 @@ DUMMY
             '--compiler_flags=--compilation_level=COMPILATION_LEVEL',
             '--compiler_flags=--define=goog.DEBUG=false',
             '--output_file={compiled_js_path}'
-        ]).format(**arg_format_dict)
+        ]]
 
-        mock_system.assert_called_once_with(expected)
+        mock_popen.assert_any_call(expected, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.cmd.setup_files.assert_called_once_with(StubConfig.PRODUCTION_DIR)
 
 

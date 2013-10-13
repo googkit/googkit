@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 from cmds.command import Command
@@ -63,6 +64,7 @@ class ApplyConfigCommand(Command):
             for line in fp:
                 for marker in markers:
                     if line.find(marker) >= 0:
+                        logging.debug('Applying config to {path} ...'.format(path=path))
                         updater = updaters[marker]
                         line = ApplyConfigCommand.line_indent(line) + updater(line, dirpath) + marker + '\n'
                 lines.append(line)
@@ -96,5 +98,5 @@ class ApplyConfigCommand(Command):
 
 
     def run_internal(self):
-        print('Applying config...')
+        logging.info('Applying config...')
         self.apply_config_all()
