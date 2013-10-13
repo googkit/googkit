@@ -3,6 +3,7 @@ import os
 import sys
 import googkit.lib.path
 import googkit.lib.plugin
+from googkit.lib.argument_parser import ArgumentParser
 from googkit.lib.command_tree import CommandTree
 from googkit.lib.config import Config
 from googkit.lib.environment import Environment
@@ -44,11 +45,14 @@ def main():
     tree = CommandTree()
     googkit.lib.plugin.load(tree)
 
-    if len(sys.argv) < 2:
+    parser = ArgumentParser()
+    parser.parse(sys.argv)
+
+    args = parser.commands
+    if len(args) == 0:
         print_help(tree)
         sys.exit()
 
-    args = sys.argv[1:]
     classes = tree.command_classes(args)
     if classes is None:
         print_help(tree, args)
