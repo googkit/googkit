@@ -39,7 +39,7 @@ def find_config():
     return config
 
 
-def run():
+def main():
     logging.basicConfig(level=logging.INFO, format='%(message)s')
     tree = CommandTree()
     googkit.lib.plugin.load(tree)
