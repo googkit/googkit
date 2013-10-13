@@ -259,7 +259,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.find_config', return_value='dummy_cfg'), \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
-                mock.patch('lib.plugin.load'), \
+                mock.patch('googkit.lib.plugin.load'), \
                 mock.patch('logging.basicConfig') as mock_basic_cfg, \
                 mock.patch('logging.error') as mock_error:
             MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
