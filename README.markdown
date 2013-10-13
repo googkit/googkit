@@ -183,12 +183,9 @@ in `production/`.
 
 Misc
 ----
-### Author
-cocopon (cocopon@me.com)
-
-
-### Contributors
-OrgaChem (orga.chem.job@gmail.com)
+### The Googkit team
+- cocopon (cocopon@me.com)
+- OrgaChem (orga.chem.job@gmail.com)
 
 
 ### License

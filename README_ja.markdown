@@ -185,12 +185,9 @@ Googkit は、Source Map ファイル `script.min.js.map` を `debug/`
 
 その他
 ------
-### 作者
-cocopon (cocopon@me.com)
-
-
-### 共同開発者
-OrgaChem (orga.chem.job@gmail.com)
+### Googkit 開発チーム
+- cocopon (cocopon@me.com)
+- OrgaChem (orga.chem.job@gmail.com)
 
 
 ### ライセンス
