@@ -10,10 +10,6 @@ from googkit.lib.environment import Environment
 from googkit.lib.error import GoogkitError
 
 
-GOOGKIT_ROOT = os.path.dirname(os.path.abspath(__file__))
-PROJECT_CONFIG = 'googkit.cfg'
-USER_CONFIG = '.googkit'
-DEFAULT_CONFIG = os.path.join(GOOGKIT_ROOT, 'config', 'default.cfg')
 VERSION = '0.0.0'
 
 
