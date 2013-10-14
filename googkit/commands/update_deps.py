@@ -40,13 +40,13 @@ class UpdateDepsCommand(Command):
 
         logging.info('Updating dependency information...')
 
-        # depswriter.py does not work when Popen was given arguments includes space.
+        # depswriter.py doesn't work with arguments including white-space.
         # For example,
         #   it works:
         #
         #     $ python depswriter.py --root_with_prefix="path path"
         #
-        #   but it does not work:
+        #   but it doesn't work:
         #
         #     $ python depswriter.py "--root_with_prefix=\"path path\""
         proc = subprocess.Popen(' '.join(args), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
