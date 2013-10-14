@@ -18,7 +18,7 @@ class Command(object):
         self.complete()
 
     def run_internal(self):
-        # Override the method to change the behavior
+        # Override the method to implement a behavior
         pass
 
     def complete(self):
