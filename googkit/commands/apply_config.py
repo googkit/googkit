@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-from googkit.cmds.command import Command
+from googkit.commands.command import Command
 
 
 class ApplyConfigCommand(Command):

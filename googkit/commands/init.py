@@ -1,7 +1,7 @@
 import distutils.core
 import os
 import googkit.lib.path
-from googkit.cmds.command import Command
+from googkit.commands.command import Command
 from googkit.lib.error import GoogkitError
 
 

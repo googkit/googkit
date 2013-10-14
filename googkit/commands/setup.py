@@ -5,7 +5,7 @@ import tempfile
 import googkit.lib.clone
 import googkit.lib.download
 import googkit.lib.unzip
-from googkit.cmds.command import Command
+from googkit.commands.command import Command
 from googkit.lib.error import GoogkitError
 
 

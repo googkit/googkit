@@ -173,8 +173,6 @@ class TestGoogkit(unittest.TestCase):
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
-        mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
-
         mock_print_help.assert_called_once_with(MockTree.return_value, [])
 
     def test_run_with_invalid_args(self):
@@ -190,8 +188,6 @@ class TestGoogkit(unittest.TestCase):
 
             with self.assertRaises(SystemExit):
                 googkit.main()
-
-        mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 

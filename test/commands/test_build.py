@@ -12,7 +12,7 @@ import subprocess
 from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig, StubConfigOnStubProject
 
-from googkit.cmds.build import BuildCommand
+from googkit.commands.build import BuildCommand
 
 
 class TestBuildCommand(unittest.TestCase):
@@ -62,7 +62,7 @@ DUMMY
 
         # Switch to the mock_open from the original open
         with mock.patch('os.sep', new='/'), \
-                mock.patch('googkit.cmds.build.open', mock_open, create=True):
+                mock.patch('googkit.commands.build.open', mock_open, create=True):
             self.cmd.compile_resource(tgt_path, 'REQUIRE_MAIN')
 
         # Expected the target file was opened twice for reading and writing
@@ -235,8 +235,8 @@ DUMMY
 
         mock_open = mock.mock_open()
 
-        with mock.patch('googkit.cmds.build.json') as mock_json, \
-                mock.patch('googkit.cmds.build.open', new=mock_open, create=True):
+        with mock.patch('googkit.commands.build.json') as mock_json, \
+                mock.patch('googkit.commands.build.open', new=mock_open, create=True):
             mock_open.return_value.__enter__.return_value = 'DUMMY'
             mock_json.load.return_value = stub_source_map
 

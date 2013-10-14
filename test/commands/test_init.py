@@ -8,7 +8,7 @@ except ImportError:
     import mock
 
 from googkit.lib.error import GoogkitError
-from googkit.cmds.init import InitCommand
+from googkit.commands.init import InitCommand
 
 from test.stub_environment import StubEnvironment
 from test.stub_config import *

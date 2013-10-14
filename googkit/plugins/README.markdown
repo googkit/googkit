@@ -30,7 +30,7 @@ command.py
 Import `commands.command.Command` and extend `Command` class:
 
 ```python
-from cmds.command import Command
+from commands.command import Command
 
 
 class PingCommand(Command):

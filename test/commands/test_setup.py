@@ -13,7 +13,7 @@ from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig
 
-from googkit.cmds.setup import SetupCommand
+from googkit.commands.setup import SetupCommand
 
 
 class TestSetupCommand(unittest.TestCase):

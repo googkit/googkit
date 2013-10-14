@@ -8,8 +8,8 @@ except ImportError:
     import mock
 
 
-from googkit.cmds.commands import CommandsCommand
-from googkit.cmds.command import Command
+from googkit.commands.commands import CommandsCommand
+from googkit.commands.command import Command
 from googkit.lib.argument_parser import ArgumentParser
 from test.stub_environment import StubEnvironment
 from test.stub_config import *
