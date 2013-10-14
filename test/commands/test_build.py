@@ -248,7 +248,11 @@ DUMMY
 
     def test_run_internal(self):
         self.cmd.compile_scripts = mock.MagicMock()
+        self.env.arg_parser = mock.MagicMock()
+        self.env.arg_parser.option.return_value = False
+
         self.cmd.run_internal()
+
         self.cmd.compile_scripts.assert_called_once_with()
 
 

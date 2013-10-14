@@ -43,8 +43,15 @@ class SetupCommand(Command):
         shutil.rmtree(tmp_path)
 
     def run_internal(self):
+        logger = logging.getLogger()
+        level = logger.level
+        if self.env.arg_parser.option('--verbose'):
+            logger.setLevel(logging.DEBUG)
+
         logging.info('Downloading Closure Library...')
         self.setup_closure_library()
 
         logging.info('Downloading Closure Compiler...')
         self.setup_closure_compiler()
+
+        logger.setLevel(level)

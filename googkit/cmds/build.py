@@ -125,9 +125,9 @@ class BuildCommand(Command):
             result_debug = builder_debug.communicate()
 
             if builder_debug.returncode != 0:
-                raise GoogkitError('Compilation failed: ' + result_debug[1])
+                raise GoogkitError('Compilation failed:\n' + result_debug[1])
             else:
-                logging.debug(result_debug[0])
+                logging.debug(result_debug[1])
 
             # In default, the source map file marks original sources to the same directory as "debug".
             # But the original sources are in "closure" or "development/js_dev", so we should set a source
@@ -158,9 +158,9 @@ class BuildCommand(Command):
         result = builder_proc.communicate()
 
         if builder_proc.returncode != 0:
-            raise GoogkitError('Compilation failed: ' + result[1])
+            raise GoogkitError('Compilation failed:\n' + result[1])
         else:
-            logging.debug(result[0])
+            logging.debug(result[1])
 
     def modify_source_map(self):
         debug_dir = self.env.config.debug_dir()
@@ -175,4 +175,11 @@ class BuildCommand(Command):
             json.dump(source_map_content, source_map_file)
 
     def run_internal(self):
+        logger = logging.getLogger()
+        level = logger.level
+        if self.env.arg_parser.option('--verbose'):
+            logger.setLevel(logging.DEBUG)
+
         self.compile_scripts()
+
+        logger.setLevel(level)

@@ -53,6 +53,8 @@ class TestSetupCommand(unittest.TestCase):
             os.path.join(tmp_path, 'compiler.zip'))
 
     def test_run_internal(self):
+        self.env.arg_parser = mock.MagicMock()
+        self.env.arg_parser.option.return_value = False
         with mock.patch('sys.stdout', new_callable=StubStdout):
             self.cmd.setup_closure_compiler = mock.MagicMock()
             self.cmd.setup_closure_library = mock.MagicMock()
