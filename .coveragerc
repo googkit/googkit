@@ -5,6 +5,7 @@ branch=True
 omit=
     */site-packages/*
     */stub_*.py
+    test/*
 
 [html]
 directory=coverage-html
