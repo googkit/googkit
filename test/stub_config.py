@@ -80,8 +80,14 @@ class StubConfig(object):
     def compiler(self):
         return StubConfig.COMPILER
 
-    def compilation_level(seld):
+    def compilation_level(self):
         return StubConfig.COMPILATION_LEVEL
+
+    def compiler_zip(self):
+        return StubConfig.COMPILER_LATEST_ZIP
+
+    def library_repos(self):
+        return StubConfig.LIBRARY_GIT_REPOS
 
 
 StubConfig.PROJECT_DIR = os.path.join(os.sep, 'dir1')
@@ -128,6 +134,8 @@ StubConfig.COMPILER = os.path.join(
 StubConfig.TEST_FILE_PATTERN = '_TEST\.(HTML|XHTML)$'
 StubConfig.COMPILED_JS = 'SCRIPT.MIN.JS'
 StubConfig.COMPILATION_LEVEL = 'COMPILATION_LEVEL'
+StubConfig.LIBRARY_GIT_REPOS = 'LIBRARY_GIT_REPOS'
+StubConfig.COMPILER_LATEST_ZIP = 'COMPILER_LATEST_ZIP'
 
 
 # This stub is useful when test target includes "os.walk()".
@@ -219,6 +227,12 @@ class StubConfigOnStubProject(object):
     def compilation_level(self):
         return StubConfigOnStubProject.COMPILATION_LEVEL
 
+    def compiler_zip(self):
+        return StubConfigOnStubProject.COMPILER_LATEST_ZIP
+
+    def library_repos(self):
+        return StubConfigOnStubProject.LIBRARY_GIT_REPOS
+
 
 StubConfigOnStubProject.PROJECT_DIR = os.path.normpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fixture', 'stub_project'))
@@ -264,4 +278,6 @@ StubConfigOnStubProject.COMPILER = os.path.join(
 
 StubConfigOnStubProject.COMPILED_JS = 'script.min.js'
 StubConfigOnStubProject.TEST_FILE_PATTERN = '_test\.(html|xhtml)$'
-StubConfigOnStubProject.COMPILATION_LEVEL = '%COMPILATION_LEVEL%'
+StubConfigOnStubProject.COMPILATION_LEVEL = 'COMPILATION_LEVEL'
+StubConfigOnStubProject.LIBRARY_GIT_REPOS = 'LIBRARY_GIT_REPOS'
+StubConfigOnStubProject.COMPILER_LATEST_ZIP = 'COMPILER_LATEST_ZIP'

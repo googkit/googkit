@@ -30,7 +30,7 @@ class TestSetupCommand(unittest.TestCase):
             self.cmd.setup_closure_library()
 
         mock_clone.run.assert_called_once_with(
-            'https://code.google.com/p/closure-library/',
+            StubConfig.LIBRARY_GIT_REPOS,
             StubConfig.LIBRARRY_ROOT)
 
     def test_setup_closure_compiler(self):
@@ -49,7 +49,7 @@ class TestSetupCommand(unittest.TestCase):
             StubConfig.COMPILER_ROOT)
 
         mock_download.run.assert_called_once_with(
-            'http://closure-compiler.googlecode.com/files/compiler-latest.zip',
+            StubConfig.COMPILER_LATEST_ZIP,
             os.path.join(tmp_path, 'compiler.zip'))
 
     def test_run_internal(self):

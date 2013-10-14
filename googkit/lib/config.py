@@ -1,19 +1,16 @@
 import os
 
-_configparser = None
 try:
     # Python 2.x
-    import ConfigParser
-    _configparser = ConfigParser
+    import ConfigParser as configparser
 except ImportError:
     # Python 3.x or later
     import configparser
-    _configparser = configparser
 
 
 class Config(object):
     def __init__(self):
-        self.parser = _configparser.ConfigParser()
+        self.parser = configparser.ConfigParser()
 
     def __load_if_necessary(self, path):
         if path is None:
@@ -96,3 +93,9 @@ class Config(object):
 
     def compilation_level(self):
         return self.parser.get('compiler', 'compilation_level')
+
+    def library_repos(self):
+        return self.parser.get('library', 'git_repository')
+
+    def compiler_zip(self):
+        return self.parser.get('compiler', 'zip_url')

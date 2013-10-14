@@ -10,9 +10,6 @@ from googkit.lib.error import GoogkitError
 
 
 class SetupCommand(Command):
-    LIBRARY_GIT_REPOS = 'https://code.google.com/p/closure-library/'
-    COMPILER_LATEST_ZIP = 'http://closure-compiler.googlecode.com/files/compiler-latest.zip'
-
     def __init__(self, env):
         super(SetupCommand, self).__init__(env)
 
@@ -21,17 +18,20 @@ class SetupCommand(Command):
         return True
 
     def setup_closure_library(self):
+        library_repos = self.env.config.library_repos()
+        library_root = self.env.config.library_root()
         try:
-            googkit.lib.clone.run(SetupCommand.LIBRARY_GIT_REPOS, self.env.config.library_root())
+            googkit.lib.clone.run(library_repos, library_root)
         except GoogkitError as e:
             raise GoogkitError('Dowloading Closure Library failed: ' + str(e))
 
     def setup_closure_compiler(self):
         tmp_path = tempfile.mkdtemp()
         compiler_zip = os.path.join(tmp_path, 'compiler.zip')
+        compiler_zip_url = self.env.config.compiler_zip()
 
         try:
-            googkit.lib.download.run(SetupCommand.COMPILER_LATEST_ZIP, compiler_zip)
+            googkit.lib.download.run(compiler_zip_url, compiler_zip)
         except IOError as e:
             raise GoogkitError('Dowloading Closure Compiler failed: ' + str(e))
 
