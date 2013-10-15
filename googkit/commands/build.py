@@ -132,8 +132,8 @@ class BuildCommand(Command):
                 logging.debug(result_debug[1])
 
             # The root path should be set by 'sourceRoot', but Closure Compiler
-            # doesn't support this attribute and use 'project_root' instead.
-            # So set 'sourceRoot' to 'debug' directory manually until
+            # doesn't support this attribute.
+            # So set 'sourceRoot' to 'project_root' directory manually until
             # Closure Compiler supports this feature.
             self.modify_source_map()
 
