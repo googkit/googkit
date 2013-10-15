@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import googkit.lib.path
 from googkit.commands.command import Command
 
 
@@ -23,27 +24,26 @@ class ApplyConfigCommand(Command):
 
         return indent
 
-    @classmethod
-    def html_path(cls, path):
-        return '/'.join(path.split(os.sep))
-
     def update_base_js(self, line, dirpath):
         path = self.env.config.base_js()
         relpath = os.path.relpath(path, dirpath)
+        href = googkit.lib.path.url(relpath)
 
-        return '<script type="text/javascript" src="{href}"></script>'.format(href=ApplyConfigCommand.html_path(relpath))
+        return '<script type="text/javascript" src="{href}"></script>'.format(href=href)
 
     def update_deps_js(self, line, dirpath):
         path = self.env.config.deps_js()
         relpath = os.path.relpath(path, dirpath)
+        src = googkit.lib.path.url(relpath)
 
-        return '<script type="text/javascript" src="{src}"></script>'.format(src=ApplyConfigCommand.html_path(relpath))
+        return '<script type="text/javascript" src="{src}"></script>'.format(src=src)
 
     def update_multitestrunner_css(self, line, dirpath):
         path = self.env.config.multitestrunner_css()
         relpath = os.path.relpath(path, dirpath)
+        href = googkit.lib.path.url(relpath)
 
-        return '<link rel="stylesheet" type="text/css" href="{href}">'.format(href=ApplyConfigCommand.html_path(relpath))
+        return '<link rel="stylesheet" type="text/css" href="{href}">'.format(href=href)
 
     def apply_config(self, path):
         lines = []

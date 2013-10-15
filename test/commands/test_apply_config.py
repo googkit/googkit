@@ -23,17 +23,6 @@ class TestApplyConfigCommand(unittest.TestCase):
         self.env.config = StubConfig()
         self.cmd = ApplyConfigCommand(self.env)
 
-    def test_html_path(self):
-        with mock.patch.object(os, 'sep', new='/'):
-            self.assertEqual(
-                ApplyConfigCommand.html_path('/dir1/dir2/file.ext'),
-                '/dir1/dir2/file.ext')
-
-        with mock.patch.object(os, 'sep', new='\\'):
-            self.assertEqual(
-                ApplyConfigCommand.html_path('\\dir1\\dir2\\file.ext'),
-                '/dir1/dir2/file.ext')
-
     def test_line_indent(self):
         self.assertEqual(ApplyConfigCommand.line_indent('    '), '    ')
         self.assertEqual(ApplyConfigCommand.line_indent('     a    '), '     ')

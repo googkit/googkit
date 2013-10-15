@@ -181,3 +181,14 @@ class TestPath(unittest.TestCase):
                 mock.patch('os.path.isdir', return_value=False):
             with self.assertRaises(GoogkitError):
                 self.assertEqual(googkit.lib.path.template(), '/dummy/usr/local/googkit/etc/template')
+
+    def test_url(self):
+        with mock.patch.object(os, 'sep', new='/'):
+            self.assertEqual(
+                googkit.lib.path.url('/dir1/dir2/file.ext'),
+                '/dir1/dir2/file.ext')
+
+        with mock.patch.object(os, 'sep', new='\\'):
+            self.assertEqual(
+                googkit.lib.path.url('\\dir1\\dir2\\file.ext'),
+                '/dir1/dir2/file.ext')
