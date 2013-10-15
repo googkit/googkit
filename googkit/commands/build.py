@@ -93,8 +93,8 @@ class BuildCommand(Command):
         compiled_js = config.compiled_js()
 
         # The library path should be a relative path from the project root.
-        # Because "sources" in the source map becomes absolute if an absolute path was
-        # specified by "--root".Then, the absolute path creates a problem on http scheme.
+        # If '--root' is specified as absolute path, 'sources' attribute
+        # of the source map will be absolute path and not work with http scheme.
         lib_path = os.path.relpath(
             config.library_root(),
             googkit.lib.path.project_root(self.env.cwd))
