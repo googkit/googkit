@@ -131,11 +131,10 @@ class BuildCommand(Command):
             else:
                 logging.debug(result_debug[1])
 
-            # In default, the source map file marks original sources to the same directory as "debug".
-            # But the original sources are in "closure" or "development/js_dev", so we should set a source
-            # map attribute as "sourceRoot" to fix the original source paths.
-            # But cannot set the "sourceRoot" by Closure Compiler yet, so "modify_source_map" does it
-            # until Closure Compiler support "sourceRoot".
+            # The root path should be set by 'sourceRoot', but Closure Compiler
+            # doesn't support this attribute and use 'project_root' instead.
+            # So set 'sourceRoot' to 'debug' directory manually until
+            # Closure Compiler supports this feature.
             self.modify_source_map()
 
         logging.info('Copying resources for production...')
