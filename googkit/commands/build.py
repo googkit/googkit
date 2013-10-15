@@ -12,9 +12,6 @@ from googkit.lib.error import GoogkitError
 class BuildCommand(Command):
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
-    def __init__(self, env):
-        super(BuildCommand, self).__init__(env)
-
     @classmethod
     def needs_config(cls):
         return True

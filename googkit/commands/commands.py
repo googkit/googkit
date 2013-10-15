@@ -7,9 +7,6 @@ class CommandsCommand(Command):
     An output will be used for shell completion.
     """
 
-    def __init__(self, env):
-        super(CommandsCommand, self).__init__(env)
-
     def complete(self):
         pass
 

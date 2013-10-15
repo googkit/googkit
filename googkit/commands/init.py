@@ -6,9 +6,6 @@ from googkit.lib.error import GoogkitError
 
 
 class InitCommand(Command):
-    def __init__(self, env):
-        super(InitCommand, self).__init__(env)
-
     def copy_template(self, dst_dir):
         template_dir = googkit.lib.path.template()
 

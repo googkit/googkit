@@ -8,9 +8,6 @@ from googkit.commands.command import Command
 class ApplyConfigCommand(Command):
     CONFIG_TARGET_EXT = ('.html', '.xhtml', '.js', '.css')
 
-    def __init__(self, env):
-        super(ApplyConfigCommand, self).__init__(env)
-
     @classmethod
     def needs_config(cls):
         return True

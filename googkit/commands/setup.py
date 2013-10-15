@@ -10,9 +10,6 @@ from googkit.lib.error import GoogkitError
 
 
 class SetupCommand(Command):
-    def __init__(self, env):
-        super(SetupCommand, self).__init__(env)
-
     @classmethod
     def needs_config(cls):
         return True
