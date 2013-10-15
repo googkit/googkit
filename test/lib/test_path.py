@@ -28,9 +28,10 @@ class TestPath(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', side_effect=side_effect):
-            self.assertEqual(googkit.lib.path.project_root(), '/dir1/dir2')
+        with mock.patch('os.path.exists', side_effect=side_effect):
+            self.assertEqual(
+                googkit.lib.path.project_root('/dir1/dir2/dir3/dir4'),
+                '/dir1/dir2')
 
     def test_project_root_on_current(self):
         def side_effect(path):
@@ -39,13 +40,14 @@ class TestPath(unittest.TestCase):
             else:
                 return False
 
-        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', side_effect=side_effect):
-            self.assertEqual(googkit.lib.path.project_root(), '/dir1/dir2/dir3/dir4')
+        with mock.patch('os.path.exists', side_effect=side_effect):
+            self.assertEqual(
+                googkit.lib.path.project_root('/dir1/dir2/dir3/dir4'),
+                '/dir1/dir2/dir3/dir4')
 
     def test_project_root_with_on_unrelated(self):
         with mock.patch('os.path.exists', return_value=False):
-            self.assertEqual(googkit.lib.path.project_root(), None)
+            self.assertEqual(googkit.lib.path.project_root('/cwd'), None)
 
     def test_project_config_on_groundchild(self):
         def side_effect(path):
@@ -60,9 +62,10 @@ class TestPath(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', side_effect=side_effect):
-            self.assertEqual(googkit.lib.path.project_config(), '/dir1/dir2/googkit.cfg')
+        with mock.patch('os.path.exists', side_effect=side_effect):
+            self.assertEqual(
+                googkit.lib.path.project_config('/dir1/dir2/dir3/dir4'),
+                '/dir1/dir2/googkit.cfg')
 
     def test_project_config_on_current(self):
         def side_effect(path):
@@ -77,14 +80,15 @@ class TestPath(unittest.TestCase):
 
             return os.path.normpath(path) in exists
 
-        with mock.patch('os.getcwd', return_value='/dir1/dir2/dir3/dir4'), \
-                mock.patch('os.path.exists', side_effect=side_effect):
-            self.assertEqual(googkit.lib.path.project_config(), '/dir1/dir2/dir3/dir4/googkit.cfg')
+        with mock.patch('os.path.exists', side_effect=side_effect):
+            self.assertEqual(
+                googkit.lib.path.project_config('/dir1/dir2/dir3/dir4'),
+                '/dir1/dir2/dir3/dir4/googkit.cfg')
 
     def test_project_config_with_on_unrelated(self):
         with mock.patch('os.path.exists', return_value=False):
             with self.assertRaises(GoogkitError):
-                googkit.lib.path.project_config()
+                googkit.lib.path.project_config('/cwd')
 
     def test_user_config_on_groundchild(self):
         def side_effect_expand_user(path):

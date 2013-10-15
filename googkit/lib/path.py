@@ -1,5 +1,4 @@
 import os
-import os.path
 from googkit.lib.error import GoogkitError
 
 
@@ -16,8 +15,8 @@ def googkit_root():
     return os.path.normpath(os.path.join(script_dir, '..', '..'))
 
 
-def project_root():
-    current = os.getcwd()
+def project_root(cwd):
+    current = cwd
     try:
         while not os.path.exists(os.path.join(current, PROJECT_CONFIG)):
             before = current
@@ -35,8 +34,8 @@ def project_root():
         return None
 
 
-def project_config():
-    proj_root = project_root()
+def project_config(cwd):
+    proj_root = project_root(cwd)
 
     if proj_root is None:
         raise GoogkitError('Project directory is not found.')

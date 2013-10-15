@@ -32,10 +32,10 @@ def print_version():
     print('googkit ' + VERSION)
 
 
-def find_config():
+def find_config(cwd):
     default_config = googkit.lib.path.default_config()
     user_config = googkit.lib.path.user_config()
-    project_config = googkit.lib.path.project_config()
+    project_config = googkit.lib.path.project_config(cwd)
     config = Config()
     config.load(project_config, user_config, default_config)
     return config
@@ -65,8 +65,8 @@ def main():
         config = None
         for cls in classes:
             if config is None and cls.needs_config():
-                os.chdir(googkit.lib.path.project_root())
-                config = find_config()
+                os.chdir(googkit.lib.path.project_root(cwd))
+                config = find_config(cwd)
 
             env = Environment(cwd, parser, tree, config)
             command = cls(env)

@@ -92,11 +92,11 @@ class TestGoogkit(unittest.TestCase):
             mock_def_cfg.return_value = 'DUMMY_DEF'
             mock_proj_cfg.return_value = 'DUMMY_PROJ'
 
-            googkit.find_config()
+            googkit.find_config('/cwd')
 
-        mock_usr_cfg.assert_called_once_with()
-        mock_def_cfg.assert_called_once_with()
-        mock_proj_cfg.assert_called_once_with()
+        mock_usr_cfg.assert_called_once()
+        mock_def_cfg.assert_called_once()
+        mock_proj_cfg.assert_called_once()
         mock_config.return_value.load.assert_called_once_with('DUMMY_PROJ', 'DUMMY_USR', 'DUMMY_DEF')
 
     def test_run(self):
