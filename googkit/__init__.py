@@ -46,6 +46,8 @@ def main():
     tree = CommandTree()
     googkit.lib.plugin.load(tree)
 
+    cwd = os.getcwd()
+
     parser = ArgumentParser()
     parser.parse(sys.argv)
     commands = parser.commands
@@ -66,7 +68,7 @@ def main():
                 os.chdir(googkit.lib.path.project_root())
                 config = find_config()
 
-            env = Environment(parser, tree, config)
+            env = Environment(cwd, parser, tree, config)
             command = cls(env)
             command.run()
     except GoogkitError as e:
