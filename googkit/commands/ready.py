@@ -1,16 +1,16 @@
-from googkit.commands.download import DownloadCommand
+from googkit.commands.apply_config import ApplyConfigCommand
 from googkit.commands.sequence import SequenceCommand
 from googkit.commands.update_deps import UpdateDepsCommand
 
 
-class SetupCommand(SequenceCommand):
+class ReadyCommand(SequenceCommand):
     """
-    Command class that sets up Closure Tools.
+    Command class that gets ready for running the web app.
     """
 
     @classmethod
     def _internal_commands(cls):
         return [
-            DownloadCommand,
+            ApplyConfigCommand,
             UpdateDepsCommand
         ]

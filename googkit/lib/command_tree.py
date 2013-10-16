@@ -1,24 +1,25 @@
-from googkit.commands.apply_config import ApplyConfigCommand
 from googkit.commands.build import BuildCommand
 from googkit.commands.commands import CommandsCommand
 from googkit.commands.init import InitCommand
+from googkit.commands.ready import ReadyCommand
 from googkit.commands.setup import SetupCommand
 from googkit.commands.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):
+    # TODO: Replace command list with single command
     DEFAULT_TREE = {
         '_commands': [CommandsCommand],
         'build': [BuildCommand],
         'config': {
-            'apply': [ApplyConfigCommand, UpdateDepsCommand]
+            'apply': [ReadyCommand]
         },
         'deps': {
             'update': [UpdateDepsCommand]
         },
         'init': [InitCommand],
-        'ready': [ApplyConfigCommand, UpdateDepsCommand],
-        'setup': [SetupCommand, UpdateDepsCommand]
+        'ready': [ReadyCommand],
+        'setup': [SetupCommand]
     }
 
     def __init__(self):
