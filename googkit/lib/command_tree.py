@@ -1,4 +1,5 @@
 from googkit.commands.build import BuildCommand
+from googkit.commands.command import Command
 from googkit.commands.commands import CommandsCommand
 from googkit.commands.init import InitCommand
 from googkit.commands.ready import ReadyCommand
@@ -7,7 +8,6 @@ from googkit.commands.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):
-    # TODO: Replace command list with single command
     DEFAULT_TREE = {
         '_commands': [CommandsCommand],
         'build': [BuildCommand],
@@ -72,26 +72,21 @@ class CommandTree(object):
             return self._tree['_commands']
 
         for arg in args:
-            # a garbage found next to a right command
+            # Extra argument found after existing commands
             if last_value is not None:
                 return None
 
             next_value = value.get(arg)
 
-            if isinstance(next_value, list):
-                last_value = next_value
-                continue
-
             if isinstance(next_value, dict):
                 value = next_value
                 continue
 
-            return None
-
             if isinstance(next_value, list):
-                return next_value
+                last_value = next_value
+                continue
 
-            value = next_value
+            return None
 
         return last_value
 
