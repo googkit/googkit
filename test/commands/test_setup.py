@@ -19,8 +19,8 @@ from googkit.commands.setup import SetupCommand
 class TestSetupCommand(unittest.TestCase):
     def setUp(self):
         self.env = StubEnvironment()
-        self.env.config = StubConfig()
         self.cmd = SetupCommand(self.env)
+        self.cmd.config = StubConfig()
 
     def test_needs_config(self):
         self.assertTrue(SetupCommand.needs_config())
@@ -37,7 +37,7 @@ class TestSetupCommand(unittest.TestCase):
         tmp_path = '/tmp/dummy'
         with mock.patch('googkit.lib.download') as mock_download, \
                 mock.patch('googkit.lib.unzip') as mock_unzip, \
-                mock.patch('tempfile.mkdtemp', return_value=tmp_path) as mock_mkdtemp, \
+                mock.patch('tempfile.mkdtemp', return_value=tmp_path), \
                 mock.patch('shutil.rmtree') as mock_rmtree:
             self.cmd.setup_closure_compiler()
 

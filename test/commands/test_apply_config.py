@@ -20,8 +20,9 @@ from test.stub_config import StubConfig, StubConfigOnStubProject
 class TestApplyConfigCommand(unittest.TestCase):
     def setUp(self):
         self.env = StubEnvironment()
-        self.env.config = StubConfig()
         self.cmd = ApplyConfigCommand(self.env)
+
+        self.cmd.config = StubConfig()
 
     def test_line_indent(self):
         self.assertEqual(ApplyConfigCommand.line_indent('    '), '    ')
@@ -121,8 +122,9 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
         self.cmd.update_deps_js.assert_called_once_with('  <!--@deps_js@-->\n', StubConfig.DEVELOPMENT_DIR)
 
     def test_apply_config_all(self):
-        self.env.config = StubConfigOnStubProject()
         self.cmd.apply_config = mock.MagicMock()
+        self.cmd.config = StubConfigOnStubProject()
+
         self.cmd.apply_config_all()
 
         expected_calls = [os.path.join(StubConfigOnStubProject.DEVELOPMENT_DIR, path) for path in [
@@ -133,14 +135,13 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
             'js_dev/example_test.html',
             'js_dev/main.js'
         ]]
-
         for expected_call in expected_calls:
             self.cmd.apply_config.assert_any_call(expected_call)
 
     def test_run_internal(self):
         with mock.patch('sys.stdout', new_callable=StubStdout):
             self.cmd.apply_config_all = mock.MagicMock()
-            self.cmd.run()
+            self.cmd.run_internal()
             self.cmd.apply_config_all.assert_called_once_with()
 
 

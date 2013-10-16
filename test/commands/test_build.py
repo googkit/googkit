@@ -18,8 +18,8 @@ from googkit.commands.build import BuildCommand
 class TestBuildCommand(unittest.TestCase):
     def setUp(self):
         self.env = StubEnvironment()
-        self.env.config = StubConfig()
         self.cmd = BuildCommand(self.env)
+        self.cmd.config = StubConfig()
 
     def test_needs_config(self):
         self.assertTrue(BuildCommand.needs_config())
@@ -75,7 +75,7 @@ DUMMY
             [mock.call(line + '\n',) for line in expected.split('\n')])
 
     def test_setup_files(self):
-        self.env.config = StubConfigOnStubProject()
+        self.cmd.config = StubConfigOnStubProject()
         self.cmd.compile_resource = mock.MagicMock()
 
         with mock.patch.object(BuildCommand, 'rmtree_silent') as mock_rmtree_silent, \
@@ -173,8 +173,8 @@ DUMMY
         self.cmd.setup_files.assert_any_call(StubConfig.DEBUG_DIR)
 
     def test_compile_scripts(self):
-        self.env.config.is_debug_enabled = mock.MagicMock()
-        self.env.config.is_debug_enabled.return_value = False
+        self.cmd.config.is_debug_enabled = mock.MagicMock()
+        self.cmd.config.is_debug_enabled.return_value = False
 
         self.cmd.setup_files = mock.MagicMock()
         self.cmd.modify_source_map = mock.MagicMock()

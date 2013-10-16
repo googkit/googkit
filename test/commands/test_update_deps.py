@@ -20,8 +20,8 @@ from googkit.commands.update_deps import UpdateDepsCommand
 class TestUpdateDepsCommand(unittest.TestCase):
     def setUp(self):
         self.env = StubEnvironment()
-        self.env.config = StubConfig()
         self.cmd = UpdateDepsCommand(self.env)
+        self.cmd.config = StubConfig()
 
     def test_needs_config(self):
         self.assertTrue(UpdateDepsCommand.needs_config())
@@ -66,7 +66,7 @@ class TestUpdateDepsCommand(unittest.TestCase):
 
     def test_update_testrunner(self):
         # Use stub config for stub project directories.
-        self.env.config = StubConfigOnStubProject()
+        self.cmd.config = StubConfigOnStubProject()
 
         self.cmd.update_tests = mock.MagicMock()
         self.cmd.update_tests.return_value = 'changed'

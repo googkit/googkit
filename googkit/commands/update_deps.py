@@ -21,7 +21,7 @@ class UpdateDepsCommand(Command):
         return indent
 
     def update_deps(self):
-        config = self.env.config
+        config = self.config
         js_dev_dir = config.js_dev_dir()
         deps_js = config.deps_js()
 
@@ -59,7 +59,7 @@ class UpdateDepsCommand(Command):
         return 'var testFiles = [{test_files}];'.format(test_files=joined)
 
     def update_testrunner(self):
-        config = self.env.config
+        config = self.config
         js_dev_dir = config.js_dev_dir()
         testrunner = config.testrunner()
 
