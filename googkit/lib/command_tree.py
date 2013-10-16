@@ -1,4 +1,5 @@
 from googkit.commands.build import BuildCommand
+from googkit.commands.command import Command
 from googkit.commands.commands import CommandsCommand
 from googkit.commands.init import InitCommand
 from googkit.commands.ready import ReadyCommand
@@ -7,7 +8,6 @@ from googkit.commands.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):
-    # TODO: Replace command list with single command
     DEFAULT_TREE = {
         '_commands': [CommandsCommand],
         'build': [BuildCommand],
@@ -65,35 +65,29 @@ class CommandTree(object):
 
     def command_classes(self, args):
         value = self._tree
-        last_value = None
 
         # TODO: is there a better way...?
         if len(args) > 1 and args[0] == '_commands':
             return self._tree['_commands']
 
+        depth = 0
         for arg in args:
-            # a garbage found next to a right command
-            if last_value is not None:
-                return None
-
             next_value = value.get(arg)
-
-            if isinstance(next_value, list):
-                last_value = next_value
-                continue
+            depth += 1
 
             if isinstance(next_value, dict):
                 value = next_value
                 continue
 
-            return None
-
             if isinstance(next_value, list):
+                if depth != len(args):
+                    # Extra argument found after existing commands
+                    # TODO: should raise an error?
+                    return None
+
                 return next_value
 
-            value = next_value
-
-        return last_value
+        return None
 
     def register(self, names, commands):
         command_dict = self._tree
