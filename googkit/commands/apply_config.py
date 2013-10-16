@@ -22,21 +22,21 @@ class ApplyConfigCommand(Command):
         return indent
 
     def update_base_js(self, line, dirpath):
-        path = self.env.config.base_js()
+        path = self.config.base_js()
         relpath = os.path.relpath(path, dirpath)
         href = googkit.lib.path.url(relpath)
 
         return '<script type="text/javascript" src="{href}"></script>'.format(href=href)
 
     def update_deps_js(self, line, dirpath):
-        path = self.env.config.deps_js()
+        path = self.config.deps_js()
         relpath = os.path.relpath(path, dirpath)
         src = googkit.lib.path.url(relpath)
 
         return '<script type="text/javascript" src="{src}"></script>'.format(src=src)
 
     def update_multitestrunner_css(self, line, dirpath):
-        path = self.env.config.multitestrunner_css()
+        path = self.config.multitestrunner_css()
         relpath = os.path.relpath(path, dirpath)
         href = googkit.lib.path.url(relpath)
 
@@ -65,12 +65,12 @@ class ApplyConfigCommand(Command):
                 fp.write(line)
 
     def apply_config_all(self):
-        devel_dir = self.env.config.development_dir()
+        devel_dir = self.config.development_dir()
 
         # If library_root is in development_dir, we should avoid to walk into the library_root.
         ignores = (
-            self.env.config.library_root(),
-            self.env.config.compiler_root())
+            self.config.library_root(),
+            self.config.compiler_root())
 
         for root, dirs, files in os.walk(devel_dir):
             for filename in files:

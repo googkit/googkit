@@ -61,7 +61,7 @@ class BuildCommand(Command):
         return ignoref
 
     def setup_files(self, target_dir):
-        config = self.env.config
+        config = self.config
         devel_dir = config.development_dir()
         compiled_js = config.compiled_js()
 
@@ -85,7 +85,7 @@ class BuildCommand(Command):
                 self.compile_resource(path, compiled_js)
 
     def compile_scripts(self):
-        config = self.env.config
+        config = self.config
         js_dev_dir = config.js_dev_dir()
         compiled_js = config.compiled_js()
 
@@ -161,8 +161,8 @@ class BuildCommand(Command):
             logging.debug(result[1])
 
     def modify_source_map(self):
-        debug_dir = self.env.config.debug_dir()
-        source_map = self.env.config.compiled_js() + '.map'
+        debug_dir = self.config.debug_dir()
+        source_map = self.config.compiled_js() + '.map'
         debug_source_map = os.path.join(debug_dir, source_map)
 
         with open(debug_source_map) as source_map_file:
