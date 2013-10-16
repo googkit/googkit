@@ -9,12 +9,12 @@ from googkit.commands.command import Command
 from googkit.lib.error import GoogkitError
 
 
-class SetupCommand(Command):
+class DownloadCommand(Command):
     @classmethod
     def needs_config(cls):
         return True
 
-    def setup_closure_library(self):
+    def download_closure_library(self):
         library_repos = self.config.library_repos()
         library_root = self.config.library_root()
         try:
@@ -22,7 +22,7 @@ class SetupCommand(Command):
         except GoogkitError as e:
             raise GoogkitError('Dowloading Closure Library failed: ' + str(e))
 
-    def setup_closure_compiler(self):
+    def download_closure_compiler(self):
         tmp_path = tempfile.mkdtemp()
         compiler_zip = os.path.join(tmp_path, 'compiler.zip')
         compiler_zip_url = self.config.compiler_zip()
@@ -46,9 +46,9 @@ class SetupCommand(Command):
             logger.setLevel(logging.DEBUG)
 
         logging.info('Downloading Closure Library...')
-        self.setup_closure_library()
+        self.download_closure_library()
 
         logging.info('Downloading Closure Compiler...')
-        self.setup_closure_compiler()
+        self.download_closure_compiler()
 
         logger.setLevel(level)

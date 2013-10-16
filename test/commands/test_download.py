@@ -13,33 +13,33 @@ from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig
 
-from googkit.commands.setup import SetupCommand
+from googkit.commands.download import DownloadCommand
 
 
-class TestSetupCommand(unittest.TestCase):
+class TestDownloadCommand(unittest.TestCase):
     def setUp(self):
         self.env = StubEnvironment()
-        self.cmd = SetupCommand(self.env)
+        self.cmd = DownloadCommand(self.env)
         self.cmd.config = StubConfig()
 
     def test_needs_config(self):
-        self.assertTrue(SetupCommand.needs_config())
+        self.assertTrue(DownloadCommand.needs_config())
 
-    def test_setup_closure_library(self):
+    def test_download_closure_library(self):
         with mock.patch('googkit.lib.clone') as mock_clone:
-            self.cmd.setup_closure_library()
+            self.cmd.download_closure_library()
 
         mock_clone.run.assert_called_once_with(
             StubConfig.LIBRARY_GIT_REPOS,
             StubConfig.LIBRARRY_ROOT)
 
-    def test_setup_closure_compiler(self):
+    def test_download_closure_compiler(self):
         tmp_path = '/tmp/dummy'
         with mock.patch('googkit.lib.download') as mock_download, \
                 mock.patch('googkit.lib.unzip') as mock_unzip, \
                 mock.patch('tempfile.mkdtemp', return_value=tmp_path), \
                 mock.patch('shutil.rmtree') as mock_rmtree:
-            self.cmd.setup_closure_compiler()
+            self.cmd.download_closure_compiler()
 
         # Expected temporary directory was created and removed
         mock_rmtree.assert_called_once_with(tmp_path)
@@ -56,13 +56,13 @@ class TestSetupCommand(unittest.TestCase):
         self.env.arg_parser = mock.MagicMock()
         self.env.arg_parser.option.return_value = False
         with mock.patch('sys.stdout', new_callable=StubStdout):
-            self.cmd.setup_closure_compiler = mock.MagicMock()
-            self.cmd.setup_closure_library = mock.MagicMock()
+            self.cmd.download_closure_compiler = mock.MagicMock()
+            self.cmd.download_closure_library = mock.MagicMock()
 
             self.cmd.run_internal()
 
-            self.cmd.setup_closure_compiler.assert_called_once_with()
-            self.cmd.setup_closure_library.assert_called_once_with()
+            self.cmd.download_closure_compiler.assert_called_once_with()
+            self.cmd.download_closure_library.assert_called_once_with()
 
 
 if __name__ == '__main__':
