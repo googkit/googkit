@@ -1,12 +1,13 @@
 from googkit.commands.build import BuildCommand
 from googkit.commands.commands import CommandsCommand
-from googkit.commands.download import DownloadCommand
 from googkit.commands.init import InitCommand
 from googkit.commands.ready import ReadyCommand
+from googkit.commands.setup import SetupCommand
 from googkit.commands.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):
+    # TODO: Replace command list with single command
     DEFAULT_TREE = {
         '_commands': [CommandsCommand],
         'build': [BuildCommand],
@@ -18,7 +19,7 @@ class CommandTree(object):
         },
         'init': [InitCommand],
         'ready': [ReadyCommand],
-        'setup': [DownloadCommand, UpdateDepsCommand]
+        'setup': [SetupCommand]
     }
 
     def __init__(self):
