@@ -155,7 +155,7 @@ class TestGoogkit(unittest.TestCase):
 
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
-                mock.patch('sys.stdout') as mock_stdout, \
+                mock.patch('sys.stdout'), \
                 mock.patch('googkit.lib.path.project_root', return_value='/dir1/dir2'), \
                 mock.patch('googkit.print_help'), \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
@@ -165,7 +165,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('logging.error') as mock_error:
             MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
 
-            with self.assertRaises(SystemExit) as e:
+            with self.assertRaises(SystemExit):
                 googkit.main()
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
