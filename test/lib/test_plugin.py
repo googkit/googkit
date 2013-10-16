@@ -142,8 +142,6 @@ class TestPlugin(unittest.TestCase):
                 mock.patch('googkit.lib.path.plugin', return_value='/dummy/plugins'), \
                 mock.patch('os.path.exists', side_effect=is_exists), \
                 mock.patch('os.path.isdir', side_effect=is_dir), \
-                mock.patch('googkit.lib.plugin.__import__', create=True, return_value=mock_module) as mock_import:
-            with self.assertRaises(GoogkitError):
-                googkit.lib.plugin.load(mock_tree)
-
-        self.assertFalse(mock_import.called)
+                mock.patch('googkit.lib.plugin.__import__', create=True, return_value=mock_module):
+            # should not raise any error
+            googkit.lib.plugin.load(mock_tree)

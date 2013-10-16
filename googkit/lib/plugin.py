@@ -18,7 +18,7 @@ def load(tree):
 
         init_path = os.path.join(plugin_dir, INIT_FILE)
         if not os.path.exists(init_path):
-            raise GoogkitError('{init_path} is not found.'.format(init_path=init_path))
+            continue
 
         command_path = os.path.join(plugin_dir, COMMAND_FILE)
         if not os.path.exists(command_path):
