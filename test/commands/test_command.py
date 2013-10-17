@@ -7,8 +7,9 @@ except ImportError:
     # Python 2.x or 3.2-
     import mock
 
-from googkit.lib.error import GoogkitError
 from googkit.commands.command import Command
+from googkit.lib.argument_parser import ArgumentParser
+from googkit.lib.error import GoogkitError
 
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
@@ -20,6 +21,7 @@ class TestCommand(unittest.TestCase):
             pass
 
         env = StubEnvironment()
+        env.arg_parser = ArgumentParser()
         cmd = DummyCommand(env)
         cmd._setup = mock.MagicMock()
         cmd.run_internal = mock.MagicMock()
@@ -31,6 +33,31 @@ class TestCommand(unittest.TestCase):
         cmd._setup.assert_called_once()
         cmd.run_internal.assert_called_once()
         cmd.complete.assert_called_once()
+
+    def test_validate_options(self):
+        class DummyCommand(Command):
+            @classmethod
+            def supported_options(cls):
+                return set(['--foo', '--bar'])
+
+        env = StubEnvironment()
+        env.arg_parser = ArgumentParser()
+
+        # No options should not raise any error
+        env.arg_parser.parse(['googkit.py'])
+        cmd = DummyCommand(env)
+        cmd._validate_options()
+
+        # Supported option should not raise any error
+        env.arg_parser.parse(['googkit.py', '--foo'])
+        cmd = DummyCommand(env)
+        cmd._validate_options()
+
+        # Unsupported option
+        env.arg_parser.parse(['googkit.py', '--foo', '--blue-rose'])
+        cmd = DummyCommand(env)
+        with self.assertRaises(GoogkitError):
+            cmd._validate_options()
 
     def test_setup(self):
         class DummyCommand(Command):

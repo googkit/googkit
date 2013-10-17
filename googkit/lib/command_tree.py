@@ -1,5 +1,4 @@
 from googkit.commands.build import BuildCommand
-from googkit.commands.command import Command
 from googkit.commands.commands import CommandsCommand
 from googkit.commands.init import InitCommand
 from googkit.commands.ready import ReadyCommand
