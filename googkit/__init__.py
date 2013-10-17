@@ -55,6 +55,7 @@ def main():
         env = Environment(cwd, parser, tree)
         command = CommandClass(env)
         command.run()
+        logging.info('Complete.')
     except GoogkitError as e:
         logging.error('[Error] ' + str(e))
         sys.exit(1)

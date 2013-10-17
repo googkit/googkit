@@ -3,6 +3,7 @@ import os
 import googkit.lib.path
 from googkit.lib.config import Config
 from googkit.lib.error import GoogkitError
+from googkit.lib.logutil import log_level
 
 
 class Command(object):
@@ -16,7 +17,7 @@ class Command(object):
 
     @classmethod
     def supported_options(cls):
-        return set()
+        return set(['--verbose'])
 
     def _validate_options(self):
         opts = set(self.env.arg_parser.options.keys())
@@ -46,14 +47,14 @@ class Command(object):
         os.chdir(self.env.cwd)
 
     def run(self):
-        self._validate_options()
-        self._setup()
-        self.run_internal()
-        self.complete()
+        level = logging.DEBUG if self.env.arg_parser.option('--verbose') else None
+
+        # Log level should be DEBUG if verbose option was set.
+        with log_level(level):
+            self._validate_options()
+            self._setup()
+            self.run_internal()
 
     def run_internal(self):
         # Override the method to implement a behavior
         pass
-
-    def complete(self):
-        logging.info('Complete.')

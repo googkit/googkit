@@ -17,10 +17,6 @@ class BuildCommand(Command):
         return True
 
     @classmethod
-    def supported_options(cls):
-        return set(['--verbose'])
-
-    @classmethod
     def rmtree_silent(cls, path):
         try:
             shutil.rmtree(path)
@@ -177,11 +173,4 @@ class BuildCommand(Command):
             json.dump(source_map_content, source_map_file)
 
     def run_internal(self):
-        logger = logging.getLogger()
-        level = logger.level
-        if self.env.arg_parser.option('--verbose'):
-            logger.setLevel(logging.DEBUG)
-
         self.compile_scripts()
-
-        logger.setLevel(level)

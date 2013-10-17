@@ -52,7 +52,7 @@ class UpdateDepsCommand(Command):
         if proc.returncode != 0:
             raise GoogkitError('Updating dependencies failed: ' + result[1])
         else:
-            logging.debug(result[0])
+            logging.debug(result[1])
 
     def update_tests(self, line, tests):
         joined = ','.join(['\'' + test_file + '\'' for test_file in tests])
@@ -81,7 +81,7 @@ class UpdateDepsCommand(Command):
                 relpath = os.path.relpath(path, testrunner_dir)
 
                 tests.append(relpath)
-                logging.debug('Test case found: ' + path)
+                logging.debug('Test case found on ' + path)
 
         lines = []
 
