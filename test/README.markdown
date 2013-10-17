@@ -79,3 +79,23 @@ class TestSample(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
 ```
+
+
+### Using doctest
+If you want to use [doctest](http://docs.python.org/3.3/library/doctest.html#module-doctest),
+add the following test file to `test/`.
+
+```python
+import unittest
+import doctest
+import sample
+
+
+def load_tests(loader, tests, ignore):
+    tests.addTests(doctest.DocTestSuite(sample))
+    return tests
+
+
+if __name__ == '__main__':
+    unittest.main()
+```

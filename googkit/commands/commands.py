@@ -7,8 +7,9 @@ class CommandsCommand(Command):
     An output will be used for shell completion.
     """
 
-    def complete(self):
-        pass
+    @classmethod
+    def supported_options(cls):
+        return set()
 
     def run_internal(self):
         commands = self.env.arg_parser.commands[1:]

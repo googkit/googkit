@@ -55,7 +55,10 @@ class ApplyConfigCommand(Command):
             for line in fp:
                 for marker in markers:
                     if line.find(marker) >= 0:
-                        logging.debug('Applying config to {path} ...'.format(path=path))
+                        format_dict = {'marker': marker, 'path': path}
+                        msg = 'Line marked by {marker} was replaced on {path}'.format(**format_dict)
+                        logging.debug(msg)
+
                         updater = updaters[marker]
                         line = ApplyConfigCommand.line_indent(line) + updater(line, dirpath) + marker + '\n'
                 lines.append(line)
