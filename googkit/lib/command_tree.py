@@ -1,5 +1,4 @@
 from googkit.commands.build import BuildCommand
-from googkit.commands.command import Command
 from googkit.commands.commands import CommandsCommand
 from googkit.commands.init import InitCommand
 from googkit.commands.ready import ReadyCommand
@@ -9,17 +8,17 @@ from googkit.commands.update_deps import UpdateDepsCommand
 
 class CommandTree(object):
     DEFAULT_TREE = {
-        '_commands': [CommandsCommand],
-        'build': [BuildCommand],
+        '_commands': CommandsCommand,
+        'build': BuildCommand,
         'config': {
-            'apply': [ReadyCommand]
+            'apply': ReadyCommand
         },
         'deps': {
-            'update': [UpdateDepsCommand]
+            'update': UpdateDepsCommand
         },
-        'init': [InitCommand],
-        'ready': [ReadyCommand],
-        'setup': [SetupCommand]
+        'init': InitCommand,
+        'ready': ReadyCommand,
+        'setup': SetupCommand
     }
 
     def __init__(self):
@@ -63,7 +62,7 @@ class CommandTree(object):
         commands = command_dict.keys()
         return sorted([cmd for cmd in commands if not CommandTree.is_internal_command(cmd)])
 
-    def command_classes(self, args):
+    def command_class(self, args):
         value = self._tree
 
         # TODO: is there a better way...?
@@ -75,17 +74,15 @@ class CommandTree(object):
             next_value = value.get(arg)
             depth += 1
 
-            if isinstance(next_value, dict):
-                value = next_value
-                continue
-
-            if isinstance(next_value, list):
+            if not isinstance(next_value, dict):
                 if depth != len(args):
                     # Extra argument found after existing commands
                     # TODO: should raise an error?
                     return None
 
                 return next_value
+
+            value = next_value
 
         return None
 

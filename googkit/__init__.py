@@ -46,16 +46,15 @@ def main():
         print_version()
         sys.exit()
 
-    classes = tree.command_classes(commands)
-    if classes is None:
+    CommandClass = tree.command_class(commands)
+    if CommandClass is None:
         print_help(tree, commands)
         sys.exit()
 
     try:
-        for cls in classes:
-            env = Environment(cwd, parser, tree)
-            command = cls(env)
-            command.run()
+        env = Environment(cwd, parser, tree)
+        command = CommandClass(env)
+        command.run()
     except GoogkitError as e:
         logging.error('[Error] ' + str(e))
         sys.exit(1)

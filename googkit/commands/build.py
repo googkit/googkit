@@ -17,6 +17,10 @@ class BuildCommand(Command):
         return True
 
     @classmethod
+    def supported_options(cls):
+        return set(['--verbose'])
+
+    @classmethod
     def rmtree_silent(cls, path):
         try:
             shutil.rmtree(path)

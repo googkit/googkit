@@ -14,6 +14,17 @@ class Command(object):
     def needs_config(cls):
         return False
 
+    @classmethod
+    def supported_options(cls):
+        return set()
+
+    def _validate_options(self):
+        opts = set(self.env.arg_parser.options.keys())
+        unsupported_opts = opts - self.__class__.supported_options()
+
+        if len(unsupported_opts) > 0:
+            raise GoogkitError('Invalid option: ' + ', '.join(opts))
+
     def _load_config(self):
         default_config = googkit.lib.path.default_config()
         user_config = googkit.lib.path.user_config()
@@ -35,6 +46,7 @@ class Command(object):
         os.chdir(self.env.cwd)
 
     def run(self):
+        self._validate_options()
         self._setup()
         self.run_internal()
         self.complete()
