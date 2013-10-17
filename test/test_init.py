@@ -83,14 +83,9 @@ class TestGoogkit(unittest.TestCase):
             mock_stdout.write.assert_any_call('    dummy2')
 
     def test_run(self):
-        MockCmd1 = mock.MagicMock()
-        MockCmd2 = mock.MagicMock()
-
-        MockCmd1.needs_config.return_value = False
-        MockCmd2.needs_config.return_value = False
-
-        mock_cmd1 = MockCmd1.return_value
-        mock_cmd2 = MockCmd2.return_value
+        MockCmd = mock.MagicMock()
+        MockCmd.needs_config.return_value = False
+        mock_cmd = MockCmd.return_value
 
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
@@ -100,14 +95,13 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load') as mock_load, \
                 mock.patch('logging.basicConfig'):
-            MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
+            MockTree.return_value.command_class.return_value = MockCmd
 
             googkit.main()
 
         mock_load.assert_called_once_with(MockTree.return_value)
 
-        mock_cmd1.run.assert_called_once_with()
-        mock_cmd2.run.assert_called_once_with()
+        mock_cmd.run.assert_called_once_with()
 
     def test_run_with_empty_args(self):
         with mock.patch('os.chdir'), \
@@ -117,7 +111,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load'), \
                 mock.patch('logging.basicConfig') as mock_basic_cfg:
-            MockTree.return_value.command_classes.return_value = None
+            MockTree.return_value.command_class.return_value = None
 
             with self.assertRaises(SystemExit):
                 googkit.main()
@@ -134,7 +128,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load'), \
                 mock.patch('logging.basicConfig') as mock_basic_cfg:
-            MockTree.return_value.command_classes.return_value = None
+            MockTree.return_value.command_class.return_value = None
 
             with self.assertRaises(SystemExit):
                 googkit.main()
@@ -144,14 +138,10 @@ class TestGoogkit(unittest.TestCase):
         mock_print_help.assert_called_once_with(MockTree.return_value, ['dummy'])
 
     def test_run_with_exception(self):
-        MockCmd1 = mock.MagicMock()
-        MockCmd2 = mock.MagicMock()
-
-        MockCmd1.needs_config.return_value = False
-        MockCmd2.needs_config.return_value = True
-
-        mock_cmd1 = MockCmd1.return_value
-        mock_cmd1.run.side_effect = GoogkitError('DUMMY')
+        MockCmd = mock.MagicMock()
+        MockCmd.needs_config.return_value = False
+        mock_cmd = MockCmd.return_value
+        mock_cmd.run.side_effect = GoogkitError('DUMMY')
 
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
@@ -163,7 +153,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('googkit.lib.plugin.load'), \
                 mock.patch('logging.basicConfig') as mock_basic_cfg, \
                 mock.patch('logging.error') as mock_error:
-            MockTree.return_value.command_classes.return_value = [MockCmd1, MockCmd2]
+            MockTree.return_value.command_class.return_value = MockCmd
 
             with self.assertRaises(SystemExit):
                 googkit.main()

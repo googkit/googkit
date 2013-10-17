@@ -18,12 +18,12 @@ class TestCommandTree(unittest.TestCase):
 
     def setUp(self):
         CommandTree.DEFAULT_TREE = {
-            '_cmd0': [TestCommandTree.cmd0],
-            'cmd1': [TestCommandTree.cmd1],
+            '_cmd0': TestCommandTree.cmd0,
+            'cmd1': TestCommandTree.cmd1,
             'cmd2': {
-                'cmd3': [TestCommandTree.cmd3],
+                'cmd3': TestCommandTree.cmd3,
                 'cmd4': {
-                    'cmd5': [TestCommandTree.cmd5]
+                    'cmd5': TestCommandTree.cmd5
                 }
             }
         }
@@ -126,44 +126,44 @@ class TestCommandTree(unittest.TestCase):
         result = self.tree.available_commands(['cmd2', 'cmd4', 'cmd5'])
         self.assertEqual(len(result), 0)
 
-    def test_command_classes_with_no_cmd(self):
-        self.assertEqual(self.tree.command_classes([]), None)
+    def test_command_class_with_no_cmd(self):
+        self.assertEqual(self.tree.command_class([]), None)
 
-    def test_command_classes_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd999']), None)
+    def test_command_class_with_garbage(self):
+        self.assertEqual(self.tree.command_class(['cmd999']), None)
 
-    def test_command_classes_with_main_cmd(self):
-        result = self.tree.command_classes(['cmd1'])
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0], TestCommandTree.cmd1)
+    def test_command_class_with_main_cmd(self):
+        result = self.tree.command_class(['cmd1'])
+        self.assertIsNotNone(result)
+        self.assertEqual(result, TestCommandTree.cmd1)
 
-    def test_command_classes_with_main_cmd_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd1', 'cmd999']), None)
+    def test_command_class_with_main_cmd_with_garbage(self):
+        self.assertEqual(self.tree.command_class(['cmd1', 'cmd999']), None)
 
-    def test_command_classes_with_cmd_has_sub_one(self):
-        self.assertEqual(self.tree.command_classes(['cmd2']), None)
+    def test_command_class_with_cmd_has_sub_one(self):
+        self.assertEqual(self.tree.command_class(['cmd2']), None)
 
-    def test_command_classes_with_cmd_has_sub_one_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd999']), None)
+    def test_command_class_with_cmd_has_sub_one_with_garbage(self):
+        self.assertEqual(self.tree.command_class(['cmd2', 'cmd999']), None)
 
-    def test_command_classes_with_sub_cmd(self):
-        result = self.tree.command_classes(['cmd2', 'cmd3'])
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0], TestCommandTree.cmd3)
+    def test_command_class_with_sub_cmd(self):
+        result = self.tree.command_class(['cmd2', 'cmd3'])
+        self.assertIsNotNone(result)
+        self.assertEqual(result, TestCommandTree.cmd3)
 
-    def test_command_classes_with_sub_cmd_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd3', 'cmd999']), None)
+    def test_command_class_with_sub_cmd_with_garbage(self):
+        self.assertEqual(self.tree.command_class(['cmd2', 'cmd3', 'cmd999']), None)
 
-    def test_command_classes_with_sub_cmd_has_sub_one(self):
-        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4']), None)
+    def test_command_class_with_sub_cmd_has_sub_one(self):
+        self.assertEqual(self.tree.command_class(['cmd2', 'cmd4']), None)
 
-    def test_command_classes_with_sub_cmd_has_sub_one_with_garbage(self):
-        self.assertEqual(self.tree.command_classes(['cmd2', 'cmd4', 'cmd999']), None)
+    def test_command_class_with_sub_cmd_has_sub_one_with_garbage(self):
+        self.assertEqual(self.tree.command_class(['cmd2', 'cmd4', 'cmd999']), None)
 
-    def test_command_classes_with_sub_sub_cmd(self):
-        result = self.tree.command_classes(['cmd2', 'cmd4', 'cmd5'])
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0], TestCommandTree.cmd5)
+    def test_command_class_with_sub_sub_cmd(self):
+        result = self.tree.command_class(['cmd2', 'cmd4', 'cmd5'])
+        self.assertIsNotNone(result)
+        self.assertEqual(result, TestCommandTree.cmd5)
 
     def test_register(self):
         cmd100 = mock.MagicMock()
