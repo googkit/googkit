@@ -13,18 +13,69 @@ VERSION = '0.0.0'
 
 
 def print_help(tree, commands=[]):
+    """Print help.
+
+    :param tree: `CommandTree` stored available commands.
+    :param commands: Commands was given by user.
+
+    If an empty commands was given, print an usage and availables:
+        >>> from compat.unittest import mock
+        >>> tree = mock.MagicMock()
+        >>> tree.right_commands.return_value = []
+        >>> tree.available_commands.return_value = ['sub1', 'sub2']
+        ...
+        >>> print_help(tree, [])
+        Usage: googkit <command>
+        <BLANKLINE>
+        Available commands:
+            sub1
+            sub2
+
+    If a branch command was given, print an usage and availables:
+        >>> from compat.unittest import mock
+        >>> tree = mock.MagicMock()
+        >>> tree.right_commands.return_value = ['sub']
+        >>> tree.available_commands.return_value = ['subsub1', 'subsub2']
+        ...
+        >>> print_help(tree, ['sub'])
+        Usage: googkit sub <command>
+        <BLANKLINE>
+        Available commands:
+            subsub1
+            subsub2
+
+    If an invalid command was given, print an error and expecteds:
+        >>> from compat.unittest import mock
+        >>> tree = mock.MagicMock()
+        >>> tree.right_commands.return_value = []
+        >>> tree.available_commands.return_value = ['sub1', 'sub2']
+        ...
+        >>> print_help(tree, ['invalid'])
+        Invalid command: invalid
+        <BLANKLINE>
+        Did you mean one of these?
+            sub1
+            sub2
+    """
     right_commands = tree.right_commands(commands)
-    if len(right_commands) == 0:
-        print('Usage: googkit <command>')
-    else:
-        print('Usage: googkit {cmd} <command>'.format(cmd=' '.join(right_commands)))
-
-    print('')
-    print('Available commands:')
-
     available_commands = tree.available_commands(right_commands)
-    for name in available_commands:
-        print('    ' + name)
+    valid = not commands or commands == right_commands
+
+    if not valid:
+        print('Invalid command: {cmd}\n'.format(cmd=commands[-1]))
+    elif right_commands:
+        print('Usage: googkit {cmd} <command>\n'.format(cmd=' '.join(commands)))
+    else:
+        print('Usage: googkit <command>\n')
+
+    if available_commands:
+        if valid:
+            print('Available commands:')
+        else:
+            print('Did you mean one of these?')
+
+        for name in available_commands:
+            print('    ' + name)
 
 
 def print_version():
@@ -42,7 +93,7 @@ def main():
     parser.parse(sys.argv)
     commands = parser.commands
 
-    if len(commands) == 0 and parser.option('--version'):
+    if commands and parser.option('--version'):
         print_version()
         sys.exit()
 

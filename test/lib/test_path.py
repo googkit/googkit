@@ -2,13 +2,7 @@ import unittest
 import os
 import re
 
-try:
-    # Python 3.3 or later
-    import unittest.mock as mock
-except ImportError:
-    # Python 2.x or 3.2-
-    import mock
-
+from compat.unittest import mock
 
 import googkit.lib.path
 from googkit.lib.error import GoogkitError

@@ -1,18 +1,12 @@
 import unittest
 
-try:
-    # Python 3.3 or later
-    import unittest.mock as mock
-except ImportError:
-    # Python 2.x or 3.2-
-    import mock
+from compat.unittest import mock
+from test.stub_stdout import StubStdout
+from test.stub_environment import StubEnvironment
 
 from googkit.commands.command import Command
 from googkit.lib.argument_parser import ArgumentParser
 from googkit.lib.error import GoogkitError
-
-from test.stub_stdout import StubStdout
-from test.stub_environment import StubEnvironment
 
 
 class TestCommand(unittest.TestCase):

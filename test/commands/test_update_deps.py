@@ -1,15 +1,9 @@
 import unittest
 
-try:
-    # Python 3.3 or later
-    import unittest.mock as mock
-except ImportError:
-    # Python 2.x or 3.2-
-    import mock
-
-
 import os
 import subprocess
+
+from compat.unittest import mock
 from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig, StubConfigOnStubProject

@@ -1,16 +1,10 @@
 import unittest
 
-try:
-    # Python 3.3 or later
-    import unittest.mock as mock
-except ImportError:
-    # Python 2.x or 3.2-
-    import mock
+from compat.unittest import mock
+from test.stub_environment import StubEnvironment
 
 from googkit.commands.command import Command
 from googkit.commands.sequence import SequenceCommand
-
-from test.stub_environment import StubEnvironment
 
 
 class DummyFooCommand(Command):

@@ -1,13 +1,7 @@
 import unittest
 import urllib
 
-try:
-    # Python 3.3 or later
-    import unittest.mock as mock
-except ImportError:
-    # Python 2.x or 3.2-
-    import mock
-
+from compat.unittest import mock
 
 _urllib = None
 

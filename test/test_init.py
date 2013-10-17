@@ -1,87 +1,20 @@
 import unittest
+import doctest
+import logging
 
-try:
-    # Python 3.3 or later
-    import unittest.mock as mock
-except ImportError:
-    # Python 2.x or 3.2-
-    import mock
-
+from compat.unittest import mock
 
 import googkit
-import logging
 from googkit.lib.error import GoogkitError
-from test.stub_stdout import StubStdout
+
+
+# Import tests from doctest
+def load_tests(loader, tests, ignore):
+    tests.addTests(doctest.DocTestSuite(googkit))
+    return tests
 
 
 class TestGoogkit(unittest.TestCase):
-    # This case simulate:
-    #   * only 2 commands as dummy1 and dummy2 are available
-    #   * googkit.py get 2 argments ARG1, ARG2 (internally DUMMY1, DUMMY2)
-    def test_print_help(self):
-        # Mociking stdout
-        MockStdout = mock.MagicMock(spec=StubStdout)
-        with mock.patch('sys.stdout', new_callable=MockStdout) as mock_stdout:
-            # Mocking ConfigTree
-            mock_tree = mock.MagicMock()
-            mock_tree.right_commands.return_value = ['DUMMY1', 'DUMMY2']
-            mock_tree.available_commands.return_value = ['dummy1', 'dummy2']
-
-            googkit.print_help(mock_tree, ['ARG1', 'ARG2'])
-
-            mock_tree.right_commands.assert_called_once_with(['ARG1', 'ARG2'])
-            mock_tree.available_commands.assert_called_once_with(['DUMMY1', 'DUMMY2'])
-
-            # Expected some messages printing to stdout
-            mock_stdout.write.assert_any_call('Usage: googkit DUMMY1 DUMMY2 <command>')
-            mock_stdout.write.assert_any_call('Available commands:')
-            mock_stdout.write.assert_any_call('    dummy1')
-            mock_stdout.write.assert_any_call('    dummy2')
-
-    # This case simulate:
-    #   * only 2 commands as dummy1 and dummy2 are available
-    #   * googkit.py get 2 argments ARG1, ARG2 but there are invalid
-    def test_print_help_with_invalid_args(self):
-        # Mociking stdout
-        MockStdout = mock.MagicMock(spec=StubStdout)
-        with mock.patch('sys.stdout', new_callable=MockStdout) as mock_stdout:
-            # Mocking ConfigTree
-            mock_tree = mock.MagicMock()
-            mock_tree.right_commands.return_value = []
-            mock_tree.available_commands.return_value = ['dummy1', 'dummy2']
-
-            googkit.print_help(mock_tree, ['ARG1', 'ARG2'])
-
-            # Expected some messages printing to stdout
-            mock_tree.right_commands.assert_called_once_with(['ARG1', 'ARG2'])
-            mock_tree.available_commands.assert_called_once_with([])
-            mock_stdout.write.assert_any_call('Usage: googkit <command>')
-            mock_stdout.write.assert_any_call('Available commands:')
-            mock_stdout.write.assert_any_call('    dummy1')
-            mock_stdout.write.assert_any_call('    dummy2')
-
-    # This case simulate:
-    #   * only 2 commands as dummy1 and dummy2 are available
-    #   * googkit.py get no argments
-    def test_print_help_with_no_args(self):
-        # Mociking stdout
-        MockStdout = mock.MagicMock(spec=StubStdout)
-        with mock.patch('sys.stdout', new_callable=MockStdout) as mock_stdout:
-            # Mocking ConfigTree
-            mock_tree = mock.MagicMock()
-            mock_tree.right_commands.return_value = []
-            mock_tree.available_commands.return_value = ['dummy1', 'dummy2']
-
-            googkit.print_help(mock_tree, [])
-
-            # Expected some messages printing to stdout
-            mock_tree.right_commands.assert_called_once_with([])
-            mock_tree.available_commands.assert_called_once_with([])
-            mock_stdout.write.assert_any_call('Usage: googkit <command>')
-            mock_stdout.write.assert_any_call('Available commands:')
-            mock_stdout.write.assert_any_call('    dummy1')
-            mock_stdout.write.assert_any_call('    dummy2')
-
     def test_run(self):
         MockCmd = mock.MagicMock()
         MockCmd.needs_config.return_value = False
