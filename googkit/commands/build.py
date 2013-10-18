@@ -22,6 +22,9 @@ class BuildCommand(Command):
             def __str__(self):
                 return self.key + '=' + self.value
 
+            def __repr__(self):
+                return '<Builder Argument \'' + str(self) + '\'>'
+
             def __eq__(self, other):
                 return self.key == other.key and self.value == other.value
 
@@ -36,6 +39,9 @@ class BuildCommand(Command):
             def __str__(self):
                 return '--compiler_flags={key}={value}'.format(
                     key=self.key, value=self.value)
+
+            def __repr__(self):
+                return '<Compiler Argument \'' + str(self) + '\'>'
 
             def __eq__(self, other):
                 return self.key == other.key and self.value == other.value
@@ -77,6 +83,9 @@ class BuildCommand(Command):
 
         def __str__(self):
             return ' '.join([str(entry) for entry in self._args])
+
+        def __iter__(self):
+            return iter(self._args)
 
         def builder_arg(self, key, value):
             entry = self.BuilderArgumentEntry(key, value)
@@ -167,10 +176,7 @@ class BuildCommand(Command):
     def _build(self, builder_args, project_root):
         builder = self.config.closurebuilder()
 
-        cmd = 'python {builder} {args}'.format(
-            builder=builder, args=str(builder_args))
-
-        print(cmd)
+        cmd = ['python', builder] + [str(arg) for arg in builder_args]
 
         popen_args = {
             'stdout': subprocess.PIPE,
@@ -200,7 +206,7 @@ class BuildCommand(Command):
         source_map = os.path.join(project_root,
                                   self.config.debug_dir(),
                                   self.config.compiled_js() + '.map')
-        self.modify_source_map(source_map)
+        self.modify_source_map(source_map, project_root)
 
     def build_production(self, project_root):
         logging.info('Copying resources for production...')

@@ -93,15 +93,18 @@ DUMMY
 
     def test_debug_arguments(self):
         expected = BuildCommand.BuilderArguments()
-        expected.builder_arg('--root', os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
+        expected.builder_arg('--root',
+                             os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
         expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
         expected.builder_arg('--namespace', 'main')
         expected.builder_arg('--output_mode', 'compiled')
-        expected.builder_arg('--output_file', os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--output_file',
+                             os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS))
         expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
         expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
         expected.compiler_arg('--source_map_format', 'V3')
-        expected.compiler_arg('--create_source_map', os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'))
+        expected.compiler_arg('--create_source_map',
+                              os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'))
         expected.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path=StubConfig.COMPILED_JS + '.map'))
 
         args = self.cmd.debug_arguments(StubConfig.PROJECT_DIR)
@@ -109,11 +112,13 @@ DUMMY
 
     def test_production_arguments(self):
         expected = BuildCommand.BuilderArguments()
-        expected.builder_arg('--root', os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
+        expected.builder_arg('--root',
+                             os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
         expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
         expected.builder_arg('--namespace', 'main')
         expected.builder_arg('--output_mode', 'compiled')
-        expected.builder_arg('--output_file', os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--output_file',
+                             os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS))
         expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
         expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
         expected.compiler_arg('--define', 'goog.DEBUG=false')
@@ -124,7 +129,7 @@ DUMMY
     def test_build_production(self):
         self.cmd.setup_files = mock.MagicMock()
         self.cmd.production_arguments = mock.MagicMock()
-        self.cmd.production_arguments.return_value = 'ARG'
+        self.cmd.production_arguments.return_value = ['ARG']
 
         MockPopen = mock.MagicMock()
         mock_popen = MockPopen.return_value
@@ -135,12 +140,15 @@ DUMMY
             self.cmd.build_production(StubConfig.PROJECT_DIR)
 
         self.cmd.setup_files.assert_called_once_with(StubConfig.PRODUCTION_DIR)
-        MockPopen.assert_called_once_with('python {0} ARG'.format(StubConfig.CLOSUREBUILDER), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        MockPopen.assert_called_once_with(
+            ['python', StubConfig.CLOSUREBUILDER, 'ARG'],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
 
     def test_build_debug(self):
         self.cmd.setup_files = mock.MagicMock()
         self.cmd.debug_arguments = mock.MagicMock()
-        self.cmd.debug_arguments.return_value = 'ARG'
+        self.cmd.debug_arguments.return_value = ['ARG']
         self.cmd.modify_source_map = mock.MagicMock()
 
         MockPopen = mock.MagicMock()
@@ -152,8 +160,14 @@ DUMMY
             self.cmd.build_debug(StubConfig.PROJECT_DIR)
 
         self.cmd.setup_files.assert_called_once_with(StubConfig.DEBUG_DIR)
-        MockPopen.assert_called_once_with('python {0} ARG'.format(StubConfig.CLOSUREBUILDER), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        self.cmd.modify_source_map.assert_called_once_with(os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'))
+        MockPopen.assert_called_once_with(
+            ['python', StubConfig.CLOSUREBUILDER, 'ARG'],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+
+        self.cmd.modify_source_map.assert_called_once_with(
+            os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'),
+            StubConfig.PROJECT_DIR)
 
     def test_modify_source_map(self):
         # Data will be given by open()
