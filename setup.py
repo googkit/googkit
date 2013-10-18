@@ -29,6 +29,8 @@ setup(
         'googkit/commands',
         'googkit/compat',
         'googkit/compat/unittest',
+        'googkit/compat/urllib',
+        'googkit/compat/urllib/request',
         'googkit/lib',
         'googkit/plugins'
     ],
