@@ -93,7 +93,7 @@ def main():
     parser.parse(sys.argv)
     commands = parser.commands
 
-    if commands and parser.option('--version'):
+    if len(commands) == 0 and parser.option('--version'):
         print_version()
         sys.exit()
 
