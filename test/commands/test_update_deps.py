@@ -1,14 +1,13 @@
 import unittest
-
 import os
 import subprocess
 
-from compat.unittest import mock
-from test.stub_stdout import StubStdout
-from test.stub_environment import StubEnvironment
 from test.stub_config import StubConfig, StubConfigOnStubProject
+from test.stub_environment import StubEnvironment
+from test.stub_stdout import StubStdout
 
 from googkit.commands.update_deps import UpdateDepsCommand
+from googkit.compat.unittest import mock
 
 
 class TestUpdateDepsCommand(unittest.TestCase):

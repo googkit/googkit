@@ -59,7 +59,7 @@ Following template may be useful:
 
 ```python
 import unittest
-import compat.unittest
+import googkit.compat.unittest
 
 # Import your module here
 import sample

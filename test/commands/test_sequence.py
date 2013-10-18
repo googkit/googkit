@@ -1,10 +1,10 @@
 import unittest
 
-from compat.unittest import mock
 from test.stub_environment import StubEnvironment
 
 from googkit.commands.command import Command
 from googkit.commands.sequence import SequenceCommand
+from googkit.compat.unittest import mock
 
 
 class DummyFooCommand(Command):

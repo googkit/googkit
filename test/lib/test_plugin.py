@@ -1,9 +1,8 @@
 import unittest
-
-from compat.unittest import mock
-
 import os
+
 import googkit.lib.plugin
+from googkit.compat.unittest import mock
 from googkit.lib.error import GoogkitError
 
 

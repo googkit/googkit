@@ -1,12 +1,12 @@
 import unittest
 
-from compat.unittest import mock
+from test.stub_config import *
+from test.stub_environment import StubEnvironment
 
 from googkit.commands.commands import CommandsCommand
 from googkit.commands.command import Command
+from googkit.compat.unittest import mock
 from googkit.lib.argument_parser import ArgumentParser
-from test.stub_environment import StubEnvironment
-from test.stub_config import *
 
 
 class TestCommandsCommand(unittest.TestCase):

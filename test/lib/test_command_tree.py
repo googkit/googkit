@@ -1,7 +1,6 @@
 import unittest
 
-from compat.unittest import mock
-
+from googkit.compat.unittest import mock
 from googkit.lib.command_tree import CommandTree
 
 

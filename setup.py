@@ -26,7 +26,9 @@ setup(
     long_description='TODO: long description',
     packages=[
         'googkit',
-        'googkit/cmds',
+        'googkit/commands',
+        'googkit/compat',
+        'googkit/compat/unittest',
         'googkit/lib',
         'googkit/plugins'
     ],

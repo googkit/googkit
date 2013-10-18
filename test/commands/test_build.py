@@ -1,13 +1,12 @@
 import unittest
-
-from compat.unittest import mock
-
 import os
 import subprocess
-from test.stub_environment import StubEnvironment
+
 from test.stub_config import StubConfig, StubConfigOnStubProject
+from test.stub_environment import StubEnvironment
 
 from googkit.commands.build import BuildCommand
+from googkit.compat.unittest import mock
 
 
 class TestBuildCommand(unittest.TestCase):

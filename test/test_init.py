@@ -2,9 +2,8 @@ import unittest
 import doctest
 import logging
 
-from compat.unittest import mock
-
 import googkit
+from googkit.compat.unittest import mock
 from googkit.lib.error import GoogkitError
 
 

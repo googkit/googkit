@@ -3,14 +3,14 @@
 #
 # * Silencing sys.stdout
 #
-#   from compat.unittest import mock
+#   from googkit.compat.unittest import mock
 #   with patch('sys.stdout', new_callable = StubStdout):
 #       print('this message will be not displayed')
 #
 #
 # * Mocking sys.stdout
 #
-#   from compat.unittest import mock
+#   from googkit.compat.unittest import mock
 #   MockStdout = mock.Mock(spec = StubStdout)
 #   with patch('sys.stdout', new_callable = MockStdout) as mock_stdout:
 #       print('this message will be not displayed')

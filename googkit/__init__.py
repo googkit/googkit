@@ -19,7 +19,7 @@ def print_help(tree, commands=[]):
     :param commands: Commands was given by user.
 
     If an empty commands was given, print an usage and availables:
-        >>> from compat.unittest import mock
+        >>> from googkit.compat.unittest import mock
         >>> tree = mock.MagicMock()
         >>> tree.right_commands.return_value = []
         >>> tree.available_commands.return_value = ['sub1', 'sub2']
@@ -32,7 +32,7 @@ def print_help(tree, commands=[]):
             sub2
 
     If a branch command was given, print an usage and availables:
-        >>> from compat.unittest import mock
+        >>> from googkit.compat.unittest import mock
         >>> tree = mock.MagicMock()
         >>> tree.right_commands.return_value = ['sub']
         >>> tree.available_commands.return_value = ['subsub1', 'subsub2']
@@ -45,7 +45,7 @@ def print_help(tree, commands=[]):
             subsub2
 
     If an invalid command was given, print an error and expecteds:
-        >>> from compat.unittest import mock
+        >>> from googkit.compat.unittest import mock
         >>> tree = mock.MagicMock()
         >>> tree.right_commands.return_value = []
         >>> tree.available_commands.return_value = ['sub1', 'sub2']

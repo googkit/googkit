@@ -1,10 +1,10 @@
 import unittest
 
-from compat.unittest import mock
-from test.stub_stdout import StubStdout
 from test.stub_environment import StubEnvironment
+from test.stub_stdout import StubStdout
 
 from googkit.commands.command import Command
+from googkit.compat.unittest import mock
 from googkit.lib.argument_parser import ArgumentParser
 from googkit.lib.error import GoogkitError
 

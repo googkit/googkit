@@ -1,9 +1,8 @@
 import unittest
-
-from compat.unittest import mock
+import zipfile
 
 import googkit.lib.unzip
-import zipfile
+from googkit.compat.unittest import mock
 
 
 class TestClone(unittest.TestCase):

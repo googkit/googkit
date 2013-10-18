@@ -1,8 +1,6 @@
 import unittest
 import urllib
 
-from compat.unittest import mock
-
 _urllib = None
 
 if hasattr(urllib, 'urlretrieve'):
@@ -13,8 +11,8 @@ else:
     import urllib.request
     _urllib = urllib.request
 
-
 import googkit.lib.download
+from googkit.compat.unittest import mock
 
 
 class TestDownload(unittest.TestCase):

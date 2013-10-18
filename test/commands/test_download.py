@@ -1,13 +1,12 @@
 import unittest
-
-from compat.unittest import mock
-
 import os
-from test.stub_stdout import StubStdout
-from test.stub_environment import StubEnvironment
+
 from test.stub_config import StubConfig
+from test.stub_environment import StubEnvironment
+from test.stub_stdout import StubStdout
 
 from googkit.commands.download import DownloadCommand
+from googkit.compat.unittest import mock
 
 
 class TestDownloadCommand(unittest.TestCase):

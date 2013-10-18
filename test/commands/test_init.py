@@ -1,12 +1,11 @@
 import unittest
 
-from compat.unittest import mock
-
-from googkit.lib.error import GoogkitError
-from googkit.commands.init import InitCommand
-
-from test.stub_environment import StubEnvironment
 from test.stub_config import *
+from test.stub_environment import StubEnvironment
+
+from googkit.commands.init import InitCommand
+from googkit.compat.unittest import mock
+from googkit.lib.error import GoogkitError
 
 
 class TestInitCommand(unittest.TestCase):
