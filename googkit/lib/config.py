@@ -1,11 +1,5 @@
 import os
-
-try:
-    # Python 2.x
-    import ConfigParser as configparser
-except ImportError:
-    # Python 3.x or later
-    import configparser
+import googkit.compat.configparser as configparser
 
 
 class Config(object):

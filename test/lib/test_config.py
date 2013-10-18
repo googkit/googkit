@@ -1,18 +1,9 @@
 import unittest
 import os
 
+import googkit.compat.configparser as configparser
 from googkit.lib.config import Config
 
-
-_configparser = None
-try:
-    # Python 2.x
-    import ConfigParser
-    _configparser = ConfigParser
-except ImportError:
-    # Python 3.x or later
-    import configparser
-    _configparser = configparser
 
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 TEST_CONFIG_1 = os.path.join(SCRIPT_PATH, '../fixture/test1.cfg')
@@ -24,7 +15,7 @@ DEFAULT_CONFIG = os.path.join(SCRIPT_PATH, '../fixture/stub_default.cfg')
 class TestConfig(unittest.TestCase):
     def setUp(self):
         self.cfg = Config()
-        self.cfg.parser = _configparser.ConfigParser()
+        self.cfg.parser = configparser.ConfigParser()
 
         with open(DEFAULT_CONFIG) as fp:
             if hasattr(self.cfg.parser, 'read_file'):
@@ -39,7 +30,7 @@ class TestConfig(unittest.TestCase):
         cfg.load(TEST_CONFIG_1, None, TEST_CONFIG_3)
 
         self.assertEqual(cfg.parser.get('test1', 'test'), 'TEST1')
-        with self.assertRaises(_configparser.NoSectionError):
+        with self.assertRaises(configparser.NoSectionError):
             cfg.parser.get('test2', 'test')
         self.assertEqual(cfg.parser.get('test3', 'test'), 'TEST3')
 
