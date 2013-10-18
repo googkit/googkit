@@ -3,6 +3,19 @@ from setuptools import setup
 import googkit
 
 
+def recurse_package(top_dir):
+    result = []
+
+    for root, dirnames, filenames in os.walk(top_dir):
+        basename = os.path.basename(root)
+        if basename == '__pycache__':
+            continue
+
+        result.append(root)
+
+    return result
+
+
 def data_files(data_dirs):
     result = []
 
@@ -24,16 +37,7 @@ setup(
     keywords='',
     url='https://github.com/cocopon/googkit',
     long_description='TODO: long description',
-    packages=[
-        'googkit',
-        'googkit/commands',
-        'googkit/compat',
-        'googkit/compat/unittest',
-        'googkit/compat/urllib',
-        'googkit/compat/urllib/request',
-        'googkit/lib',
-        'googkit/plugins'
-    ],
+    packages=recurse_package('googkit'),
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',
