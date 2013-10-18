@@ -7,14 +7,103 @@ import json
 import googkit.lib.path
 from googkit.commands.command import Command
 from googkit.lib.error import GoogkitError
+from googkit.lib.dirutil import working_directory
 
 
 class BuildCommand(Command):
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
+    class BuilderArguments(object):
+        class BuilderArgumentEntry(object):
+            def __init__(self, key, value):
+                self.key = key
+                self.value = value
+
+            def __str__(self):
+                return self.key + '=' + self.value
+
+            def __repr__(self):
+                return '<Builder Argument \'' + str(self) + '\'>'
+
+            def __eq__(self, other):
+                return self.key == other.key and self.value == other.value
+
+            def __hash__(self):
+                return hash(str(self))
+
+        class CompilerArgumentEntry(object):
+            def __init__(self, key, value):
+                self.key = key
+                self.value = value 
+
+            def __str__(self):
+                return '--compiler_flags={key}={value}'.format(
+                    key=self.key, value=self.value)
+
+            def __repr__(self):
+                return '<Compiler Argument \'' + str(self) + '\'>'
+
+            def __eq__(self, other):
+                return self.key == other.key and self.value == other.value
+
+            def __hash__(self):
+                return hash(str(self))
+
+        """Argument builder for the Closure Builder.
+
+        Usage::
+            >>> args = BuildCommand.BuilderArguments()
+            >>> args.builder_arg('--arg1', 'ARG1')
+            >>> args.builder_arg('--arg2', 'ARG2')
+            >>> args.compiler_arg('--arg3', 'ARG3')
+            >>> str(args)
+            --arg1=ARG1 --arg2=ARG2 --compiler_flags="--arg3=ARG3"
+
+            >>> args1 = BuildCommand.BuilderArguments()
+            >>> args.builder_arg('--arg1', 'ARG1')
+            >>> args.builder_arg('--arg2', 'ARG2')
+            >>> args.compiler_arg('--arg3', 'ARG3')
+            ...
+            >>> args2 = BuildCommand.BuilderArguments()
+            >>> args.builder_arg('--arg1', 'ARG1')
+            >>> args.builder_arg('--arg2', 'ARG2')
+            >>> args.compiler_arg('--arg3', 'ARG3')
+            ...
+            >>> args3 = BuildCommand.BuilderArguments()
+            >>> args.builder_arg('--arg1', 'ARG1')
+            >>> args.compiler_arg('--arg3', 'ARG3')
+            >>> assert args1 == args2
+            >>> assert args2 != args3
+        """
+        def __init__(self):
+            self._args = set()
+
+        def __eq__(self, other):
+            return self._args == other._args
+
+        def __str__(self):
+            return ' '.join([str(entry) for entry in self._args])
+
+        def __iter__(self):
+            return iter(self._args)
+
+        def builder_arg(self, key, value):
+            entry = self.BuilderArgumentEntry(key, value)
+            self._args.add(entry)
+
+        def compiler_arg(self, key, value):
+            entry = self.CompilerArgumentEntry(key, value)
+            self._args.add(entry)
+
     @classmethod
     def needs_config(cls):
         return True
+
+    @classmethod
+    def supported_options(cls):
+        opts = super(BuildCommand, cls).supported_options()
+        opts.add('--debug')
+        return opts
 
     @classmethod
     def rmtree_silent(cls, path):
@@ -31,28 +120,6 @@ class BuildCommand(Command):
             indent = m.group(1)
 
         return indent
-
-    def compile_resource(self, path, compiled_js_path):
-        lines = []
-
-        with open(path) as f:
-            for line in f:
-                # Remove lines that requires unneeded scripts
-                if line.find('<!--@base_js@-->') >= 0:
-                    continue
-                if line.find('<!--@deps_js@-->') >= 0:
-                    continue
-
-                # Replace deps.js by a compiled script
-                if line.find('<!--@require_main@-->') >= 0:
-                    indent = BuildCommand.line_indent(line)
-                    line = indent + '<script type="text/javascript" src="{src}"></script>\n'.format(src=compiled_js_path)
-
-                lines.append(line)
-
-        with open(path, 'w') as f:
-            for line in lines:
-                f.write(line)
 
     @classmethod
     def ignore_dirs(cls, *ignore_dirs):
@@ -84,75 +151,39 @@ class BuildCommand(Command):
 
                 self.compile_resource(path, compiled_js)
 
-    def compile_scripts(self):
-        config = self.config
-        js_dev_dir = config.js_dev_dir()
-        compiled_js = config.compiled_js()
+    def compile_resource(self, path, compiled_js_path):
+        lines = []
 
-        # The library path should be a relative path from the project root.
-        # If '--root' is specified as absolute path, 'sources' attribute
-        # of the source map will be absolute path and not work with http scheme.
-        lib_path = os.path.relpath(
-            config.library_root(),
-            googkit.lib.path.project_root(self.env.cwd))
+        with open(path) as f:
+            for line in f:
+                # Remove lines that requires unneeded scripts
+                if line.find('<!--@base_js@-->') >= 0:
+                    continue
+                if line.find('<!--@deps_js@-->') >= 0:
+                    continue
 
-        if config.is_debug_enabled():
-            logging.info('Copying resources for debug...')
-            self.setup_files(config.debug_dir())
+                # Replace deps.js by a compiled script
+                if line.find('<!--@require_main@-->') >= 0:
+                    indent = BuildCommand.line_indent(line)
+                    line = indent + '<script src="{src}"></script>\n'.format(src=compiled_js_path)
 
-            source_map = compiled_js + '.map'
-            debug_dir = config.debug_dir()
-            debug_source_map = os.path.join(debug_dir, source_map)
-            debug_compiled_js = os.path.join(debug_dir, compiled_js)
+                lines.append(line)
 
-            debug_args = [
-                'python',
-                config.closurebuilder(),
-                '--root=' + lib_path,
-                '--root=' + js_dev_dir,
-                '--namespace=main',
-                '--output_mode=compiled',
-                '--compiler_jar=' + config.compiler(),
-                '--compiler_flags=--compilation_level=' + config.compilation_level(),
-                '--compiler_flags=--source_map_format=V3',
-                '--compiler_flags=--create_source_map=' + debug_source_map,
-                '--compiler_flags=--output_wrapper="%output%//# sourceMappingURL={path}"'.format(path=source_map),
-                '--output_file=' + debug_compiled_js]
+        with open(path, 'w') as f:
+            for line in lines:
+                f.write(line)
 
-            logging.info('Building for debug...')
-            builder_debug = subprocess.Popen(debug_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            result_debug = builder_debug.communicate()
+    def _build(self, builder_args, project_root):
+        builder = self.config.closurebuilder()
 
-            if builder_debug.returncode != 0:
-                raise GoogkitError('Compilation failed:\n' + result_debug[1])
-            else:
-                logging.debug(result_debug[1])
+        cmd = ['python', builder] + [str(arg) for arg in builder_args]
 
-            # The root path should be set by 'sourceRoot', but Closure Compiler
-            # doesn't support this attribute.
-            # So set 'sourceRoot' to 'project_root' directory manually until
-            # Closure Compiler supports this feature.
-            self.modify_source_map()
+        popen_args = {
+            'stdout': subprocess.PIPE,
+            'stderr': subprocess.PIPE
+        }
 
-        logging.info('Copying resources for production...')
-        self.setup_files(config.production_dir())
-
-        prod_dir = config.production_dir()
-        prod_compiled_js = os.path.join(prod_dir, compiled_js)
-        prod_args = [
-            'python',
-            config.closurebuilder(),
-            '--root=' + lib_path,
-            '--root=' + js_dev_dir,
-            '--namespace=main',
-            '--output_mode=compiled',
-            '--compiler_jar=' + config.compiler(),
-            '--compiler_flags=--compilation_level=' + config.compilation_level(),
-            '--compiler_flags=--define=goog.DEBUG=false',
-            '--output_file=' + prod_compiled_js]
-
-        logging.info('Building for production...')
-        builder_proc = subprocess.Popen(prod_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        builder_proc = subprocess.Popen(cmd, **popen_args)
         result = builder_proc.communicate()
 
         if builder_proc.returncode != 0:
@@ -160,17 +191,88 @@ class BuildCommand(Command):
         else:
             logging.debug(result[1])
 
-    def modify_source_map(self):
-        debug_dir = self.config.debug_dir()
-        source_map = self.config.compiled_js() + '.map'
-        debug_source_map = os.path.join(debug_dir, source_map)
+    def build_debug(self, project_root):
+        logging.info('Copying resources for debug...')
+        self.setup_files(self.config.debug_dir())
 
-        with open(debug_source_map) as source_map_file:
+        logging.info('Building for debug...')
+        args = self.debug_arguments(project_root)
+        self._build(args, project_root)
+
+        # The root path should be set by 'sourceRoot', but Closure Compiler
+        # doesn't support this attribute.
+        # So set 'sourceRoot' to 'project_root' directory manually until
+        # Closure Compiler supports this feature.
+        source_map = os.path.join(project_root,
+                                  self.config.debug_dir(),
+                                  self.config.compiled_js() + '.map')
+        self.modify_source_map(source_map, project_root)
+
+    def build_production(self, project_root):
+        logging.info('Copying resources for production...')
+        self.setup_files(self.config.production_dir())
+
+        logging.info('Building for production...')
+        args = self.production_arguments(project_root)
+        self._build(args, project_root)
+
+    def debug_arguments(self, project_root):
+        config = self.config
+        compiled_js = os.path.join(config.debug_dir(), config.compiled_js())
+        source_map_path = compiled_js + '.map'
+        source_map = os.path.basename(source_map_path)
+
+        # The library path should be a relative path from the project root.
+        # If '--root' is specified as absolute path, 'sources' attribute
+        # of the source map will be absolute path and not work with http scheme.
+        lib_path = os.path.relpath(config.library_root(), project_root)
+
+        args = BuildCommand.BuilderArguments()
+        args.builder_arg('--root', lib_path)
+        args.builder_arg('--root', config.js_dev_dir())
+        args.builder_arg('--namespace', 'main')
+        args.builder_arg('--output_mode', 'compiled')
+        args.builder_arg('--output_file', compiled_js)
+        args.builder_arg('--compiler_jar', config.compiler())
+        args.compiler_arg('--compilation_level', config.compilation_level())
+        args.compiler_arg('--source_map_format', 'V3')
+        args.compiler_arg('--create_source_map', source_map_path)
+        args.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path=source_map))
+        return args
+
+    def production_arguments(self, project_root):
+        config = self.config
+        compiled_js = os.path.join(config.production_dir(), config.compiled_js())
+        lib_path = os.path.relpath(config.library_root(), project_root)
+
+        args = BuildCommand.BuilderArguments()
+        args.builder_arg('--root', lib_path)
+        args.builder_arg('--root', config.js_dev_dir())
+        args.builder_arg('--namespace', 'main')
+        args.builder_arg('--output_mode', 'compiled')
+        args.builder_arg('--output_file', compiled_js)
+        args.builder_arg('--compiler_jar', config.compiler())
+        args.compiler_arg('--compilation_level', config.compilation_level())
+        args.compiler_arg('--define', 'goog.DEBUG=false')
+        return args
+
+    def modify_source_map(self, source_map, project_root):
+        source_root = os.path.relpath(project_root, self.config.debug_dir())
+
+        with open(source_map) as source_map_file:
             source_map_content = json.load(source_map_file)
-            source_map_content['sourceRoot'] = '../'
+            source_map_content['sourceRoot'] = source_root
 
-        with open(debug_source_map, 'w') as source_map_file:
+        with open(source_map, 'w') as source_map_file:
             json.dump(source_map_content, source_map_file)
 
     def run_internal(self):
-        self.compile_scripts()
+        project_root = googkit.lib.path.project_root(self.env.cwd)
+        with working_directory(project_root):
+            if self.env.arg_parser.option('--debug'):
+                self.build_debug(project_root)
+                return
+
+            if self.config.is_debug_enabled():
+                self.build_debug(project_root)
+            self.build_production(project_root)
