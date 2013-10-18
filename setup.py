@@ -3,6 +3,11 @@ from setuptools import setup
 import googkit
 
 
+def read(path):
+    script_dir = os.path.dirname(__file__)
+    return open(os.path.join(script_dir, path)).read()
+
+
 def recurse_package(top_dir):
     result = []
 
@@ -36,7 +41,7 @@ setup(
     license='MIT',
     keywords='',
     url='https://github.com/cocopon/googkit',
-    long_description='TODO: long description',
+    long_description=read('README.rst'),
     packages=recurse_package('googkit'),
     classifiers=[
         'Development Status :: 3 - Alpha',
