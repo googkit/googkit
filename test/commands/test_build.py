@@ -43,7 +43,7 @@ DUMMY
         # Expected data will be given by open.write()
         expected = '''\
 DUMMY
-  <script type="text/javascript" src="REQUIRE_MAIN"></script>
+  <script src="REQUIRE_MAIN"></script>
    <!--@dummy_marker@-->'''
 
         # Use mock_open
@@ -91,130 +91,69 @@ DUMMY
             os.path.join(StubConfigOnStubProject.PRODUCTION_DIR, 'index.html'),
             StubConfigOnStubProject.COMPILED_JS)
 
-    def test_compile_scripts_with_debug_enabled(self):
+    def test_debug_arguments(self):
+        expected = BuildCommand.BuilderArguments()
+        expected.builder_arg('--root', os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
+        expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
+        expected.builder_arg('--namespace', 'main')
+        expected.builder_arg('--output_mode', 'compiled')
+        expected.builder_arg('--output_file', os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
+        expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
+        expected.compiler_arg('--source_map_format', 'V3')
+        expected.compiler_arg('--create_source_map', os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'))
+        expected.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path=StubConfig.COMPILED_JS + '.map'))
+
+        args = self.cmd.debug_arguments(StubConfig.PROJECT_DIR)
+        self.assertEqual(args, expected)
+
+    def test_production_arguments(self):
+        expected = BuildCommand.BuilderArguments()
+        expected.builder_arg('--root', os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
+        expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
+        expected.builder_arg('--namespace', 'main')
+        expected.builder_arg('--output_mode', 'compiled')
+        expected.builder_arg('--output_file', os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
+        expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
+        expected.compiler_arg('--define', 'goog.DEBUG=false')
+
+        args = self.cmd.production_arguments(StubConfig.PROJECT_DIR)
+        self.assertEqual(args, expected)
+
+    def test_build_production(self):
         self.cmd.setup_files = mock.MagicMock()
-        self.cmd.modify_source_map = mock.MagicMock()
+        self.cmd.production_arguments = mock.MagicMock()
+        self.cmd.production_arguments.return_value = 'ARG'
 
         MockPopen = mock.MagicMock()
-        MockPopen.return_value.returncode = 0
-
-        with mock.patch('subprocess.Popen', new=MockPopen) as mock_popen, \
-                mock.patch('googkit.lib.path.project_root', return_value='/dir1'):
-            self.cmd.compile_scripts()
-
-        # In debug mode, expected that Popen was called twice
-        self.assertEqual(mock_popen.call_count, 2)
-
-        # In debug mode, expected that soource file was modified
-        self.cmd.modify_source_map.assert_called_once_with()
-
-        # In debug mode, expected that setup_files was called twice
-        self.assertEqual(self.cmd.setup_files.call_count, 2)
-
-        arg_format_dict = {
-            'source_map': StubConfig.COMPILED_JS + '.map',
-            'source_map_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS + '.map'),
-            'compiled_js_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS),
-            'js_dev_path': StubConfig.JS_DEV_DIR,
-            'library': os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR),
-            'compiler_path': StubConfig.COMPILER,
-            'compiled_js_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS),
-            'closurebuilder_path': StubConfig.CLOSUREBUILDER
-        }
-
-        expected = [str_.format(**arg_format_dict) for str_ in [
-            'python',
-            '{closurebuilder_path}',
-            '--root={library}',
-            '--root={js_dev_path}',
-            '--namespace=main',
-            '--output_mode=compiled',
-            '--compiler_jar={compiler_path}',
-            '--compiler_flags=--compilation_level=COMPILATION_LEVEL',
-            '--compiler_flags=--define=goog.DEBUG=false',
-            '--output_file={compiled_js_path}'
-        ]]
-
-        mock_popen.assert_any_call(expected, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        self.cmd.setup_files.assert_any_call(StubConfig.PRODUCTION_DIR)
-
-        arg_format_dict_on_debug = {
-            'source_map': StubConfig.COMPILED_JS + '.map',
-            'source_map_path': os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'),
-            'compiled_js_path': os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS),
-            'js_dev_path': StubConfig.JS_DEV_DIR,
-            'library': os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR),
-            'compiler_path': StubConfig.COMPILER,
-            'compiled_js_path': os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS),
-            'closurebuilder_path': StubConfig.CLOSUREBUILDER
-        }
-
-        expected_on_debug = [str_.format(**arg_format_dict_on_debug) for str_ in [
-            'python',
-            '{closurebuilder_path}',
-            '--root={library}',
-            '--root={js_dev_path}',
-            '--namespace=main',
-            '--output_mode=compiled',
-            '--compiler_jar={compiler_path}',
-            '--compiler_flags=--compilation_level=COMPILATION_LEVEL',
-            '--compiler_flags=--source_map_format=V3',
-            '--compiler_flags=--create_source_map={source_map_path}',
-            '--compiler_flags=--output_wrapper="%output%//# sourceMappingURL={source_map}"',
-            '--output_file={compiled_js_path}'
-        ]]
-
-        mock_popen.assert_any_call(expected_on_debug, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        self.cmd.setup_files.assert_any_call(StubConfig.DEBUG_DIR)
-
-    def test_compile_scripts(self):
-        self.cmd.config.is_debug_enabled = mock.MagicMock()
-        self.cmd.config.is_debug_enabled.return_value = False
-
-        self.cmd.setup_files = mock.MagicMock()
-        self.cmd.modify_source_map = mock.MagicMock()
-
-        MockPopen = mock.MagicMock()
-        MockPopen.return_value.returncode = 0
-
-        with mock.patch('subprocess.Popen', new=MockPopen) as mock_popen, \
-                mock.patch('googkit.lib.path.project_root', return_value='/dir1'):
-            self.cmd.compile_scripts()
-
+        mock_popen = MockPopen.return_value
+        # It simulates the command was succeeded
         mock_popen.returncode = 0
 
-        # Expected that Popen was called twice
-        self.assertEqual(mock_popen.call_count, 1)
+        with mock.patch('subprocess.Popen', new=MockPopen):
+            self.cmd.build_production(StubConfig.PROJECT_DIR)
 
-        # Expected that setup_files was called twice
-        self.assertEqual(self.cmd.setup_files.call_count, 1)
-
-        arg_format_dict = {
-            'source_map': StubConfig.COMPILED_JS + '.map',
-            'source_map_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS + '.map'),
-            'compiled_js_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS),
-            'js_dev_path': StubConfig.JS_DEV_DIR,
-            'library': os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR),
-            'compiler_path': StubConfig.COMPILER,
-            'compiled_js_path': os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS),
-            'closurebuilder_path': StubConfig.CLOSUREBUILDER
-        }
-
-        expected = [str_.format(**arg_format_dict) for str_ in [
-            'python',
-            '{closurebuilder_path}',
-            '--root={library}',
-            '--root={js_dev_path}',
-            '--namespace=main',
-            '--output_mode=compiled',
-            '--compiler_jar={compiler_path}',
-            '--compiler_flags=--compilation_level=COMPILATION_LEVEL',
-            '--compiler_flags=--define=goog.DEBUG=false',
-            '--output_file={compiled_js_path}'
-        ]]
-
-        mock_popen.assert_any_call(expected, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.cmd.setup_files.assert_called_once_with(StubConfig.PRODUCTION_DIR)
+        MockPopen.assert_called_once_with('python {0} ARG'.format(StubConfig.CLOSUREBUILDER), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    def test_build_debug(self):
+        self.cmd.setup_files = mock.MagicMock()
+        self.cmd.debug_arguments = mock.MagicMock()
+        self.cmd.debug_arguments.return_value = 'ARG'
+        self.cmd.modify_source_map = mock.MagicMock()
+
+        MockPopen = mock.MagicMock()
+        mock_popen = MockPopen.return_value
+        # It simulates the command was succeeded
+        mock_popen.returncode = 0
+
+        with mock.patch('subprocess.Popen', new=MockPopen):
+            self.cmd.build_debug(StubConfig.PROJECT_DIR)
+
+        self.cmd.setup_files.assert_called_once_with(StubConfig.DEBUG_DIR)
+        MockPopen.assert_called_once_with('python {0} ARG'.format(StubConfig.CLOSUREBUILDER), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.cmd.modify_source_map.assert_called_once_with(os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'))
 
     def test_modify_source_map(self):
         # Data will be given by open()
@@ -224,31 +163,33 @@ DUMMY
         }
 
         expected = {
-            'sourceRoot': '../',
+            'sourceRoot': os.path.relpath(StubConfig.PROJECT_DIR, StubConfig.DEBUG_DIR),
             'dummy': 'do not change me'
         }
 
         mock_open = mock.mock_open()
+        dummy_source_map_file = 'DUMMY'
 
         with mock.patch('googkit.commands.build.json') as mock_json, \
                 mock.patch('googkit.commands.build.open', new=mock_open, create=True):
-            mock_open.return_value.__enter__.return_value = 'DUMMY'
+            mock_open.return_value.__enter__.return_value = dummy_source_map_file
             mock_json.load.return_value = stub_source_map
 
-            self.cmd.modify_source_map()
+            self.cmd.modify_source_map(dummy_source_map_file, StubConfig.PROJECT_DIR)
 
-        mock_json.load.assert_called_once_with('DUMMY')
+        mock_json.load.assert_called_once_with(dummy_source_map_file)
         self.assertEqual(mock_json.dump.call_args[0][0], expected)
         self.assertEqual(mock_json.dump.call_count, 1)
 
     def test_run_internal(self):
-        self.cmd.compile_scripts = mock.MagicMock()
-        self.env.arg_parser = mock.MagicMock()
-        self.env.arg_parser.option.return_value = False
+        pass
+        #self.cmd.compile_scripts = mock.MagicMock()
+        #self.env.arg_parser = mock.MagicMock()
+        #self.env.arg_parser.option.return_value = False
 
-        self.cmd.run_internal()
+        #self.cmd.run_internal()
 
-        self.cmd.compile_scripts.assert_called_once_with()
+        #self.cmd.build_production.assert_called_once_with()
 
 
 if __name__ == '__main__':
