@@ -3,7 +3,7 @@ import os
 import sys
 import googkit.lib.path
 import googkit.lib.plugin
-from googkit.lib.argument_parser import ArgumentParser
+from googkit.lib.argument import ArgumentParser
 from googkit.lib.command_tree import CommandTree
 from googkit.lib.environment import Environment
 from googkit.lib.error import GoogkitError
@@ -89,11 +89,10 @@ def main():
 
     cwd = os.getcwd()
 
-    parser = ArgumentParser()
-    parser.parse(sys.argv)
-    commands = parser.commands
+    args = ArgumentParser.parse(sys.argv)
+    commands = args.commands
 
-    if len(commands) == 0 and parser.option('--version'):
+    if len(commands) == 0 and args.option('--version'):
         print_version()
         sys.exit()
 
@@ -103,7 +102,7 @@ def main():
         sys.exit()
 
     try:
-        env = Environment(cwd, parser, tree)
+        env = Environment(cwd, args, tree)
         command = CommandClass(env)
         command.run()
         logging.info('Complete.')

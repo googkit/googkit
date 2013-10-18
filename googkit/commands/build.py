@@ -269,7 +269,7 @@ class BuildCommand(Command):
     def run_internal(self):
         project_root = googkit.lib.path.project_root(self.env.cwd)
         with working_directory(project_root):
-            if self.env.arg_parser.option('--debug'):
+            if self.env.argument.option('--debug'):
                 self.build_debug(project_root)
                 return
 

@@ -1,5 +1,7 @@
 class Environment(object):
-    def __init__(self, cwd, arg_parser, tree):
+    """Environment class that has runtime information."""
+
+    def __init__(self, cwd, argument, tree):
         self.cwd = cwd
-        self.arg_parser = arg_parser
+        self.argument = argument
         self.tree = tree

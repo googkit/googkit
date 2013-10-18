@@ -6,7 +6,7 @@ from test.stub_environment import StubEnvironment
 from googkit.commands.commands import CommandsCommand
 from googkit.commands.command import Command
 from googkit.compat.unittest import mock
-from googkit.lib.argument_parser import ArgumentParser
+from googkit.lib.argument import ArgumentParser
 
 
 class TestCommandsCommand(unittest.TestCase):
@@ -19,10 +19,7 @@ class TestCommandsCommand(unittest.TestCase):
         self.assertTrue(isinstance(self.cmd, Command))
 
     def test_run_internal(self):
-        parser = ArgumentParser()
-        parser.parse(['googkit.py', 'arg1', 'arg2'])
-
-        self.env.arg_parser = parser
+        self.env.argument = ArgumentParser.parse(['googkit.py', 'arg1', 'arg2'])
         self.env.tree = mock.MagicMock()
         self.env.tree.available_commands.return_value = ['DUMMY1', 'DUMMY2']
 

@@ -1,13 +1,31 @@
 import re
 
 
+class Argument(object):
+    """Argument class that has parsed commands and options."""
+
+    def __init__(self, commands=[], options={}):
+        self._commands = commands
+        self._options = options
+
+    @property
+    def commands(self):
+        return self._commands
+
+    @property
+    def options(self):
+        return self._options
+
+    def option(self, name):
+        return self._options.get(name)
+
+
 class ArgumentParser(object):
+    """Parser class that parses command line arguments."""
+
     OPTION_PATTERN = re.compile('(--?\w+)(?:=(.+))?')
 
-    def __init__(self):
-        self._commands = []
-        self._options = {}
-
+    @classmethod
     def parse(self, argv):
         commands = []
         options = {}
@@ -19,8 +37,7 @@ class ArgumentParser(object):
             else:
                 commands.append(arg)
 
-        self._commands = commands
-        self._options = options
+        return Argument(commands, options)
 
     @classmethod
     def _is_option(cls, arg):
@@ -36,14 +53,3 @@ class ArgumentParser(object):
             return (m.group(1), True)
 
         return (m.group(1), m.group(2))
-
-    @property
-    def commands(self):
-        return self._commands
-
-    @property
-    def options(self):
-        return self._options
-
-    def option(self, name):
-        return self._options.get(name)

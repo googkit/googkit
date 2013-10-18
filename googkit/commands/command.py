@@ -20,7 +20,7 @@ class Command(object):
         return set(['--verbose'])
 
     def _validate_options(self):
-        opts = set(self.env.arg_parser.options.keys())
+        opts = set(self.env.argument.options.keys())
         unsupported_opts = opts - self.__class__.supported_options()
 
         if len(unsupported_opts) > 0:
@@ -47,7 +47,7 @@ class Command(object):
         os.chdir(self.env.cwd)
 
     def run(self):
-        level = logging.DEBUG if self.env.arg_parser.option('--verbose') else None
+        level = logging.DEBUG if self.env.argument.option('--verbose') else None
 
         # Log level should be DEBUG if verbose option was set.
         with log_level(level):

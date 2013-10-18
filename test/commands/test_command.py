@@ -5,7 +5,8 @@ from test.stub_stdout import StubStdout
 
 from googkit.commands.command import Command
 from googkit.compat.unittest import mock
-from googkit.lib.argument_parser import ArgumentParser
+from googkit.lib.argument import Argument
+from googkit.lib.argument import ArgumentParser
 from googkit.lib.error import GoogkitError
 
 
@@ -15,7 +16,7 @@ class TestCommand(unittest.TestCase):
             pass
 
         env = StubEnvironment()
-        env.arg_parser = ArgumentParser()
+        env.argument = Argument()
         cmd = DummyCommand(env)
         cmd._setup = mock.MagicMock()
         cmd.run_internal = mock.MagicMock()
@@ -35,20 +36,19 @@ class TestCommand(unittest.TestCase):
                 return set(['--foo', '--bar'])
 
         env = StubEnvironment()
-        env.arg_parser = ArgumentParser()
 
         # No options should not raise any error
-        env.arg_parser.parse(['googkit.py'])
+        env.argument = ArgumentParser.parse(['googkit.py'])
         cmd = DummyCommand(env)
         cmd._validate_options()
 
         # Supported option should not raise any error
-        env.arg_parser.parse(['googkit.py', '--foo'])
+        env.argument = ArgumentParser.parse(['googkit.py', '--foo'])
         cmd = DummyCommand(env)
         cmd._validate_options()
 
         # Unsupported option
-        env.arg_parser.parse(['googkit.py', '--foo', '--blue-rose'])
+        env.argument = ArgumentParser.parse(['googkit.py', '--foo', '--blue-rose'])
         cmd = DummyCommand(env)
         with self.assertRaises(GoogkitError):
             cmd._validate_options()
