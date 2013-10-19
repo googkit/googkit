@@ -96,7 +96,7 @@ class BuildCommand(Command):
             self._args.add(entry)
 
     @classmethod
-    def needs_config(cls):
+    def needs_project_config(cls):
         return True
 
     @classmethod

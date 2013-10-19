@@ -8,7 +8,7 @@ from googkit.lib.error import GoogkitError
 
 class UpdateDepsCommand(Command):
     @classmethod
-    def needs_config(cls):
+    def needs_project_config(cls):
         return True
 
     @classmethod

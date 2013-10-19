@@ -15,8 +15,8 @@ class TestDownloadCommand(unittest.TestCase):
         self.cmd = DownloadCommand(self.env)
         self.cmd.config = StubConfig()
 
-    def test_needs_config(self):
-        self.assertTrue(DownloadCommand.needs_config())
+    def test_needs_project_config(self):
+        self.assertTrue(DownloadCommand.needs_project_config())
 
     def test_download_closure_library(self):
         with mock.patch('googkit.lib.clone') as mock_clone:

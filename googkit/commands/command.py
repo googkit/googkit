@@ -10,9 +10,8 @@ class Command(object):
     def __init__(self, env):
         self.env = env
 
-    # TODO: Rename: needs_project_config
     @classmethod
-    def needs_config(cls):
+    def needs_project_config(cls):
         return False
 
     @classmethod
@@ -39,7 +38,7 @@ class Command(object):
         return config
 
     def _setup(self):
-        if self.__class__.needs_config():
+        if self.__class__.needs_project_config():
             self.config = self._load_config()
         else:
             self.config = None

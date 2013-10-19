@@ -16,8 +16,8 @@ class TestUpdateDepsCommand(unittest.TestCase):
         self.cmd = UpdateDepsCommand(self.env)
         self.cmd.config = StubConfig()
 
-    def test_needs_config(self):
-        self.assertTrue(UpdateDepsCommand.needs_config())
+    def test_needs_project_config(self):
+        self.assertTrue(UpdateDepsCommand.needs_project_config())
 
     def test_line_indent(self):
         self.assertEqual(UpdateDepsCommand.line_indent('    '), '    ')

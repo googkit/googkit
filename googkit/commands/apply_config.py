@@ -9,7 +9,7 @@ class ApplyConfigCommand(Command):
     CONFIG_TARGET_EXT = ('.html', '.xhtml', '.js', '.css')
 
     @classmethod
-    def needs_config(cls):
+    def needs_project_config(cls):
         return True
 
     @classmethod

@@ -70,7 +70,7 @@ class TestCommand(unittest.TestCase):
     def test_load_config(self):
         class ConcreteCommandNeedsConfig(Command):
             @classmethod
-            def needs_config(cls):
+            def needs_project_config(cls):
                 return True
 
         with mock.patch('googkit.lib.path.user_config') as mock_usr_cfg, \

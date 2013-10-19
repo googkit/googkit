@@ -15,8 +15,8 @@ class TestBuildCommand(unittest.TestCase):
         self.cmd = BuildCommand(self.env)
         self.cmd.config = StubConfig()
 
-    def test_needs_config(self):
-        self.assertTrue(BuildCommand.needs_config())
+    def test_needs_project_config(self):
+        self.assertTrue(BuildCommand.needs_project_config())
 
     def rmtree_silent(self):
         with mock.patch('shutil.rmtree') as mock_rmtree:

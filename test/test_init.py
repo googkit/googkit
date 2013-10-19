@@ -9,7 +9,7 @@ from googkit.lib.error import GoogkitError
 class TestGoogkit(unittest.TestCase):
     def test_run(self):
         MockCmd = mock.MagicMock()
-        MockCmd.needs_config.return_value = False
+        MockCmd.needs_project_config.return_value = False
         mock_cmd = MockCmd.return_value
 
         with mock.patch('os.chdir'), \
@@ -64,7 +64,7 @@ class TestGoogkit(unittest.TestCase):
 
     def test_run_with_exception(self):
         MockCmd = mock.MagicMock()
-        MockCmd.needs_config.return_value = False
+        MockCmd.needs_project_config.return_value = False
         mock_cmd = MockCmd.return_value
         mock_cmd.run.side_effect = GoogkitError('DUMMY')
 

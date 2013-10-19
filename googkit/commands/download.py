@@ -11,7 +11,7 @@ from googkit.lib.error import GoogkitError
 
 class DownloadCommand(Command):
     @classmethod
-    def needs_config(cls):
+    def needs_project_config(cls):
         return True
 
     def download_closure_library(self):

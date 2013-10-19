@@ -21,8 +21,8 @@ class TestApplyConfigCommand(unittest.TestCase):
         self.assertEqual(ApplyConfigCommand.line_indent('     a    '), '     ')
         self.assertEqual(ApplyConfigCommand.line_indent('a    '), '')
 
-    def test_needs_config(self):
-        self.assertTrue(ApplyConfigCommand.needs_config())
+    def test_needs_project_config(self):
+        self.assertTrue(ApplyConfigCommand.needs_project_config())
 
     def test_update_base_js(self):
         s = '<script type="text/javascript" src="{src}"></script>'

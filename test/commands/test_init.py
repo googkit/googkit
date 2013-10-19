@@ -14,8 +14,8 @@ class TestInitCommand(unittest.TestCase):
         self.env.config = StubConfig()
         self.cmd = InitCommand(self.env)
 
-    def test_needs_config(self):
-        self.assertFalse(InitCommand.needs_config())
+    def test_needs_project_config(self):
+        self.assertFalse(InitCommand.needs_project_config())
 
     def test_copy_templates(self):
         dst_path = '/tmp/foo/bar'
