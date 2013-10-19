@@ -1,16 +1,9 @@
 import unittest
-import doctest
 import logging
 
 import googkit
 from googkit.compat.unittest import mock
 from googkit.lib.error import GoogkitError
-
-
-# Import tests from doctest
-def load_tests(loader, tests, ignore):
-    tests.addTests(doctest.DocTestSuite(googkit))
-    return tests
 
 
 class TestGoogkit(unittest.TestCase):
@@ -22,7 +15,7 @@ class TestGoogkit(unittest.TestCase):
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
                 mock.patch('googkit.lib.path.project_root', return_value='/dir1/dir2'), \
-                mock.patch('googkit.print_help'), \
+                mock.patch('googkit.Help'), \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load') as mock_load, \
@@ -38,7 +31,7 @@ class TestGoogkit(unittest.TestCase):
     def test_run_with_empty_args(self):
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py']), \
-                mock.patch('googkit.print_help') as mock_print_help, \
+                mock.patch('googkit.Help') as mock_help, \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load'), \
@@ -50,12 +43,12 @@ class TestGoogkit(unittest.TestCase):
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
-        mock_print_help.assert_called_once_with(MockTree.return_value, [])
+        mock_help.print_help.assert_called_once()
 
     def test_run_with_invalid_args(self):
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy']), \
-                mock.patch('googkit.print_help') as mock_print_help, \
+                mock.patch('googkit.Help') as mock_help, \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load'), \
@@ -67,7 +60,7 @@ class TestGoogkit(unittest.TestCase):
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
-        mock_print_help.assert_called_once_with(MockTree.return_value, ['dummy'])
+        mock_help.assert_called_once()
 
     def test_run_with_exception(self):
         MockCmd = mock.MagicMock()
@@ -79,7 +72,7 @@ class TestGoogkit(unittest.TestCase):
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy1', 'dummy2']), \
                 mock.patch('sys.stdout'), \
                 mock.patch('googkit.lib.path.project_root', return_value='/dir1/dir2'), \
-                mock.patch('googkit.print_help'), \
+                mock.patch('googkit.Help'), \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load'), \
