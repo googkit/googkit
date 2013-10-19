@@ -7,6 +7,7 @@ from googkit.lib.argument import ArgumentParser
 from googkit.lib.command_tree import CommandTree
 from googkit.lib.environment import Environment
 from googkit.lib.error import GoogkitError
+from googkit.lib.error import InvalidOptionError
 from googkit.lib.help import Help
 
 
@@ -39,6 +40,10 @@ def main():
         command = CommandClass(env)
         command.run()
         logging.info('Complete.')
+    except InvalidOptionError as e:
+        logging.error('[Error] ' + str(e))
+        Help(tree, arg).print_help()
+        sys.exit(1)
     except GoogkitError as e:
         logging.error('[Error] ' + str(e))
         sys.exit(1)

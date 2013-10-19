@@ -3,6 +3,7 @@ import os
 import googkit.lib.path
 from googkit.lib.config import Config
 from googkit.lib.error import GoogkitError
+from googkit.lib.error import InvalidOptionError
 from googkit.lib.logutil import log_level
 
 
@@ -23,7 +24,7 @@ class Command(object):
         unsupported_opts = opts - self.__class__.supported_options()
 
         if len(unsupported_opts) > 0:
-            raise GoogkitError('Invalid option: ' + ', '.join(opts))
+            raise InvalidOptionError(unsupported_opts)
 
     def _load_config(self):
         default_config = googkit.lib.path.default_config()

@@ -34,6 +34,21 @@ class Help(object):
         for name in self._available_commands:
             print('    ' + name)
 
+    def _print_available_options(self):
+        cls = self._tree.command_class(self._argument.commands)
+        if not cls:
+            return
+
+        supported_options = cls.supported_options()
+        if not supported_options:
+            return
+
+        print('')
+        print('Available options:')
+
+        for name in supported_options:
+            print('    ' + name)
+
     def print_help(self):
         if not self._is_valid_commands():
             last_command = self._argument.commands[-1]
@@ -42,3 +57,4 @@ class Help(object):
 
         self._print_usage()
         self._print_available_commands()
+        self._print_available_options()
