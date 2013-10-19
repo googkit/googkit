@@ -31,7 +31,7 @@ class TestGoogkit(unittest.TestCase):
     def test_run_with_empty_args(self):
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py']), \
-                mock.patch('googkit.Help') as mock_help, \
+                mock.patch('googkit.Help') as MockHelp, \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load'), \
@@ -43,12 +43,12 @@ class TestGoogkit(unittest.TestCase):
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
-        mock_help.print_help.assert_called_once()
+        self.assertTrue(MockHelp.return_value.print_help.called)
 
     def test_run_with_invalid_args(self):
         with mock.patch('os.chdir'), \
                 mock.patch('sys.argv', new=['/DUMMY.py', 'dummy']), \
-                mock.patch('googkit.Help') as mock_help, \
+                mock.patch('googkit.Help') as MockHelp, \
                 mock.patch('googkit.Environment', return_value='dummy_env'), \
                 mock.patch('googkit.CommandTree') as MockTree, \
                 mock.patch('googkit.lib.plugin.load'), \
@@ -60,7 +60,7 @@ class TestGoogkit(unittest.TestCase):
 
         mock_basic_cfg.assert_called_once_with(level=logging.INFO, format='%(message)s')
 
-        mock_help.assert_called_once()
+        self.assertTrue(MockHelp.return_value.print_help.called)
 
     def test_run_with_exception(self):
         MockCmd = mock.MagicMock()

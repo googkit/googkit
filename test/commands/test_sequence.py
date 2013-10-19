@@ -28,10 +28,10 @@ class TestSequenceCommand(unittest.TestCase):
         env = StubEnvironment()
         command = DummySequenceCommand(env)
 
-        with mock.patch('test.commands.test_sequence.DummyFooCommand') as mock_foo, \
-                mock.patch('test.commands.test_sequence.DummyBarCommand') as mock_bar:
+        with mock.patch('test.commands.test_sequence.DummyFooCommand') as MockFoo, \
+                mock.patch('test.commands.test_sequence.DummyBarCommand') as MockBar:
             command.run()
 
-        mock_foo.run.assert_called_once()
-        mock_bar.run.assert_called_once()
+        self.assertTrue(MockFoo.return_value.run.called)
+        self.assertTrue(MockBar.return_value.run.called)
         # TODO: Is it possible to test an execution order of those commands?

@@ -20,14 +20,12 @@ class TestCommand(unittest.TestCase):
         cmd = DummyCommand(env)
         cmd._setup = mock.MagicMock()
         cmd.run_internal = mock.MagicMock()
-        cmd.complete = mock.MagicMock()
 
         with mock.patch('sys.stdout', new_callable=StubStdout):
             cmd.run()
 
-        cmd._setup.assert_called_once()
-        cmd.run_internal.assert_called_once()
-        cmd.complete.assert_called_once()
+        self.assertTrue(cmd._setup.called)
+        self.assertTrue(cmd.run_internal.called)
 
     def test_validate_options(self):
         class DummyCommand(Command):
@@ -91,10 +89,10 @@ class TestCommand(unittest.TestCase):
 
             self.assertIsNotNone(result)
 
-        mock_usr_cfg.assert_called_once()
-        mock_def_cfg.assert_called_once()
-        mock_proj_cfg.assert_called_once()
-        MockConfig.return_value.load.assert_called_once()
+        self.assertTrue(mock_usr_cfg.called)
+        self.assertTrue(mock_def_cfg.called)
+        self.assertTrue(mock_proj_cfg.called)
+        self.assertTrue(MockConfig.return_value.load.called)
 
 
 if __name__ == '__main__':

@@ -3,8 +3,8 @@ import unittest
 from test.stub_stdout import StubStdout
 
 from googkit.compat.unittest import mock
-from googkit.lib.command_tree import CommandTree
 from googkit.lib.argument import ArgumentParser
+from googkit.lib.command_tree import CommandTree
 from googkit.lib.help import Help
 
 

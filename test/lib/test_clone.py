@@ -10,14 +10,14 @@ class TestClone(unittest.TestCase):
                 mock.patch('googkit.lib.clone._pull') as mock_pull:
             googkit.lib.clone.run('https://exmaple.com/example.git', '/dir1/dir2')
 
-        mock_pull.assert_called_once()
+        self.assertTrue(mock_pull.called)
 
     def test_run_with_no_target_dir(self):
         with mock.patch('os.path.exists', return_value=False), \
                 mock.patch('googkit.lib.clone._clone') as mock_clone:
             googkit.lib.clone.run('https://exmaple.com/example.git', '/dir1/dir2')
 
-        mock_clone.assert_called_once()
+        self.assertTrue(mock_clone.called)
 
     def test_pull(self):
         MockPopen = mock.MagicMock()
@@ -30,7 +30,7 @@ class TestClone(unittest.TestCase):
 
         mock_chdir.assert_any_call('/dir1/dir2')
         mock_chdir.assert_any_call('/dir1/dir2/dir3/dir4')
-        mock_popen.assert_called_once()
+        self.assertTrue(mock_popen.called)
 
     def test_clone(self):
         MockPopen = mock.MagicMock()
@@ -40,7 +40,7 @@ class TestClone(unittest.TestCase):
                 mock.patch('subprocess.Popen', new=MockPopen) as mock_popen:
             googkit.lib.clone.run('https://example.com/example.git', '/dir1/dir2')
 
-        mock_popen.assert_called_once()
+        self.assertTrue(mock_popen.called)
 
 
 if __name__ == '__main__':
