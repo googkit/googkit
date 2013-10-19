@@ -38,4 +38,4 @@ And append ``register`` function to register ``ping`` command on
 the command tree of Googkit::
 
   def register(tree):
-      tree.register(['ping'], [PingCommand])
+      tree.register(['ping'], PingCommand)
