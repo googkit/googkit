@@ -24,9 +24,9 @@ as containing a package.
 command.py
 ----------
 ``command.py`` is your command.
-Import ``commands.command.Command`` and extend ``Command`` class::
+Import ``Command`` class from  ``googkit.commands.command`` and extend it::
 
-  from commands.command import Command
+  from googkit.commands.command import Command
   
   
   class PingCommand(Command):
