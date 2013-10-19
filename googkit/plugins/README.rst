@@ -10,9 +10,9 @@ will be as follows::
   googkit/
   |-- googkit/
   |   `-- plugins/
-  |       |-- ping/
-  |       |   |-- __init__.py
-  :       :   `-- command.py
+  |       `-- ping/
+  |           |-- __init__.py
+  :           `-- command.py
 
 
 __init__.py
