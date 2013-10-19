@@ -17,7 +17,7 @@ class Help(object):
                 cmd=' '.join(self._correct_commands),
                 cmds_mark=commands_mark))
         else:
-            print('Usage: googkit {mark}'.format(
+            print('Usage: googkit {cmds_mark}'.format(
                 cmds_mark=commands_mark))
 
     def _print_available_commands(self):
