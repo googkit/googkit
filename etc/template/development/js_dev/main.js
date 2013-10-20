@@ -1,5 +1,5 @@
 /**
- * @fileoverview An entry point for the web app.
+ * @fileoverview An entry point of the web app.
  */
 
 

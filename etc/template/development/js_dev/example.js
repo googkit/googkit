@@ -5,7 +5,7 @@ goog.require('goog.dom');
 
 
 /**
- * An example class of the starter kit.
+ * An example class of the Googkit project template.
  * @constructor
  */
 foo.Example = function() {
@@ -33,9 +33,6 @@ foo.Example.prototype.demonstrate = function() {
 };
 
 
-/**
- * Does something.
- */
 foo.Example.prototype.doSomething = function() {
   this.showItWorks();
   this.demonstrate();
