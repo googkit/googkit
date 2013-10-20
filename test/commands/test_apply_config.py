@@ -25,23 +25,23 @@ class TestApplyConfigCommand(unittest.TestCase):
         self.assertTrue(ApplyConfigCommand.needs_project_config())
 
     def test_update_base_js(self):
-        s = '<script type="text/javascript" src="{src}"></script>'
+        s = '<script src="{src}"></script>'
         expected = s.format(src=os.path.relpath(StubConfig.BASE_JS, StubConfig.DEVELOPMENT_DIR))
-        line = '<script type="text/javascript" src="link"></script>'
+        line = '<script src="link"></script>'
 
         self.assertEqual(self.cmd.update_base_js(line, StubConfig.DEVELOPMENT_DIR), expected)
 
     def test_update_deps_js(self):
-        s = '<script type="text/javascript" src="{src}"></script>'
+        s = '<script src="{src}"></script>'
         expected = s.format(src=os.path.relpath(StubConfig.DEPS_JS, StubConfig.DEVELOPMENT_DIR))
-        line = '<script type="text/javascript" src="link"></script>'
+        line = '<script src="link"></script>'
 
         self.assertEqual(self.cmd.update_deps_js(line, StubConfig.DEVELOPMENT_DIR), expected)
 
     def test_multitestrunner_css(self):
-        s = '<link rel="stylesheet" type="text/css" href="{href}">'
+        s = '<link rel="stylesheet" href="{href}">'
         expected = s.format(href=os.path.relpath(StubConfig.MULTI_TEST_RUNNER_CSS, StubConfig.DEVELOPMENT_DIR))
-        line = '<link rel="stylesheet" type="text/css" href="link">'
+        line = '<link rel="stylesheet" href="link">'
 
         self.assertEqual(self.cmd.update_multitestrunner_css(line, StubConfig.DEVELOPMENT_DIR), expected)
 

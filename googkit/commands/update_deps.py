@@ -54,6 +54,8 @@ class UpdateDepsCommand(Command):
         else:
             logging.debug(result[1])
 
+        logging.info('Done.')
+
     def update_tests(self, line, tests):
         joined = ','.join(['\'' + test_file + '\'' for test_file in tests])
         return 'var testFiles = [{test_files}];'.format(test_files=joined)
@@ -96,6 +98,8 @@ class UpdateDepsCommand(Command):
         with open(testrunner, 'w') as f:
             for line in lines:
                 f.write(line)
+
+        logging.info('Done.')
 
     def run_internal(self):
         self.update_deps()

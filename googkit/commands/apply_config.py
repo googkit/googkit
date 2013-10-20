@@ -26,21 +26,21 @@ class ApplyConfigCommand(Command):
         relpath = os.path.relpath(path, dirpath)
         href = googkit.compat.urllib.request.pathname2url(relpath)
 
-        return '<script type="text/javascript" src="{href}"></script>'.format(href=href)
+        return '<script src="{href}"></script>'.format(href=href)
 
     def update_deps_js(self, line, dirpath):
         path = self.config.deps_js()
         relpath = os.path.relpath(path, dirpath)
         src = googkit.compat.urllib.request.pathname2url(relpath)
 
-        return '<script type="text/javascript" src="{src}"></script>'.format(src=src)
+        return '<script src="{src}"></script>'.format(src=src)
 
     def update_multitestrunner_css(self, line, dirpath):
         path = self.config.multitestrunner_css()
         relpath = os.path.relpath(path, dirpath)
         href = googkit.compat.urllib.request.pathname2url(relpath)
 
-        return '<link rel="stylesheet" type="text/css" href="{href}">'.format(href=href)
+        return '<link rel="stylesheet" href="{href}">'.format(href=href)
 
     def apply_config(self, path):
         lines = []
@@ -59,8 +59,11 @@ class ApplyConfigCommand(Command):
                         msg = 'Line marked by {marker} was replaced on {path}'.format(**format_dict)
                         logging.debug(msg)
 
-                        updater = updaters[marker]
-                        line = ApplyConfigCommand.line_indent(line) + updater(line, dirpath) + marker + '\n'
+                        line = '{indent}{content}{marker}\n'.format(
+                            indent=ApplyConfigCommand.line_indent(line),
+                            content=updaters[marker](line, dirpath),
+                            marker=marker)
+
                 lines.append(line)
 
         with open(path, 'w') as fp:
@@ -74,6 +77,8 @@ class ApplyConfigCommand(Command):
         ignores = (
             self.config.library_root(),
             self.config.compiler_root())
+
+        logging.info('Applying config...')
 
         for root, dirs, files in os.walk(devel_dir):
             for filename in files:
@@ -89,6 +94,7 @@ class ApplyConfigCommand(Command):
                 if os.path.join(root, dirname) in ignores:
                     dirs.remove(dirname)
 
+        logging.info('Done.')
+
     def run_internal(self):
-        logging.info('Applying config...')
         self.apply_config_all()

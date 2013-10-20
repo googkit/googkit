@@ -34,7 +34,7 @@ class BuildCommand(Command):
         class CompilerArgumentEntry(object):
             def __init__(self, key, value):
                 self.key = key
-                self.value = value 
+                self.value = value
 
             def __str__(self):
                 return '--compiler_flags={key}={value}'.format(
@@ -58,22 +58,6 @@ class BuildCommand(Command):
             >>> args.compiler_arg('--arg3', 'ARG3')
             >>> str(args)
             --arg1=ARG1 --arg2=ARG2 --compiler_flags="--arg3=ARG3"
-
-            >>> args1 = BuildCommand.BuilderArguments()
-            >>> args.builder_arg('--arg1', 'ARG1')
-            >>> args.builder_arg('--arg2', 'ARG2')
-            >>> args.compiler_arg('--arg3', 'ARG3')
-            ...
-            >>> args2 = BuildCommand.BuilderArguments()
-            >>> args.builder_arg('--arg1', 'ARG1')
-            >>> args.builder_arg('--arg2', 'ARG2')
-            >>> args.compiler_arg('--arg3', 'ARG3')
-            ...
-            >>> args3 = BuildCommand.BuilderArguments()
-            >>> args.builder_arg('--arg1', 'ARG1')
-            >>> args.compiler_arg('--arg3', 'ARG3')
-            >>> assert args1 == args2
-            >>> assert args2 != args3
         """
         def __init__(self):
             self._args = set()
@@ -124,7 +108,8 @@ class BuildCommand(Command):
     @classmethod
     def ignore_dirs(cls, *ignore_dirs):
         def ignoref(dirpath, files):
-            return [filename for filename in files if (os.path.join(dirpath, filename) in ignore_dirs)]
+            return [filename for filename in files
+                    if (os.path.join(dirpath, filename) in ignore_dirs)]
         return ignoref
 
     def setup_files(self, target_dir):
@@ -140,7 +125,8 @@ class BuildCommand(Command):
             config.js_dev_dir())
 
         BuildCommand.rmtree_silent(target_dir)
-        shutil.copytree(devel_dir, target_dir, ignore=BuildCommand.ignore_dirs(*ignores))
+        shutil.copytree(devel_dir, target_dir,
+                        ignore=BuildCommand.ignore_dirs(*ignores))
 
         for root, dirs, files in os.walk(target_dir):
             for file in files:
@@ -165,7 +151,9 @@ class BuildCommand(Command):
                 # Replace deps.js by a compiled script
                 if line.find('<!--@require_main@-->') >= 0:
                     indent = BuildCommand.line_indent(line)
-                    line = indent + '<script src="{src}"></script>\n'.format(src=compiled_js_path)
+                    script = '<script src="{src}"></script>\n'.format(
+                        src=compiled_js_path)
+                    line = indent + script
 
                 lines.append(line)
 
@@ -194,6 +182,7 @@ class BuildCommand(Command):
     def build_debug(self, project_root):
         logging.info('Copying resources for debug...')
         self.setup_files(self.config.debug_dir())
+        logging.info('Done.')
 
         logging.info('Building for debug...')
         args = self.debug_arguments(project_root)
@@ -208,13 +197,17 @@ class BuildCommand(Command):
                                   self.config.compiled_js() + '.map')
         self.modify_source_map(source_map, project_root)
 
+        logging.info('Done.')
+
     def build_production(self, project_root):
         logging.info('Copying resources for production...')
         self.setup_files(self.config.production_dir())
+        logging.info('Done.')
 
         logging.info('Building for production...')
         args = self.production_arguments(project_root)
         self._build(args, project_root)
+        logging.info('Done.')
 
     def debug_arguments(self, project_root):
         config = self.config
@@ -222,9 +215,12 @@ class BuildCommand(Command):
         source_map_path = compiled_js + '.map'
         source_map = os.path.basename(source_map_path)
 
+        source_map_comment = '"%output%//# sourceMappingURL={path}"'.format(
+            path=source_map)
+
         # The library path should be a relative path from the project root.
-        # If '--root' is specified as absolute path, 'sources' attribute
-        # of the source map will be absolute path and not work with http scheme.
+        # If '--root' is specified as absolute path, 'sources' attribute of
+        # the source map will be absolute path and not work with http scheme.
         lib_path = os.path.relpath(config.library_root(), project_root)
 
         args = BuildCommand.BuilderArguments()
@@ -237,12 +233,13 @@ class BuildCommand(Command):
         args.compiler_arg('--compilation_level', config.compilation_level())
         args.compiler_arg('--source_map_format', 'V3')
         args.compiler_arg('--create_source_map', source_map_path)
-        args.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path=source_map))
+        args.compiler_arg('--output_wrapper', source_map_comment)
         return args
 
     def production_arguments(self, project_root):
         config = self.config
-        compiled_js = os.path.join(config.production_dir(), config.compiled_js())
+        compiled_js = os.path.join(config.production_dir(),
+                                   config.compiled_js())
         lib_path = os.path.relpath(config.library_root(), project_root)
 
         args = BuildCommand.BuilderArguments()

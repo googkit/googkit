@@ -17,15 +17,22 @@ class DownloadCommand(Command):
     def download_closure_library(self):
         library_repos = self.config.library_repos()
         library_root = self.config.library_root()
+
+        logging.info('Downloading Closure Library...')
+
         try:
             googkit.lib.clone.run(library_repos, library_root)
         except GoogkitError as e:
             raise GoogkitError('Dowloading Closure Library failed: ' + str(e))
 
+        logging.info('Done.')
+
     def download_closure_compiler(self):
         tmp_path = tempfile.mkdtemp()
         compiler_zip = os.path.join(tmp_path, 'compiler.zip')
         compiler_zip_url = self.config.compiler_zip()
+
+        logging.info('Downloading Closure Compiler...')
 
         try:
             googkit.lib.download.run(compiler_zip_url, compiler_zip)
@@ -39,9 +46,8 @@ class DownloadCommand(Command):
 
         shutil.rmtree(tmp_path)
 
-    def run_internal(self):
-        logging.info('Downloading Closure Library...')
-        self.download_closure_library()
+        logging.info('Done.')
 
-        logging.info('Downloading Closure Compiler...')
+    def run_internal(self):
+        self.download_closure_library()
         self.download_closure_compiler()

@@ -39,7 +39,6 @@ def main():
         env = Environment(cwd, arg, tree)
         command = CommandClass(env)
         command.run()
-        logging.info('Complete.')
     except InvalidOptionError as e:
         logging.error('[Error] ' + str(e))
         Help(tree, arg).print_help()
