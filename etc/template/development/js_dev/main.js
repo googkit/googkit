@@ -11,12 +11,8 @@ goog.require('foo.Example');
 /**
  * Entry point of the web app.
  */
-main = function() {
+(function() {
   // TODO: Write your code here
-  example = new foo.Example();
+  var example = new foo.Example();
   example.doSomething();
-};
-
-
-// Start the web app.
-main();
+})();
