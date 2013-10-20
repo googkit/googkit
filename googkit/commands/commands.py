@@ -2,8 +2,7 @@ from googkit.commands.command import Command
 
 
 class CommandsCommand(Command):
-    """
-    Command class that lists available subcommands for the specified arguments.
+    """Command class that lists available subcommands for the specified arguments.
     An output will be used for shell completion.
     """
 

@@ -2,9 +2,7 @@ from googkit.commands.command import Command
 
 
 class SequenceCommand(Command):
-    """
-    Command class that runs internal commands sequentially.
-    """
+    """Command class that runs internal commands sequentially."""
 
     @classmethod
     def _internal_commands(cls):
