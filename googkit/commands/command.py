@@ -48,13 +48,10 @@ class Command(object):
 
     def run(self):
         level = logging.DEBUG if self.env.argument.option('--verbose') else None
-
-        # Log level should be DEBUG if verbose option was set.
         with log_level(level):
             self._validate_options()
             self._setup()
             self.run_internal()
 
     def run_internal(self):
-        # Override the method to implement a behavior
         pass
