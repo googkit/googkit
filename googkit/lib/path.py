@@ -80,11 +80,3 @@ def template():
         raise GoogkitError(msg)
 
     return template_dir
-
-
-def url(path):
-    """
-    Convert a path into a url.
-    Regardless of the value of os.sep, '/' will be used as a path separator.
-    """
-    return '/'.join(path.split(os.sep))
