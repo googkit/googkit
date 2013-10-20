@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-import googkit.lib.path
+import googkit.compat.urllib.request
 from googkit.commands.command import Command
 
 
@@ -24,21 +24,21 @@ class ApplyConfigCommand(Command):
     def update_base_js(self, line, dirpath):
         path = self.config.base_js()
         relpath = os.path.relpath(path, dirpath)
-        href = googkit.lib.path.url(relpath)
+        href = googkit.compat.urllib.request.pathname2url(relpath)
 
         return '<script type="text/javascript" src="{href}"></script>'.format(href=href)
 
     def update_deps_js(self, line, dirpath):
         path = self.config.deps_js()
         relpath = os.path.relpath(path, dirpath)
-        src = googkit.lib.path.url(relpath)
+        src = googkit.compat.urllib.request.pathname2url(relpath)
 
         return '<script type="text/javascript" src="{src}"></script>'.format(src=src)
 
     def update_multitestrunner_css(self, line, dirpath):
         path = self.config.multitestrunner_css()
         relpath = os.path.relpath(path, dirpath)
-        href = googkit.lib.path.url(relpath)
+        href = googkit.compat.urllib.request.pathname2url(relpath)
 
         return '<link rel="stylesheet" type="text/css" href="{href}">'.format(href=href)
 
