@@ -180,9 +180,7 @@ class BuildCommand(Command):
             logging.debug(result[1])
 
     def build_debug(self, project_root):
-        logging.info('Copying resources for debug...')
         self.setup_files(self.config.debug_dir())
-        logging.info('Done.')
 
         logging.info('Building for debug...')
         args = self.debug_arguments(project_root)
@@ -200,9 +198,7 @@ class BuildCommand(Command):
         logging.info('Done.')
 
     def build_production(self, project_root):
-        logging.info('Copying resources for production...')
         self.setup_files(self.config.production_dir())
-        logging.info('Done.')
 
         logging.info('Building for production...')
         args = self.production_arguments(project_root)

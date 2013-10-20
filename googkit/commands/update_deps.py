@@ -35,7 +35,7 @@ class UpdateDepsCommand(Command):
             '--output_file="{deps_js}"'.format(js_dev=js_dev_dir, js_dev_rel=js_dev_dir_rel, deps_js=deps_js)
         ]
 
-        logging.info('Updating dependency information...')
+        logging.debug('Updating dependency information: {cmd}'.format(cmd=' '.join(args)))
 
         # depswriter.py doesn't work with arguments including white-space.
         # For example,
@@ -51,10 +51,6 @@ class UpdateDepsCommand(Command):
 
         if proc.returncode != 0:
             raise GoogkitError('Updating dependencies failed: ' + result[1])
-        else:
-            logging.debug(result[1])
-
-        logging.info('Done.')
 
     def update_tests(self, line, tests):
         joined = ','.join(['\'' + test_file + '\'' for test_file in tests])
@@ -67,8 +63,6 @@ class UpdateDepsCommand(Command):
 
         if not os.path.exists(testrunner):
             return
-
-        logging.info('Updating dependencies for unit-testing...')
 
         testrunner_dir = os.path.dirname(testrunner)
         test_file_pattern = config.test_file_pattern()
@@ -98,8 +92,6 @@ class UpdateDepsCommand(Command):
         with open(testrunner, 'w') as f:
             for line in lines:
                 f.write(line)
-
-        logging.info('Done.')
 
     def run_internal(self):
         self.update_deps()

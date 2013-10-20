@@ -78,8 +78,6 @@ class ApplyConfigCommand(Command):
             self.config.library_root(),
             self.config.compiler_root())
 
-        logging.info('Applying config...')
-
         for root, dirs, files in os.walk(devel_dir):
             for filename in files:
                 (base, ext) = os.path.splitext(filename)
@@ -93,8 +91,6 @@ class ApplyConfigCommand(Command):
             for dirname in dirs:
                 if os.path.join(root, dirname) in ignores:
                     dirs.remove(dirname)
-
-        logging.info('Done.')
 
     def run_internal(self):
         self.apply_config_all()
