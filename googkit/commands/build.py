@@ -14,6 +14,17 @@ class BuildCommand(Command):
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
     class BuilderArguments(object):
+        """Argument builder for the Closure Builder.
+
+        Usage::
+            >>> args = BuildCommand.BuilderArguments()
+            >>> args.builder_arg('--arg1', 'ARG1')
+            >>> args.builder_arg('--arg2', 'ARG2')
+            >>> args.compiler_arg('--arg3', 'ARG3')
+            >>> str(args)
+            --arg1=ARG1 --arg2=ARG2 --compiler_flags="--arg3=ARG3"
+        """
+
         class BuilderArgumentEntry(object):
             def __init__(self, key, value):
                 self.key = key
@@ -49,16 +60,6 @@ class BuildCommand(Command):
             def __hash__(self):
                 return hash(str(self))
 
-        """Argument builder for the Closure Builder.
-
-        Usage::
-            >>> args = BuildCommand.BuilderArguments()
-            >>> args.builder_arg('--arg1', 'ARG1')
-            >>> args.builder_arg('--arg2', 'ARG2')
-            >>> args.compiler_arg('--arg3', 'ARG3')
-            >>> str(args)
-            --arg1=ARG1 --arg2=ARG2 --compiler_flags="--arg3=ARG3"
-        """
         def __init__(self):
             self._args = set()
 
