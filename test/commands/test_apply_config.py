@@ -25,25 +25,30 @@ class TestApplyConfigCommand(unittest.TestCase):
         self.assertTrue(ApplyConfigCommand.needs_project_config())
 
     def test_update_base_js(self):
-        s = '<script src="{src}"></script>'
-        expected = s.format(src=os.path.relpath(StubConfig.BASE_JS, StubConfig.DEVELOPMENT_DIR))
-        line = '<script src="link"></script>'
+        self.cmd.config = mock.MagicMock()
+        self.cmd.config.base_js.return_value = '/dummy'
 
-        self.assertEqual(self.cmd.update_base_js(line, StubConfig.DEVELOPMENT_DIR), expected)
+        line = '<script src="remove me"></script>'
+        expected = '<script src="."></script>'
+        self.assertEqual(self.cmd.update_base_js(line, '/dummy'), expected)
 
     def test_update_deps_js(self):
-        s = '<script src="{src}"></script>'
-        expected = s.format(src=os.path.relpath(StubConfig.DEPS_JS, StubConfig.DEVELOPMENT_DIR))
-        line = '<script src="link"></script>'
+        self.cmd.config = mock.MagicMock()
+        self.cmd.config.deps_js.return_value = '/dummy'
 
-        self.assertEqual(self.cmd.update_deps_js(line, StubConfig.DEVELOPMENT_DIR), expected)
+        line = '<script src="remove me"></script>'
+        expected = '<script src="."></script>'
+
+        self.assertEqual(self.cmd.update_deps_js(line, '/dummy'), expected)
 
     def test_multitestrunner_css(self):
-        s = '<link rel="stylesheet" href="{href}">'
-        expected = s.format(href=os.path.relpath(StubConfig.MULTI_TEST_RUNNER_CSS, StubConfig.DEVELOPMENT_DIR))
-        line = '<link rel="stylesheet" href="link">'
+        self.cmd.config = mock.MagicMock()
+        self.cmd.config.multitestrunner_css.return_value = '/dummy'
 
-        self.assertEqual(self.cmd.update_multitestrunner_css(line, StubConfig.DEVELOPMENT_DIR), expected)
+        line = '<link rel="stylesheet" href="remove me">'
+        expected = '<link rel="stylesheet" href=".">'
+
+        self.assertEqual(self.cmd.update_multitestrunner_css(line, '/dummy'), expected)
 
     def test_apply_config(self):
         # Expected following directory structure:
@@ -95,8 +100,7 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
         mock_fp.__iter__.return_value = iter([(line + '\n') for line in read_data.split('\n')])
 
         # Switch to the mock_open from the original open
-        with mock.patch.object(os, 'sep', new='/'), \
-                mock.patch('googkit.commands.apply_config.open', mock_open, create=True):
+        with mock.patch('googkit.commands.apply_config.open', mock_open, create=True):
             self.cmd.apply_config(tgt_path)
 
         # Expected the target file was opened twice for reading and writing
@@ -119,7 +123,7 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
 
         self.cmd.apply_config_all()
 
-        expected_calls = [os.path.join(StubConfigOnStubProject.DEVELOPMENT_DIR, path) for path in [
+        expected_paths = [os.path.normcase(path) for path in [
             'index.html',
             'all_tests.html',
             'style.css',
@@ -127,14 +131,20 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
             'js_dev/example_test.html',
             'js_dev/main.js'
         ]]
-        for expected_call in expected_calls:
-            self.cmd.apply_config.assert_any_call(expected_call)
+        for expected_path in expected_paths:
+            path = os.path.join(StubConfigOnStubProject.DEVELOPMENT_DIR, expected_path)
+            self.cmd.apply_config.assert_any_call(path)
 
     def test_run_internal(self):
-        with mock.patch('sys.stdout', new_callable=StubStdout):
-            self.cmd.apply_config_all = mock.MagicMock()
+        dummy_project_root = os.path.normcase('/dir1/dir2')
+        self.cmd.apply_config_all = mock.MagicMock()
+
+        with mock.patch('sys.stdout', new_callable=StubStdout), \
+                mock.patch('googkit.lib.path.project_root', return_value=dummy_project_root), \
+                mock.patch('googkit.commands.apply_config.working_directory'):
             self.cmd.run_internal()
-            self.cmd.apply_config_all.assert_called_once_with()
+
+        self.cmd.apply_config_all.assert_called_once_with()
 
 
 if __name__ == '__main__':

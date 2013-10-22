@@ -20,7 +20,7 @@ def project_root(cwd):
     try:
         while not os.path.exists(os.path.join(current, PROJECT_CONFIG)):
             before = current
-            current = os.path.abspath(os.path.join(current, '../'))
+            current = os.path.dirname(current)
 
             # Break if current smeems root.
             if before == current:
