@@ -11,8 +11,8 @@ You can setup only two commands, so start developing quickly.
 You can also do such a complicated compiling ... at one blow!
 
 
-System Requirement
-~~~~~~~~~~~~~~~~~~
+Requirements
+~~~~~~~~~~~~
 Googkit requires Following commands.
 Install them if not installed yet.
 
@@ -27,8 +27,8 @@ Install Googkit
 At first, you need to install Googkit.
 
 
-Linux or Mac OSX
-~~~~~~~~~~~~~~~~
+Linux or OS X
+~~~~~~~~~~~~~
 
 1. Download Googkit::
 

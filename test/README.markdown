@@ -2,8 +2,8 @@ Unit-Testing Googkit
 ====================
 
 
-System Requirements
--------------------
+Requirements
+------------
 `coverage` is required for measuring test coverage:
 
 	$ easy_install coverage
