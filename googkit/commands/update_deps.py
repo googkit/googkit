@@ -2,6 +2,8 @@ import logging
 import os
 import re
 import subprocess
+import googkit.lib.path
+from googkit.lib.dirutil import working_directory
 from googkit.commands.command import Command
 from googkit.lib.error import GoogkitError
 
@@ -94,5 +96,7 @@ class UpdateDepsCommand(Command):
                 f.write(line)
 
     def run_internal(self):
-        self.update_deps()
-        self.update_testrunner()
+        project_root = googkit.lib.path.project_root(self.env.cwd)
+        with working_directory(project_root):
+            self.update_deps()
+            self.update_testrunner()

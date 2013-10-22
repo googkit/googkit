@@ -2,6 +2,7 @@ import logging
 import os
 import re
 import googkit.compat.urllib.request
+from googkit.lib.dirutil import working_directory
 from googkit.commands.command import Command
 
 
@@ -93,4 +94,6 @@ class ApplyConfigCommand(Command):
                     dirs.remove(dirname)
 
     def run_internal(self):
-        self.apply_config_all()
+        project_root = googkit.lib.path.project_root(self.env.cwd)
+        with working_directory(project_root):
+            self.apply_config_all()
