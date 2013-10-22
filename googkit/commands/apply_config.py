@@ -47,23 +47,24 @@ class ApplyConfigCommand(Command):
     def apply_config(self, path):
         lines = []
         updaters = {
-            '<!--@base_js@-->': self.update_base_js,
-            '<!--@deps_js@-->': self.update_deps_js,
-            '<!--@multitestrunner_css@-->': self.update_multitestrunner_css}
-        markers = updaters.keys()
+            'base.js': {'marker': '<!--@base_js@-->', 'update': self.update_base_js},
+            'deps.js': {'marker': '<!--@deps_js@-->', 'update': self.update_deps_js},
+            'multitestrunner.css': {'marker': '<!--@multitestrunner_css@-->', 'update': self.update_multitestrunner_css}
+        }
         dirpath = os.path.dirname(path)
 
         with open(path) as fp:
             for line in fp:
-                for marker in markers:
+                for updater_name in updaters.keys():
+                    marker = updaters[updater_name]['marker']
+                    update = updaters[updater_name]['update']
                     if line.find(marker) >= 0:
-                        format_dict = {'marker': marker, 'path': path}
-                        msg = 'Line marked by {marker} was replaced on {path}'.format(**format_dict)
+                        msg = 'Replaced a {name} path on {path}'.format(name=updater_name, path=path)
                         logging.debug(msg)
 
                         line = '{indent}{content}{marker}\n'.format(
                             indent=ApplyConfigCommand.line_indent(line),
-                            content=updaters[marker](line, dirpath),
+                            content=update(line, dirpath),
                             marker=marker)
 
                 lines.append(line)
@@ -98,3 +99,4 @@ class ApplyConfigCommand(Command):
         project_root = googkit.lib.path.project_root(self.env.cwd)
         with working_directory(project_root):
             self.apply_config_all()
+        logging.info('Applied configs.')
