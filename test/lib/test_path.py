@@ -6,6 +6,7 @@ import googkit.lib.path
 from googkit.compat.unittest import mock
 from googkit.lib.error import GoogkitError
 
+
 def is_path_equal(a, b):
     return os.path.abspath(a) == os.path.abspath(b)
 
@@ -16,13 +17,13 @@ class TestPath(unittest.TestCase):
 
     def test_project_root_on_grandchild(self):
         def stub_exists(path):
-            exists = [os.path.abspath(path) for path in [
+            exists = [os.path.abspath(exist) for exist in [
                 '/',
                 '/dir1',
                 '/dir1/dir2',
                 '/dir1/dir2/googkit.cfg',
                 '/dir1/dir2/dir3',
-                '/dir1/dir2/dir3/dir4'
+                '/dir1/dir2/dir3/dir4',
             ]]
 
             return os.path.abspath(path) in exists
@@ -30,15 +31,21 @@ class TestPath(unittest.TestCase):
         cwd = os.path.normcase('/dir1/dir2/dir3/dir4')
         with mock.patch('os.path.exists', side_effect=stub_exists):
             self.assertPathEqual(
-                googkit.lib.path.project_root(os.path.normcase(cwd)),
+                googkit.lib.path.project_root(cwd),
                 '/dir1/dir2')
 
     def test_project_root_on_current(self):
         def stub_exists(path):
-            if is_path_equal(path, '/dir1/dir2/dir3/dir4/googkit.cfg'):
-                return True
-            else:
-                return False
+            exists = [os.path.abspath(exist) for exist in [
+                '/',
+                '/dir1',
+                '/dir1/dir2',
+                '/dir1/dir2/dir3',
+                '/dir1/dir2/dir3/dir4',
+                '/dir1/dir2/dir3/dir4/googkit.cfg',
+            ]]
+
+            return os.path.abspath(path) in exists
 
         cwd = os.path.normcase('/dir1/dir2/dir3/dir4')
         with mock.patch('os.path.exists', side_effect=stub_exists):
@@ -46,52 +53,20 @@ class TestPath(unittest.TestCase):
                 googkit.lib.path.project_root(cwd),
                 '/dir1/dir2/dir3/dir4')
 
-    def test_project_root_with_on_unrelated(self):
-        with mock.patch('os.path.exists', return_value=False):
-            self.assertEqual(googkit.lib.path.project_root('/cwd'), None)
-
-    def test_project_config_on_groundchild(self):
+    def test_project_config(self):
         def stub_exists(path):
-            exists = [os.path.abspath(path) for path in [
-                '/',
-                '/dir1',
-                '/dir1/dir2',
-                '/dir1/dir2/googkit.cfg',
-                '/dir1/dir2/dir3',
-                '/dir1/dir2/dir3/dir4'
-            ]]
-
-            return os.path.abspath(path) in exists
+            if is_path_equal(path, '/dir1/dir2/googkit.cfg'):
+                return True
+            else:
+                return False
 
         cwd = os.path.normcase('/dir1/dir2/dir3/dir4')
-        with mock.patch('os.path.exists', side_effect=stub_exists):
+        dummy_project_root = os.path.normcase('/dir1/dir2')
+        with mock.patch('os.path.exists', side_effect=stub_exists), \
+                mock.patch('googkit.lib.path.project_root', return_value=dummy_project_root):
             self.assertPathEqual(
                 googkit.lib.path.project_config(cwd),
                 '/dir1/dir2/googkit.cfg')
-
-    def test_project_config_on_current(self):
-        def stub_exists(path):
-            exists = [os.path.abspath(path) for path in [
-                '/',
-                '/dir1',
-                '/dir1/dir2',
-                '/dir1/dir2/dir3',
-                '/dir1/dir2/dir3/dir4',
-                '/dir1/dir2/dir3/dir4/googkit.cfg'
-            ]]
-
-            return os.path.abspath(path) in exists
-
-        cwd = os.path.normcase('/dir1/dir2/dir3/dir4')
-        with mock.patch('os.path.exists', side_effect=stub_exists):
-            self.assertPathEqual(
-                googkit.lib.path.project_config(cwd),
-                '/dir1/dir2/dir3/dir4/googkit.cfg')
-
-    def test_project_config_with_on_unrelated(self):
-        with mock.patch('os.path.exists', return_value=False):
-            with self.assertRaises(GoogkitError):
-                googkit.lib.path.project_config('/cwd')
 
     def test_user_config_on_groundchild(self):
         def stub_expanduser(path):
@@ -109,7 +84,7 @@ class TestPath(unittest.TestCase):
             return re.sub(r'~', '/home/user', path)
 
         def stub_exists(path):
-            exists = [os.path.abspath(path) for path in [
+            exists = [os.path.abspath(exist) for exist in [
                 '/',
                 '/home',
                 '/home/user',
@@ -123,7 +98,7 @@ class TestPath(unittest.TestCase):
 
     def test_default_config(self):
         def stub_exists(path):
-            exists = [os.path.abspath(path) for path in [
+            exists = [os.path.abspath(exist) for exist in [
                 '/',
                 '/dummy',
                 '/dummy/usr',
