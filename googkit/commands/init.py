@@ -17,6 +17,6 @@ class InitCommand(Command):
         distutils.dir_util.copy_tree(template_dir, dst_dir)
 
     def run_internal(self):
-        cwd = os.getcwd()
+        cwd = self.env.cwd
         self.copy_template(cwd)
         logging.info('Initialized googkit project in ' + cwd)

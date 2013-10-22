@@ -55,10 +55,10 @@ class TestInitCommand(unittest.TestCase):
                 self.cmd.copy_template(dst_path)
 
     def test_run_internal(self):
+        self.env.cwd = 'dummy'
         self.cmd.copy_template = mock.MagicMock()
 
-        with mock.patch('os.getcwd', return_value='dummy'):
-            self.cmd.run_internal()
+        self.cmd.run_internal()
 
         self.cmd.copy_template.assert_called_once_with('dummy')
 
