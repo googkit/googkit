@@ -136,10 +136,15 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
             self.cmd.apply_config.assert_any_call(path)
 
     def test_run_internal(self):
-        with mock.patch('sys.stdout', new_callable=StubStdout):
-            self.cmd.apply_config_all = mock.MagicMock()
+        dummy_project_root = os.path.normcase('/dir1/dir2')
+        self.cmd.apply_config_all = mock.MagicMock()
+
+        with mock.patch('sys.stdout', new_callable=StubStdout), \
+                mock.patch('googkit.lib.path.project_root', return_value=dummy_project_root), \
+                mock.patch('googkit.commands.apply_config.working_directory'):
             self.cmd.run_internal()
-            self.cmd.apply_config_all.assert_called_once_with()
+
+        self.cmd.apply_config_all.assert_called_once_with()
 
 
 if __name__ == '__main__':

@@ -1,7 +1,6 @@
 import unittest
 import os
 import re
-
 import googkit.lib.path
 from googkit.compat.unittest import mock
 from googkit.lib.error import GoogkitError

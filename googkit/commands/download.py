@@ -4,7 +4,9 @@ import shutil
 import tempfile
 import googkit.lib.clone
 import googkit.lib.download
+import googkit.lib.path
 import googkit.lib.unzip
+from googkit.lib.dirutil import working_directory
 from googkit.commands.command import Command
 from googkit.lib.error import GoogkitError
 
@@ -49,5 +51,7 @@ class DownloadCommand(Command):
         logging.info('Done.')
 
     def run_internal(self):
-        self.download_closure_library()
-        self.download_closure_compiler()
+        project_root = googkit.lib.path.project_root(self.env.cwd)
+        with working_directory(project_root):
+            self.download_closure_library()
+            self.download_closure_compiler()

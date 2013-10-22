@@ -46,16 +46,19 @@ class TestDownloadCommand(unittest.TestCase):
             os.path.join(tmp_path, 'compiler.zip'))
 
     def test_run_internal(self):
-        self.env.arg_parser = mock.MagicMock()
-        self.env.arg_parser.option.return_value = False
-        with mock.patch('sys.stdout', new_callable=StubStdout):
-            self.cmd.download_closure_compiler = mock.MagicMock()
-            self.cmd.download_closure_library = mock.MagicMock()
+        self.env.argument = mock.MagicMock()
+        self.env.argument.option.return_value = False
+        dummy_project_root = os.path.normcase('/dir1/dir2')
+        self.cmd.download_closure_compiler = mock.MagicMock()
+        self.cmd.download_closure_library = mock.MagicMock()
 
+        with mock.patch('sys.stdout', new_callable=StubStdout), \
+                mock.patch('googkit.lib.path.project_root', return_value=dummy_project_root), \
+                mock.patch('googkit.commands.download.working_directory'):
             self.cmd.run_internal()
 
-            self.cmd.download_closure_compiler.assert_called_once_with()
-            self.cmd.download_closure_library.assert_called_once_with()
+        self.cmd.download_closure_compiler.assert_called_once_with()
+        self.cmd.download_closure_library.assert_called_once_with()
 
 
 if __name__ == '__main__':

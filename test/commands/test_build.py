@@ -195,14 +195,53 @@ DUMMY
         self.assertEqual(mock_json.dump.call_count, 1)
 
     def test_run_internal(self):
-        pass
-        #self.cmd.compile_scripts = mock.MagicMock()
-        #self.env.arg_parser = mock.MagicMock()
-        #self.env.arg_parser.option.return_value = False
+        self.cmd.build_debug = mock.MagicMock()
+        self.cmd.build_production = mock.MagicMock()
+        self.cmd.config.is_debug_enabled = mock.MagicMock()
+        self.cmd.config.is_debug_enabled.return_value = False
+        self.env.argument = mock.MagicMock()
+        self.env.argument.option.return_value = False
+        dummy_project_root = os.path.normcase('/dir1/dir2')
 
-        #self.cmd.run_internal()
+        with mock.patch('googkit.lib.path.project_root', return_value=dummy_project_root), \
+                mock.patch('googkit.commands.build.working_directory'):
 
-        #self.cmd.build_production.assert_called_once_with()
+            self.cmd.run_internal()
+
+        self.cmd.build_production.assert_called_once_with(dummy_project_root)
+
+    def test_run_internal_with_debug_enabled(self):
+        self.cmd.build_debug = mock.MagicMock()
+        self.cmd.build_production = mock.MagicMock()
+        self.cmd.config.is_debug_enabled = mock.MagicMock()
+        self.cmd.config.is_debug_enabled.return_value = True
+        self.env.argument = mock.MagicMock()
+        self.env.argument.option.return_value = False
+        dummy_project_root = os.path.normcase('/dir1/dir2')
+
+        with mock.patch('googkit.lib.path.project_root', return_value=dummy_project_root), \
+                mock.patch('googkit.commands.build.working_directory'):
+
+            self.cmd.run_internal()
+
+        self.cmd.build_production.assert_called_once_with(dummy_project_root)
+        self.cmd.build_debug.assert_called_once_with(dummy_project_root)
+
+    def test_run_internal_with_debug_opt(self):
+        self.cmd.build_debug = mock.MagicMock()
+        self.cmd.build_production = mock.MagicMock()
+        self.cmd.config.is_debug_enabled = mock.MagicMock()
+        self.cmd.config.is_debug_enabled.return_value = False
+        self.env.argument = mock.MagicMock()
+        self.env.argument.option.side_effect = lambda opt: opt == '--debug'
+        dummy_project_root = os.path.normcase('/dir1/dir2')
+
+        with mock.patch('googkit.lib.path.project_root', return_value=dummy_project_root), \
+                mock.patch('googkit.commands.build.working_directory'):
+
+            self.cmd.run_internal()
+
+        self.cmd.build_debug.assert_called_once_with(dummy_project_root)
 
 
 if __name__ == '__main__':

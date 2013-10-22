@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import googkit.lib.path
 import googkit.compat.urllib.request
 from googkit.lib.dirutil import working_directory
 from googkit.commands.command import Command

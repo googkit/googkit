@@ -108,14 +108,18 @@ DUMMY
             [mock.call(line + '\n',) for line in expected_wrote.split('\n')])
 
     def test_run_internal(self):
-        with mock.patch('sys.stdout', new_callable=StubStdout):
-            self.cmd.update_deps = mock.MagicMock()
-            self.cmd.update_testrunner = mock.MagicMock()
+        dummy_project_root = os.path.normcase('/dir1/dir2')
+        self.cmd.update_deps = mock.MagicMock()
+        self.cmd.update_testrunner = mock.MagicMock()
+
+        with mock.patch('sys.stdout', new_callable=StubStdout), \
+                mock.patch('googkit.lib.path.project_root', return_value=dummy_project_root), \
+                mock.patch('googkit.commands.update_deps.working_directory'):
 
             self.cmd.run_internal()
 
-            self.cmd.update_deps.assert_called_once_with()
-            self.cmd.update_testrunner.assert_called_once_with()
+        self.cmd.update_deps.assert_called_once_with()
+        self.cmd.update_testrunner.assert_called_once_with()
 
 
 if __name__ == '__main__':
