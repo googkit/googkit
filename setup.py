@@ -44,7 +44,7 @@ setup(
     long_description=read('README.rst'),
     packages=recurse_package('googkit'),
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
         "Topic :: Utilities",
     ],
