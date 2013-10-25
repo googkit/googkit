@@ -30,12 +30,24 @@ class UpdateDepsCommand(Command):
         base_js_dir = os.path.dirname(config.base_js())
         js_dev_dir_rel = os.path.relpath(js_dev_dir, base_js_dir)
 
+        args_format = {
+            'deps_js': deps_js,
+            'js_dev': js_dev_dir,
+            'js_dev_rel': js_dev_dir_rel,
+        }
+
         args = [
             'python',
             config.depswriter(),
-            '--root_with_prefix="{js_dev} {js_dev_rel}"'.format(js_dev=js_dev_dir, js_dev_rel=js_dev_dir_rel),
-            '--output_file="{deps_js}"'.format(js_dev=js_dev_dir, js_dev_rel=js_dev_dir_rel, deps_js=deps_js)
+            '--root_with_prefix="{js_dev} {js_dev_rel}"'.format(**args_format),
+            '--output_file="{deps_js}"'.format(**args_format)
         ]
+
+        popen_args = {
+            'shell': True,
+            'stdout': subprocess.PIPE,
+            'stderr': subprocess.PIPE,
+        }
 
         # depswriter.py doesn't work with arguments including white-space.
         # For example,
@@ -46,11 +58,11 @@ class UpdateDepsCommand(Command):
         #   but it doesn't work:
         #
         #     $ python depswriter.py "--root_with_prefix=\"path path\""
-        proc = subprocess.Popen(' '.join(args), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(' '.join(args), **popen_args)
         result = proc.communicate()
 
         if proc.returncode != 0:
-            raise GoogkitError('Updating dependencies failed: ' + result[1])
+            raise GoogkitError('Updating dependencies failed: ' + result[1].decode())
 
         logging.debug('Updated ' + deps_js)
 
