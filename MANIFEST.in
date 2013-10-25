@@ -1,5 +1,4 @@
-graft etc
 include LICENSE.txt
 include README.rst
 include README_ja.rst
-include googkit/plugins/README.rst
+recursive-include googkit_data *

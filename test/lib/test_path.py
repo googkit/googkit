@@ -103,8 +103,8 @@ class TestPath(unittest.TestCase):
                 '/dummy/usr',
                 '/dummy/usr/local',
                 '/dummy/usr/local/googkit',
-                '/dummy/usr/local/googkit/etc',
-                '/dummy/usr/local/googkit/etc/default.cfg']]
+                '/dummy/usr/local/googkit/googkit_data',
+                '/dummy/usr/local/googkit/googkit_data/default.cfg']]
 
             return os.path.abspath(path) in exists
 
@@ -114,7 +114,7 @@ class TestPath(unittest.TestCase):
                 mock.patch('googkit.lib.path.googkit_root', return_value=dummy_googkit_root):
             self.assertPathEqual(
                 googkit.lib.path.default_config(),
-                '/dummy/usr/local/googkit/etc/default.cfg')
+                '/dummy/usr/local/googkit/googkit_data/default.cfg')
 
     def test_googkit_root(self):
         dummy_path = os.path.normcase('/dummy/googkit/googkit/lib/path.py')
@@ -145,14 +145,14 @@ class TestPath(unittest.TestCase):
 
     def test_template(self):
         def stub_isdir(path):
-            return is_path_equal(path, '/dummy/usr/local/googkit/etc/template')
+            return is_path_equal(path, '/dummy/usr/local/googkit/googkit_data/template')
 
         dummy_googkit_root = os.path.normcase('/dummy/usr/local/googkit')
         with mock.patch('googkit.lib.path.googkit_root', return_value=dummy_googkit_root), \
                 mock.patch('os.path.isdir', side_effect=stub_isdir):
             self.assertPathEqual(
                 googkit.lib.path.template(),
-                '/dummy/usr/local/googkit/etc/template')
+                '/dummy/usr/local/googkit/googkit_data/template')
 
     def test_template_with_directory_missing(self):
         dummy_googkit_root = os.path.normcase('/dummy/usr/local/googkit')
@@ -161,4 +161,4 @@ class TestPath(unittest.TestCase):
             with self.assertRaises(GoogkitError):
                 self.assertPathEqual(
                     googkit.lib.path.template(),
-                    '/dummy/usr/local/googkit/etc/template')
+                    '/dummy/usr/local/googkit/googkit_data/template')

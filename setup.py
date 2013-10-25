@@ -8,7 +8,7 @@ def read(path):
     return open(os.path.join(script_dir, path)).read()
 
 
-def recurse_package(top_dir):
+def packages(top_dir):
     result = []
 
     for root, dirnames, filenames in os.walk(top_dir):
@@ -19,6 +19,17 @@ def recurse_package(top_dir):
         result.append(root)
 
     return result
+
+
+def package_data(package):
+    result = []
+
+    for root, dirnames, filenames in os.walk(package):
+        comps = root.split(os.sep)[1:]
+        path = os.path.join(*comps) if len(comps) > 0 else ''
+        result.append(os.path.join(path, '*.*'))
+
+    return {package: result}
 
 
 def data_files(data_dirs):
@@ -42,7 +53,8 @@ setup(
     keywords='',
     url='https://github.com/cocopon/googkit',
     long_description=read('README.rst'),
-    packages=recurse_package('googkit'),
+    packages=packages('googkit') + packages('googkit_data'),
+    package_data=package_data('googkit_data'),
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
@@ -56,7 +68,6 @@ setup(
     zip_safe=False,
     data_files=data_files([
         'etc',
-        'etc/completion',
-        'etc/template'
+        'etc/completion'
     ])
 )
