@@ -21,7 +21,13 @@ def _git_cmd():
 
 def _pull(repos, target_path):
     args = [_git_cmd(), 'pull']
-    proc = subprocess.Popen(args, cwd=target_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    popen_args = {
+        'cwd': target_path,
+        'stdout': subprocess.PIPE,
+        'stderr': subprocess.PIPE,
+    }
+
+    proc = subprocess.Popen(args, **popen_args)
     result = proc.communicate()
 
     if proc.returncode != 0:
@@ -33,7 +39,12 @@ def _pull(repos, target_path):
 def _clone(repos, target_path):
     # git-clone on Windows expected unix-like path
     args = [_git_cmd(), 'clone', repos, request.pathname2url(target_path)]
-    proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    popen_args = {
+        'stdout': subprocess.PIPE,
+        'stderr': subprocess.PIPE,
+    }
+
+    proc = subprocess.Popen(args, **popen_args)
     result = proc.communicate()
 
     if proc.returncode != 0:
