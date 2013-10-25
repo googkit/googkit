@@ -25,9 +25,9 @@ def _pull(repos, target_path):
     result = proc.communicate()
 
     if proc.returncode != 0:
-        raise GoogkitError('Git pull failed: ' + str(result[1]))
+        raise GoogkitError('Git pull failed: ' + result[1].decode())
 
-    logging.debug(result[0])
+    logging.debug(result[0].decode())
 
 
 def _clone(repos, target_path):
@@ -37,6 +37,6 @@ def _clone(repos, target_path):
     result = proc.communicate()
 
     if proc.returncode != 0:
-        raise GoogkitError('Git clone failed: ' + str(result[1]))
+        raise GoogkitError('Git clone failed: ' + result[1].decode())
 
-    logging.debug(result[0])
+    logging.debug(result[0].decode())

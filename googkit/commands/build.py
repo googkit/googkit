@@ -176,9 +176,9 @@ class BuildCommand(Command):
         result = builder_proc.communicate()
 
         if builder_proc.returncode != 0:
-            raise GoogkitError('Compilation failed:\n' + result[1])
+            raise GoogkitError('Compilation failed:\n' + result[1].decode())
         else:
-            logging.debug(result[1])
+            logging.debug(result[1].decode())
 
     def build_debug(self, project_root):
         self.setup_files(self.config.debug_dir())
