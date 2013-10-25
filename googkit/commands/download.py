@@ -2,13 +2,13 @@ import logging
 import os
 import shutil
 import tempfile
+import zipfile
 import googkit.lib.clone
-import googkit.lib.download
 import googkit.lib.path
-import googkit.lib.unzip
 from googkit.lib.dirutil import working_directory
 from googkit.commands.command import Command
 from googkit.lib.error import GoogkitError
+from googkit.compat.urllib import request
 
 
 class DownloadCommand(Command):
@@ -37,14 +37,16 @@ class DownloadCommand(Command):
         logging.info('Downloading Closure Compiler...')
 
         try:
-            googkit.lib.download.run(compiler_zip_url, compiler_zip)
+            request.urlretrieve(compiler_zip_url, compiler_zip)
         except IOError as e:
             raise GoogkitError('Dowloading Closure Compiler failed: ' + str(e))
 
         compiler_root = self.config.compiler_root()
 
         os.path.join('tools', 'sub', 'unzip.py')
-        googkit.lib.unzip.run(compiler_zip, compiler_root)
+
+        with zipfile.ZipFile(compiler_zip) as z:
+            z.extractall(compiler_root)
 
         shutil.rmtree(tmp_path)
 

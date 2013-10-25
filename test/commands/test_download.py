@@ -28,8 +28,12 @@ class TestDownloadCommand(unittest.TestCase):
 
     def test_download_closure_compiler(self):
         tmp_path = '/tmp/dummy'
-        with mock.patch('googkit.lib.download') as mock_download, \
-                mock.patch('googkit.lib.unzip') as mock_unzip, \
+
+        MockZipFile = mock.MagicMock()
+        mock_zip = MockZipFile.return_value.__enter__.return_value
+
+        with mock.patch('googkit.commands.download.request.urlretrieve') as mock_urlretrive, \
+                mock.patch('zipfile.ZipFile', new=MockZipFile), \
                 mock.patch('tempfile.mkdtemp', return_value=tmp_path), \
                 mock.patch('shutil.rmtree') as mock_rmtree:
             self.cmd.download_closure_compiler()
@@ -37,11 +41,12 @@ class TestDownloadCommand(unittest.TestCase):
         # Expected temporary directory was created and removed
         mock_rmtree.assert_called_once_with(tmp_path)
 
-        mock_unzip.run.assert_called_once_with(
-            os.path.join(tmp_path, 'compiler.zip'),
+        MockZipFile.assert_called_once_with(
+            os.path.join(tmp_path, 'compiler.zip'))
+        mock_zip.extractall.assert_called_once_with(
             StubConfig.COMPILER_ROOT)
 
-        mock_download.run.assert_called_once_with(
+        mock_urlretrive.assert_called_once_with(
             StubConfig.COMPILER_LATEST_ZIP,
             os.path.join(tmp_path, 'compiler.zip'))
 
