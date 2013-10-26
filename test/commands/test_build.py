@@ -1,12 +1,14 @@
 import unittest
+import doctest
 import os
 import subprocess
 
+from googkit.compat.unittest import mock
 from test.stub_config import StubConfig, StubConfigOnStubProject
 from test.stub_environment import StubEnvironment
 
-from googkit.commands.build import BuildCommand
-from googkit.compat.unittest import mock
+import googkit.commands.build
+BuildCommand = googkit.commands.build.BuildCommand
 
 
 class TestBuildCommand(unittest.TestCase):
@@ -106,7 +108,8 @@ DUMMY
                               os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'))
         expected.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path=StubConfig.COMPILED_JS + '.map'))
 
-        args = self.cmd.debug_arguments(StubConfig.PROJECT_DIR)
+        with mock.patch('os.path.exists', return_value=False):
+            args = self.cmd.debug_arguments(StubConfig.PROJECT_DIR)
         self.assertEqual(args, expected)
 
     def test_production_arguments(self):
@@ -122,8 +125,49 @@ DUMMY
         expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
         expected.compiler_arg('--define', 'goog.DEBUG=false')
 
-        args = self.cmd.production_arguments(StubConfig.PROJECT_DIR)
+        with mock.patch('os.path.exists', return_value=False):
+            args = self.cmd.production_arguments(StubConfig.PROJECT_DIR)
         self.assertEqual(args, expected)
+
+    def test_debug_arguments_with_flagfile(self):
+        expected = BuildCommand.BuilderArguments()
+        expected.builder_arg('--root',
+                             os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
+        expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
+        expected.builder_arg('--namespace', 'main')
+        expected.builder_arg('--output_mode', 'compiled')
+        expected.builder_arg('--output_file',
+                             os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
+        expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
+        expected.compiler_arg('--source_map_format', 'V3')
+        expected.compiler_arg('--create_source_map',
+                              os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'))
+        expected.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path=StubConfig.COMPILED_JS + '.map'))
+        expected.compiler_arg('--flagfile', StubConfig.COMPILER_FLAGFILE_FOR_DEBUG)
+
+        with mock.patch('os.path.exists', return_value=True):
+            args = self.cmd.debug_arguments(StubConfig.PROJECT_DIR)
+        self.assertEqual(args, expected)
+
+    def test_production_arguments_with_flagfile(self):
+        expected = BuildCommand.BuilderArguments()
+        expected.builder_arg('--root',
+                             os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
+        expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
+        expected.builder_arg('--namespace', 'main')
+        expected.builder_arg('--output_mode', 'compiled')
+        expected.builder_arg('--output_file',
+                             os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
+        expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
+        expected.compiler_arg('--define', 'goog.DEBUG=false')
+        expected.compiler_arg('--flagfile', StubConfig.COMPILER_FLAGFILE)
+
+        with mock.patch('os.path.exists', return_value=True):
+            args = self.cmd.production_arguments(StubConfig.PROJECT_DIR)
+        self.assertEqual(args, expected)
+
 
     def test_build_production(self):
         self.cmd.setup_files = mock.MagicMock()
@@ -242,6 +286,11 @@ DUMMY
             self.cmd.run_internal()
 
         self.cmd.build_debug.assert_called_once_with(dummy_project_root)
+
+
+def load_tests(loader, tests, ignore):
+    tests.addTests(doctest.DocTestSuite(googkit.commands.build))
+    return tests
 
 
 if __name__ == '__main__':

@@ -12,19 +12,24 @@ foo.Example = function() {
 };
 
 
+/**
+ * Shows a message 'it works'.
+ */
 foo.Example.prototype.showItWorks = function() {
   // Add 'works' css class if Closure Library works correctly
   goog.dom.classes.set(document.body, 'works');
 };
 
 
+/**
+ * Shows a simple demo.
+ */
 foo.Example.prototype.demonstrate = function() {
   var nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   var expression = nums.join(' + ');
-  var total = 0;
-  goog.array.forEach(nums, function(num) {
-    total += num;
-  }, this);
+  var total = goog.array.reduce(nums, function(before, current) {
+    return before + current;
+  }, 0);
 
   var welcomeElem = goog.dom.getElementByClass('welcome');
   var text = expression + ' = ' + String(total);
@@ -33,6 +38,9 @@ foo.Example.prototype.demonstrate = function() {
 };
 
 
+/**
+ * Sample method.
+ */
 foo.Example.prototype.doSomething = function() {
   this.showItWorks();
   this.demonstrate();
