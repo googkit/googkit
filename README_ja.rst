@@ -54,9 +54,7 @@ LinuxまたはOS X
 Windows
 ~~~~~~~
 
-1. Googkit をダウンロードする::
-
-     $ git clone https://github.com/cocopon/googkit
+1. `Googkit の最新版 <https://github.com/cocopon/googkit/releases>`_ をダウンロード・展開する
 
 
 2. お好みの場所に移動する::

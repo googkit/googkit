@@ -37,9 +37,7 @@ First, you need to install Googkit.
 Linux or OS X
 ~~~~~~~~~~~~~
 
-1. Download Googkit::
-
-     $ git clone https://github.com/cocopon/googkit
+1. Download and extract `the latest version of Googkit <https://github.com/cocopon/googkit/releases>`_
 
 
 2. Put it into a preferred place::
