@@ -1,5 +1,5 @@
 from googkit.commands.build import BuildCommand
-from googkit.commands.commands import CommandsCommand
+from googkit.commands.candidates import CandidatesCommand
 from googkit.commands.init import InitCommand
 from googkit.commands.lint import LintCommand
 from googkit.commands.ready import ReadyCommand
@@ -9,7 +9,7 @@ from googkit.commands.update_deps import UpdateDepsCommand
 
 class CommandTree(object):
     DEFAULT_TREE = {
-        '_commands': CommandsCommand,
+        '_candidates': CandidatesCommand,
         'build': BuildCommand,
         'config': {
             'apply': ReadyCommand
@@ -68,8 +68,8 @@ class CommandTree(object):
         value = self._tree
 
         # TODO: is there a better way...?
-        if len(args) > 1 and args[0] == '_commands':
-            return self._tree['_commands']
+        if len(args) > 1 and args[0] == '_candidates':
+            return self._tree['_candidates']
 
         depth = 0
         for arg in args:

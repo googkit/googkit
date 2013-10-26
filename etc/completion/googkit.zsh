@@ -4,9 +4,9 @@ _googkit() {
 
 	total_words=${#words}
 	if [[ $total_words -eq 2 ]]; then
-		completions="$(googkit _commands)"
+		completions="$(googkit _candidates)"
 	else
-		completions="$(googkit _commands ${words[2,-2]})"
+		completions="$(googkit _candidates ${words[2,-2]})"
 	fi
 
 	reply=("${(ps:\n:)completions}")
