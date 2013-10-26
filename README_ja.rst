@@ -2,6 +2,13 @@ Googkit
 =======
 
 
+.. image:: https://pypip.in/v/googkit/badge.png
+   :target: https://crate.io/packages/googkit
+
+.. image:: https://secure.travis-ci.org/cocopon/googkit.png?branch=master
+   :target: http://travis-ci.org/cocopon/googkit
+
+
 
 
 概要
