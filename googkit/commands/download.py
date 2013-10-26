@@ -5,10 +5,10 @@ import tempfile
 import zipfile
 import googkit.lib.clone
 import googkit.lib.path
-from googkit.lib.dirutil import working_directory
 from googkit.commands.command import Command
-from googkit.lib.error import GoogkitError
 from googkit.compat.urllib import request
+from googkit.lib.dirutil import working_directory
+from googkit.lib.error import GoogkitError
 
 
 class DownloadCommand(Command):

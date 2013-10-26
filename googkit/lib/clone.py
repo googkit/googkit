@@ -1,8 +1,8 @@
 import logging
 import os
 import subprocess
-from googkit.lib.error import GoogkitError
 from googkit.compat.urllib import request
+from googkit.lib.error import GoogkitError
 
 
 def run(repos, target_path):
