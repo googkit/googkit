@@ -1,0 +1,13 @@
+Changelog
+=========
+
+
+0.1.1
+-----
+* Fixed #36, it didn't work when installed by ``pip``
+* Fixed #37, it didn't work on Windows
+
+
+0.1.0
+-----
+* Hello, world!
