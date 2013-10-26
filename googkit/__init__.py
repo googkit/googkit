@@ -11,7 +11,7 @@ from googkit.lib.error import InvalidOptionError
 from googkit.lib.help import Help
 
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
 
 def print_version():
