@@ -24,6 +24,15 @@ class TestCandidatesCommand(unittest.TestCase):
     def _arg(self, arg_text):
         return ArgumentParser.parse(arg_text.split(' '))
 
+    def test_run(self):
+        self.cmd._validate_options = mock.MagicMock()
+        self.cmd.run_internal = mock.MagicMock()
+
+        self.cmd.run()
+
+        self.assertFalse(self.cmd._validate_options.called)
+        self.assertTrue(self.cmd.run_internal.called)
+
     def test_run_internal(self):
         self.env.argument = self._arg('googkit.py _candidates deps')
         with mock.patch('sys.stdout', new_callable=StubStdout) as mock_stdout:
