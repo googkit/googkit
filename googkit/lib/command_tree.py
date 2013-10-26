@@ -1,6 +1,7 @@
 from googkit.commands.build import BuildCommand
 from googkit.commands.commands import CommandsCommand
 from googkit.commands.init import InitCommand
+from googkit.commands.lint import LintCommand
 from googkit.commands.ready import ReadyCommand
 from googkit.commands.setup import SetupCommand
 from googkit.commands.update_deps import UpdateDepsCommand
@@ -17,8 +18,9 @@ class CommandTree(object):
             'update': UpdateDepsCommand
         },
         'init': InitCommand,
+        'lint': LintCommand,
         'ready': ReadyCommand,
-        'setup': SetupCommand
+        'setup': SetupCommand,
     }
 
     def __init__(self):

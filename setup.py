@@ -65,6 +65,12 @@ setup(
             'googkit=googkit:main'
         ]
     },
+    install_requires=[
+        'closure_linter'
+    ],
+    dependency_links=[
+        'http://closure-linter.googlecode.com/files/closure_linter-2.3.11.tar.gz',
+    ],
     zip_safe=False,
     data_files=data_files([
         'etc',

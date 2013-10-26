@@ -89,6 +89,15 @@ class StubConfig(object):
     def library_repos(self):
         return StubConfig.LIBRARY_GIT_REPOS
 
+    def compiler_flagfile(self):
+        return StubConfig.COMPILER_FLAGFILE
+
+    def compiler_flagfile_for_debug(self):
+        return StubConfig.COMPILER_FLAGFILE_FOR_DEBUG
+
+    def linter_flagfile(self):
+        return StubConfig.LINTER_FLAGFILE
+
 
 StubConfig.PROJECT_DIR = os.path.join(os.sep, 'dir1')
 
@@ -136,6 +145,9 @@ StubConfig.COMPILED_JS = 'SCRIPT.MIN.JS'
 StubConfig.COMPILATION_LEVEL = 'COMPILATION_LEVEL'
 StubConfig.LIBRARY_GIT_REPOS = 'LIBRARY_GIT_REPOS'
 StubConfig.COMPILER_LATEST_ZIP = 'COMPILER_LATEST_ZIP'
+StubConfig.COMPILER_FLAGFILE = 'COMPILER_FLAGFILE'
+StubConfig.COMPILER_FLAGFILE_FOR_DEBUG = 'COMPILER_FLAGFILE_FOR_DEBUG'
+StubConfig.LINTER_FLAGFILE = 'LINTER_FLAGFILE'
 
 
 # This stub is useful when test target includes "os.walk()".
@@ -233,6 +245,15 @@ class StubConfigOnStubProject(object):
     def library_repos(self):
         return StubConfigOnStubProject.LIBRARY_GIT_REPOS
 
+    def compiler_flagfile(self):
+        return StubConfigOnStubProject.COMPILER_FLAGFILE
+
+    def compiler_flagfile_for_debug(self):
+        return StubConfigOnStubProject.COMPILER_FLAGFILE_FOR_DEBUG
+
+    def linter_flagfile(self):
+        return StubConfigOnStubProject.LINTER_FLAGFILE
+
 
 StubConfigOnStubProject.PROJECT_DIR = os.path.normpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fixture', 'stub_project'))
@@ -281,3 +302,6 @@ StubConfigOnStubProject.TEST_FILE_PATTERN = '_test\.(html|xhtml)$'
 StubConfigOnStubProject.COMPILATION_LEVEL = 'COMPILATION_LEVEL'
 StubConfigOnStubProject.LIBRARY_GIT_REPOS = 'LIBRARY_GIT_REPOS'
 StubConfigOnStubProject.COMPILER_LATEST_ZIP = 'COMPILER_LATEST_ZIP'
+StubConfigOnStubProject.COMPILER_FLAGFILE = 'COMPILER_FLAGFILE'
+StubConfigOnStubProject.COMPILER_FLAGFILE_FOR_DEBUG = 'COMPILER_FLAGFILE_FOR_DEBUG'
+StubConfigOnStubProject.LINTER_FLAGFILE = 'LINTER_FLAGFILE'

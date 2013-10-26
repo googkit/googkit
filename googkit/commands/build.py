@@ -6,14 +6,15 @@ import shutil
 import json
 import googkit.lib.path
 from googkit.commands.command import Command
-from googkit.lib.error import GoogkitError
+from googkit.lib.argument_builder import ArgumentBuilder
 from googkit.lib.dirutil import working_directory
+from googkit.lib.error import GoogkitError
 
 
 class BuildCommand(Command):
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
-    class BuilderArguments(object):
+    class BuilderArguments(ArgumentBuilder):
         """Argument builder for the Closure Builder.
 
         Usage::
@@ -21,64 +22,14 @@ class BuildCommand(Command):
             >>> args.builder_arg('--arg1', 'ARG1')
             >>> args.builder_arg('--arg2', 'ARG2')
             >>> args.compiler_arg('--arg3', 'ARG3')
-            >>> str(args)
-            --arg1=ARG1 --arg2=ARG2 --compiler_flags="--arg3=ARG3"
+            >>> sorted(str(arg) for arg in args)
+            ['--arg1=ARG1', '--arg2=ARG2', '--compiler_flags=--arg3=ARG3']
         """
-
-        class BuilderArgumentEntry(object):
-            def __init__(self, key, value):
-                self.key = key
-                self.value = value
-
-            def __str__(self):
-                return self.key + '=' + self.value
-
-            def __repr__(self):
-                return '<Builder Argument \'' + str(self) + '\'>'
-
-            def __eq__(self, other):
-                return self.key == other.key and self.value == other.value
-
-            def __hash__(self):
-                return hash(str(self))
-
-        class CompilerArgumentEntry(object):
-            def __init__(self, key, value):
-                self.key = key
-                self.value = value
-
-            def __str__(self):
-                return '--compiler_flags={key}={value}'.format(
-                    key=self.key, value=self.value)
-
-            def __repr__(self):
-                return '<Compiler Argument \'' + str(self) + '\'>'
-
-            def __eq__(self, other):
-                return self.key == other.key and self.value == other.value
-
-            def __hash__(self):
-                return hash(str(self))
-
-        def __init__(self):
-            self._args = set()
-
-        def __eq__(self, other):
-            return self._args == other._args
-
-        def __str__(self):
-            return ' '.join([str(entry) for entry in self._args])
-
-        def __iter__(self):
-            return iter(self._args)
-
         def builder_arg(self, key, value):
-            entry = self.BuilderArgumentEntry(key, value)
-            self._args.add(entry)
+            self.add(key, value)
 
         def compiler_arg(self, key, value):
-            entry = self.CompilerArgumentEntry(key, value)
-            self._args.add(entry)
+            self.add('--compiler_flags', '{0}={1}'.format(key, value))
 
     @classmethod
     def needs_project_config(cls):
@@ -231,6 +182,10 @@ class BuildCommand(Command):
         args.compiler_arg('--source_map_format', 'V3')
         args.compiler_arg('--create_source_map', source_map_path)
         args.compiler_arg('--output_wrapper', source_map_comment)
+
+        flagfile = config.compiler_flagfile_for_debug()
+        if os.path.exists(flagfile):
+            args.compiler_arg('--flagfile', flagfile)
         return args
 
     def production_arguments(self, project_root):
@@ -248,6 +203,10 @@ class BuildCommand(Command):
         args.builder_arg('--compiler_jar', config.compiler())
         args.compiler_arg('--compilation_level', config.compilation_level())
         args.compiler_arg('--define', 'goog.DEBUG=false')
+
+        flagfile = config.compiler_flagfile()
+        if os.path.exists(flagfile):
+            args.compiler_arg('--flagfile', flagfile)
         return args
 
     def modify_source_map(self, source_map, project_root):

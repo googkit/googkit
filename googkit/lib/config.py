@@ -93,3 +93,12 @@ class Config(object):
 
     def compiler_zip(self):
         return self.parser.get('compiler', 'zip_url')
+
+    def compiler_flagfile(self):
+        return self.parser.get('compiler', 'flagfile')
+
+    def compiler_flagfile_for_debug(self):
+        return self.parser.get('compiler', 'flagfile_debug')
+
+    def linter_flagfile(self):
+        return self.parser.get('linter', 'flagfile')
