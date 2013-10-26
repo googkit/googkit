@@ -37,9 +37,7 @@ Googkitのインストール
 LinuxまたはOS X
 ~~~~~~~~~~~~~~~
 
-1. Googkit をダウンロードする::
-
-     $ git clone https://github.com/cocopon/googkit
+1. `Googkit の最新版 <https://github.com/cocopon/googkit/releases>`_ をダウンロード・展開する
 
 
 2. お好みの場所に移動する::
@@ -205,8 +203,8 @@ Googkit は、Source Map ファイル ``script.min.js.map`` を ``debug/``
 ------
 
 
-Googkit 開発チーム
-~~~~~~~~~~~~~~~~~~
+Googkit開発チーム
+~~~~~~~~~~~~~~~~~
 - cocopon (cocopon@me.com)
 - OrgaChem (orga.chem.job@gmail.com)
 
