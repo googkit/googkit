@@ -35,7 +35,8 @@ class TestLintCommand(unittest.TestCase):
         self.cmd.lint = mock.MagicMock()
 
         with mock.patch('googkit.lib.path.project_root'), \
-                mock.patch('googkit.commands.lint.working_directory'):
+                mock.patch('googkit.commands.lint.working_directory'), \
+                mock.patch('googkit.commands.lint.LintCommand.is_linter_installed', return_value=True):
             self.cmd.run_internal()
         self.cmd.lint.assert_called_once_with()
 
