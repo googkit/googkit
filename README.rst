@@ -5,8 +5,8 @@ Googkit
 .. image:: https://pypip.in/v/googkit/badge.png
    :target: https://crate.io/packages/googkit
 
-.. image:: https://secure.travis-ci.org/cocopon/googkit.png?branch=master
-   :target: http://travis-ci.org/cocopon/googkit
+.. image:: https://secure.travis-ci.org/googkit/googkit.png?branch=master
+   :target: http://travis-ci.org/googkit/googkit
 
 
 
@@ -37,7 +37,7 @@ First, you need to install Googkit.
 Linux or OS X
 ~~~~~~~~~~~~~
 
-1. Download and extract `the latest version of Googkit <https://github.com/cocopon/googkit/releases>`_
+1. Download and extract `the latest version of Googkit <https://github.com/googkit/googkit/releases>`_
 
 
 2. Put it into a preferred place::
@@ -54,7 +54,7 @@ Linux or OS X
 Windows
 ~~~~~~~
 
-1. Download and extract `the latest version of Googkit <https://github.com/cocopon/googkit/releases>`_
+1. Download and extract `the latest version of Googkit <https://github.com/googkit/googkit/releases>`_
 
 
 2. Put it into a preferred place::
@@ -129,7 +129,7 @@ unit tests.
 
 1. Create a HTML file for testing
 
-   Copy `example_test.html <https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html>`_
+   Copy `example_test.html <https://github.com/googkit/googkit/blob/master/template/development/js_dev/example_test.html>`_
    into the same directory as the target, then rename it to
    ``{target_name}_test.html``.
 

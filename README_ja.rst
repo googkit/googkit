@@ -5,8 +5,8 @@ Googkit
 .. image:: https://pypip.in/v/googkit/badge.png
    :target: https://crate.io/packages/googkit
 
-.. image:: https://secure.travis-ci.org/cocopon/googkit.png?branch=master
-   :target: http://travis-ci.org/cocopon/googkit
+.. image:: https://secure.travis-ci.org/googkit/googkit.png?branch=master
+   :target: http://travis-ci.org/googkit/googkit
 
 
 
@@ -37,7 +37,7 @@ Googkitのインストール
 LinuxまたはOS X
 ~~~~~~~~~~~~~~~
 
-1. `Googkit の最新版 <https://github.com/cocopon/googkit/releases>`_ をダウンロード・展開する
+1. `Googkit の最新版 <https://github.com/googkit/googkit/releases>`_ をダウンロード・展開する
 
 
 2. お好みの場所に移動する::
@@ -54,7 +54,7 @@ LinuxまたはOS X
 Windows
 ~~~~~~~
 
-1. `Googkit の最新版 <https://github.com/cocopon/googkit/releases>`_ をダウンロード・展開する
+1. `Googkit の最新版 <https://github.com/googkit/googkit/releases>`_ をダウンロード・展開する
 
 
 2. お好みの場所に移動する::
@@ -128,7 +128,7 @@ Windows
 
 1. テスト用のHTMLを作成する
 
-   `example_test.html <https://github.com/cocopon/googkit/blob/master/template/development/js_dev/example_test.html>`_ を
+   `example_test.html <https://github.com/googkit/googkit/blob/master/template/development/js_dev/example_test.html>`_ を
    テスト対象と同じディレクトリにコピーしてから、名前を
    ``{target_name}_test.html`` に変更します。
 

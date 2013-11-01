@@ -51,7 +51,7 @@ setup(
     description='Easier way to develop your web app with Google Closure Library',
     license='MIT',
     keywords='',
-    url='https://github.com/cocopon/googkit',
+    url='https://github.com/googkit/googkit',
     long_description=read('README.rst'),
     packages=packages('googkit') + packages('googkit_data'),
     package_data=package_data('googkit_data'),
