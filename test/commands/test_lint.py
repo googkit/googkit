@@ -25,11 +25,20 @@ class TestLintCommand(unittest.TestCase):
         with mock.patch('subprocess.Popen', new=MockPopen):
             self.cmd.lint()
 
-        MockPopen.assert_called_once_with([
+        call_1 = mock.call([
             'gjslint',
             os.path.join(StubConfigOnStubProject.JS_DEV_DIR, 'example.js'),
             os.path.join(StubConfigOnStubProject.JS_DEV_DIR, 'main.js'),
         ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        call_2 = mock.call([
+            'gjslint',
+            os.path.join(StubConfigOnStubProject.JS_DEV_DIR, 'main.js'),
+            os.path.join(StubConfigOnStubProject.JS_DEV_DIR, 'example.js'),
+        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        if call_1 not in MockPopen.call_args_list and call_2 not in MockPopen.call_args_list:
+            self.fail('Assertion Error: Arguments for gjslint is invalid.')
 
     def test_run_internal(self):
         self.cmd.lint = mock.MagicMock()
