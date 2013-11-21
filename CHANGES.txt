@@ -2,6 +2,11 @@ Changelog
 =========
 
 
+0.1.2
+-----
+* Fixed #45, updated compiler location
+
+
 0.1.1
 -----
 * Fixed #36, it didn't work when installed by ``pip``
