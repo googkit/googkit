@@ -20,11 +20,6 @@ class TestBuildCommand(unittest.TestCase):
     def test_needs_project_config(self):
         self.assertTrue(BuildCommand.needs_project_config())
 
-    def rmtree_silent(self):
-        with mock.patch('shutil.rmtree') as mock_rmtree:
-            BuildCommand.rmtree_silent('/tmp/foo/bar')
-            mock_rmtree.assert_called_once_with('/tmp/foo/bar')
-
     def test_line_indent(self):
         self.assertEqual(BuildCommand.line_indent('    '), '    ')
         self.assertEqual(BuildCommand.line_indent('     a    '), '     ')
@@ -74,19 +69,16 @@ DUMMY
         self.cmd.config = StubConfigOnStubProject()
         self.cmd.compile_resource = mock.MagicMock()
 
-        with mock.patch.object(BuildCommand, 'rmtree_silent') as mock_rmtree_silent, \
-                mock.patch.object(BuildCommand, 'ignore_dirs') as mock_ignore_dirs, \
-                mock.patch('shutil.copytree') as mock_copytree:
+        with mock.patch.object(BuildCommand, 'ignore_dirs') as mock_ignore_dirs, \
+                mock.patch('googkit.lib.file.copytree') as mock_copytree:
             mock_ignore_dirs.return_value = 'IGNORE'
 
-            self.cmd.setup_files(StubConfigOnStubProject.PRODUCTION_DIR)
+            self.cmd.setup_files(StubConfigOnStubProject.PRODUCTION_DIR, False)
 
         mock_copytree.assert_called_once_with(
             StubConfigOnStubProject.DEVELOPMENT_DIR,
             StubConfigOnStubProject.PRODUCTION_DIR,
             ignore='IGNORE')
-
-        mock_rmtree_silent.assert_called_once_with(StubConfigOnStubProject.PRODUCTION_DIR)
 
         self.cmd.compile_resource.assert_any_call(
             os.path.join(StubConfigOnStubProject.PRODUCTION_DIR, 'index.html'),
@@ -180,9 +172,9 @@ DUMMY
         mock_popen.returncode = 0
 
         with mock.patch('subprocess.Popen', new=MockPopen):
-            self.cmd.build_production(StubConfig.PROJECT_DIR)
+            self.cmd.build_production(StubConfig.PROJECT_DIR, False)
 
-        self.cmd.setup_files.assert_called_once_with(StubConfig.PRODUCTION_DIR)
+        self.cmd.setup_files.assert_called_once_with(StubConfig.PRODUCTION_DIR, False)
         MockPopen.assert_called_once_with(
             ['python', StubConfig.CLOSUREBUILDER, 'ARG'],
             stdout=subprocess.PIPE,
@@ -200,9 +192,9 @@ DUMMY
         mock_popen.returncode = 0
 
         with mock.patch('subprocess.Popen', new=MockPopen):
-            self.cmd.build_debug(StubConfig.PROJECT_DIR)
+            self.cmd.build_debug(StubConfig.PROJECT_DIR, False)
 
-        self.cmd.setup_files.assert_called_once_with(StubConfig.DEBUG_DIR)
+        self.cmd.setup_files.assert_called_once_with(StubConfig.DEBUG_DIR, False)
         MockPopen.assert_called_once_with(
             ['python', StubConfig.CLOSUREBUILDER, 'ARG'],
             stdout=subprocess.PIPE,
@@ -252,7 +244,7 @@ DUMMY
 
             self.cmd.run_internal()
 
-        self.cmd.build_production.assert_called_once_with(dummy_project_root)
+        self.cmd.build_production.assert_called_once_with(dummy_project_root, False)
 
     def test_run_internal_with_debug_enabled(self):
         self.cmd.build_debug = mock.MagicMock()
@@ -268,8 +260,8 @@ DUMMY
 
             self.cmd.run_internal()
 
-        self.cmd.build_production.assert_called_once_with(dummy_project_root)
-        self.cmd.build_debug.assert_called_once_with(dummy_project_root)
+        self.cmd.build_production.assert_called_once_with(dummy_project_root, False)
+        self.cmd.build_debug.assert_called_once_with(dummy_project_root, False)
 
     def test_run_internal_with_debug_opt(self):
         self.cmd.build_debug = mock.MagicMock()
@@ -285,7 +277,7 @@ DUMMY
 
             self.cmd.run_internal()
 
-        self.cmd.build_debug.assert_called_once_with(dummy_project_root)
+        self.cmd.build_debug.assert_called_once_with(dummy_project_root, False)
 
 
 def load_tests(loader, tests, ignore):

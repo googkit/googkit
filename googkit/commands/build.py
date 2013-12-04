@@ -1,9 +1,10 @@
-import os
+import json
 import logging
-import subprocess
+import os
 import re
 import shutil
-import json
+import subprocess
+import googkit.lib.file
 import googkit.lib.path
 from googkit.commands.command import Command
 from googkit.lib.argument_builder import ArgumentBuilder
@@ -38,15 +39,9 @@ class BuildCommand(Command):
     @classmethod
     def supported_options(cls):
         opts = super(BuildCommand, cls).supported_options()
+        opts.add('--clean')
         opts.add('--debug')
         return opts
-
-    @classmethod
-    def rmtree_silent(cls, path):
-        try:
-            shutil.rmtree(path)
-        except OSError:
-            pass
 
     @classmethod
     def line_indent(cls, line):
@@ -64,7 +59,7 @@ class BuildCommand(Command):
                     if (os.path.join(dirpath, filename) in ignore_dirs)]
         return ignoref
 
-    def setup_files(self, target_dir):
+    def setup_files(self, target_dir, should_clean):
         config = self.config
         devel_dir = config.development_dir()
         compiled_js = config.compiled_js()
@@ -76,9 +71,13 @@ class BuildCommand(Command):
             config.compiler_root(),
             config.js_dev_dir())
 
-        BuildCommand.rmtree_silent(target_dir)
-        shutil.copytree(devel_dir, target_dir,
-                        ignore=BuildCommand.ignore_dirs(*ignores))
+        if should_clean:
+            shutil.rmtree(target_dir)
+
+        googkit.lib.file.copytree(
+            devel_dir,
+            target_dir,
+            ignore=BuildCommand.ignore_dirs(*ignores))
 
         for root, dirs, files in os.walk(target_dir):
             for file in files:
@@ -131,8 +130,8 @@ class BuildCommand(Command):
         else:
             logging.debug(result[1].decode())
 
-    def build_debug(self, project_root):
-        self.setup_files(self.config.debug_dir())
+    def build_debug(self, project_root, should_clean):
+        self.setup_files(self.config.debug_dir(), should_clean)
 
         logging.info('Building for debug...')
         args = self.debug_arguments(project_root)
@@ -149,8 +148,8 @@ class BuildCommand(Command):
 
         logging.info('Done.')
 
-    def build_production(self, project_root):
-        self.setup_files(self.config.production_dir())
+    def build_production(self, project_root, should_clean):
+        self.setup_files(self.config.production_dir(), should_clean)
 
         logging.info('Building for production...')
         args = self.production_arguments(project_root)
@@ -222,10 +221,12 @@ class BuildCommand(Command):
     def run_internal(self):
         project_root = googkit.lib.path.project_root(self.env.cwd)
         with working_directory(project_root):
+            should_clean = self.env.argument.option('--clean')
+
             if self.env.argument.option('--debug'):
-                self.build_debug(project_root)
+                self.build_debug(project_root, should_clean)
                 return
 
             if self.config.is_debug_enabled():
-                self.build_debug(project_root)
-            self.build_production(project_root)
+                self.build_debug(project_root, should_clean)
+            self.build_production(project_root, should_clean)

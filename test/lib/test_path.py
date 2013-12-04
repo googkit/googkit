@@ -162,3 +162,11 @@ class TestPath(unittest.TestCase):
                 self.assertPathEqual(
                     googkit.lib.path.template(),
                     '/dummy/usr/local/googkit/googkit_data/template')
+
+    def test_replace_base(self):
+        self.assertEqual(
+            googkit.lib.path.replace_base(
+                '/old/base/foo/bar',
+                '/old/base',
+                '/new/base'),
+            '/new/base/foo/bar')
