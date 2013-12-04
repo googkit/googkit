@@ -20,6 +20,11 @@ class TestBuildCommand(unittest.TestCase):
     def test_needs_project_config(self):
         self.assertTrue(BuildCommand.needs_project_config())
 
+    def rmtree_silent(self):
+        with mock.patch('shutil.rmtree') as mock_rmtree:
+            BuildCommand.rmtree_silent('/tmp/foo/bar')
+            mock_rmtree.assert_called_once_with('/tmp/foo/bar')
+
     def test_line_indent(self):
         self.assertEqual(BuildCommand.line_indent('    '), '    ')
         self.assertEqual(BuildCommand.line_indent('     a    '), '     ')
@@ -69,8 +74,9 @@ DUMMY
         self.cmd.config = StubConfigOnStubProject()
         self.cmd.compile_resource = mock.MagicMock()
 
-        with mock.patch.object(BuildCommand, 'ignore_dirs') as mock_ignore_dirs, \
-                mock.patch('googkit.lib.file.copytree') as mock_copytree:
+        with mock.patch.object(BuildCommand, 'rmtree_silent') as mock_rmtree_silent, \
+                mock.patch.object(BuildCommand, 'ignore_dirs') as mock_ignore_dirs, \
+                mock.patch('shutil.copytree') as mock_copytree:
             mock_ignore_dirs.return_value = 'IGNORE'
 
             self.cmd.setup_files(StubConfigOnStubProject.PRODUCTION_DIR)
@@ -79,6 +85,8 @@ DUMMY
             StubConfigOnStubProject.DEVELOPMENT_DIR,
             StubConfigOnStubProject.PRODUCTION_DIR,
             ignore='IGNORE')
+
+        mock_rmtree_silent.assert_called_once_with(StubConfigOnStubProject.PRODUCTION_DIR)
 
         self.cmd.compile_resource.assert_any_call(
             os.path.join(StubConfigOnStubProject.PRODUCTION_DIR, 'index.html'),

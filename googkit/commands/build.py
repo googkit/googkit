@@ -2,8 +2,8 @@ import os
 import logging
 import subprocess
 import re
+import shutil
 import json
-import googkit.lib.file
 import googkit.lib.path
 from googkit.commands.command import Command
 from googkit.lib.argument_builder import ArgumentBuilder
@@ -42,6 +42,13 @@ class BuildCommand(Command):
         return opts
 
     @classmethod
+    def rmtree_silent(cls, path):
+        try:
+            shutil.rmtree(path)
+        except OSError:
+            pass
+
+    @classmethod
     def line_indent(cls, line):
         indent = ''
         m = re.search(r'^(\s*)', line)
@@ -69,10 +76,9 @@ class BuildCommand(Command):
             config.compiler_root(),
             config.js_dev_dir())
 
-        googkit.lib.file.copytree(
-            devel_dir,
-            target_dir,
-            ignore=BuildCommand.ignore_dirs(*ignores))
+        BuildCommand.rmtree_silent(target_dir)
+        shutil.copytree(devel_dir, target_dir,
+                        ignore=BuildCommand.ignore_dirs(*ignores))
 
         for root, dirs, files in os.walk(target_dir):
             for file in files:
