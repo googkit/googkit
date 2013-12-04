@@ -28,14 +28,17 @@ def copytree(src, dst, ignore=None):
         _mkdir(src_root, dst_root)
 
         if ignore is None:
-            ignore_dirs = None
-            ignore_files = None
+            ignore_objs = []
         else:
-            ignore_dirs = ignore(src_root, src_dirs)
-            ignore_files = ignore(src_root, src_files)
+            ignore_objs = ignore(src_root, src_dirs + src_files)
+
+            # Remove ignored dirs
+            for src_dir in src_dirs:
+                if src_dir in ignore_objs:
+                    src_dirs.remove(src_dir)
 
         for dir_name in src_dirs:
-            if (ignore_dirs is not None) and (dir_name in ignore_dirs):
+            if dir_name in ignore_objs:
                 continue
 
             src_dir = os.path.join(src_root, dir_name)
@@ -43,7 +46,7 @@ def copytree(src, dst, ignore=None):
             _mkdir(src_dir, dst_dir)
 
         for file_name in src_files:
-            if (ignore_files is not None) and (file_name in ignore_files):
+            if file_name in ignore_objs:
                 continue
 
             src_file = os.path.join(src_root, file_name)
