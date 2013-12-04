@@ -80,3 +80,10 @@ def template():
         raise GoogkitError(msg)
 
     return template_dir
+
+
+def replace_base(target, old_base, new_base):
+    """Replace a base directory in the target path with the new one."""
+    prefix = os.path.commonprefix([target, old_base])
+    diff = target[len(prefix) + 1:]
+    return os.path.join(new_base, diff)

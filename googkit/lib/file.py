@@ -1,5 +1,6 @@
 import os
 import shutil
+import googkit.lib.path
 
 
 def _mkdir(src, dst):
@@ -7,13 +8,6 @@ def _mkdir(src, dst):
         os.mkdir(dst)
         shutil.copymode(src, dst)
         shutil.copystat(src, dst)
-
-
-def _replace_root(target, old_root, new_root):
-    """Replace a root in the target path with the new one."""
-    prefix = os.path.commonprefix([target, old_root])
-    diff = target[len(prefix) + 1:]
-    return os.path.join(new_root, diff)
 
 
 def copytree(src, dst, ignore=None):
@@ -24,7 +18,7 @@ def copytree(src, dst, ignore=None):
     _mkdir(src, dst)
 
     for src_root, src_dirs, src_files in os.walk(src):
-        dst_root = _replace_root(src_root, src, dst)
+        dst_root = googkit.lib.path.replace_base(src_root, src, dst)
         _mkdir(src_root, dst_root)
 
         if ignore is None:
@@ -42,7 +36,7 @@ def copytree(src, dst, ignore=None):
                 continue
 
             src_dir = os.path.join(src_root, dir_name)
-            dst_dir = _replace_root(src_dir, src, dst)
+            dst_dir = googkit.lib.path.replace_base(src_dir, src, dst)
             _mkdir(src_dir, dst_dir)
 
         for file_name in src_files:
@@ -50,5 +44,5 @@ def copytree(src, dst, ignore=None):
                 continue
 
             src_file = os.path.join(src_root, file_name)
-            dst_file = _replace_root(src_file, src, dst)
+            dst_file = googkit.lib.path.replace_base(src_file, src, dst)
             shutil.copy2(src_file, dst_file)
