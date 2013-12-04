@@ -73,7 +73,7 @@ DUMMY
                 mock.patch('googkit.lib.file.copytree') as mock_copytree:
             mock_ignore_dirs.return_value = 'IGNORE'
 
-            self.cmd.setup_files(StubConfigOnStubProject.PRODUCTION_DIR)
+            self.cmd.setup_files(StubConfigOnStubProject.PRODUCTION_DIR, False)
 
         mock_copytree.assert_called_once_with(
             StubConfigOnStubProject.DEVELOPMENT_DIR,
@@ -172,9 +172,9 @@ DUMMY
         mock_popen.returncode = 0
 
         with mock.patch('subprocess.Popen', new=MockPopen):
-            self.cmd.build_production(StubConfig.PROJECT_DIR)
+            self.cmd.build_production(StubConfig.PROJECT_DIR, False)
 
-        self.cmd.setup_files.assert_called_once_with(StubConfig.PRODUCTION_DIR)
+        self.cmd.setup_files.assert_called_once_with(StubConfig.PRODUCTION_DIR, False)
         MockPopen.assert_called_once_with(
             ['python', StubConfig.CLOSUREBUILDER, 'ARG'],
             stdout=subprocess.PIPE,
@@ -192,9 +192,9 @@ DUMMY
         mock_popen.returncode = 0
 
         with mock.patch('subprocess.Popen', new=MockPopen):
-            self.cmd.build_debug(StubConfig.PROJECT_DIR)
+            self.cmd.build_debug(StubConfig.PROJECT_DIR, False)
 
-        self.cmd.setup_files.assert_called_once_with(StubConfig.DEBUG_DIR)
+        self.cmd.setup_files.assert_called_once_with(StubConfig.DEBUG_DIR, False)
         MockPopen.assert_called_once_with(
             ['python', StubConfig.CLOSUREBUILDER, 'ARG'],
             stdout=subprocess.PIPE,
@@ -244,7 +244,7 @@ DUMMY
 
             self.cmd.run_internal()
 
-        self.cmd.build_production.assert_called_once_with(dummy_project_root)
+        self.cmd.build_production.assert_called_once_with(dummy_project_root, False)
 
     def test_run_internal_with_debug_enabled(self):
         self.cmd.build_debug = mock.MagicMock()
@@ -260,8 +260,8 @@ DUMMY
 
             self.cmd.run_internal()
 
-        self.cmd.build_production.assert_called_once_with(dummy_project_root)
-        self.cmd.build_debug.assert_called_once_with(dummy_project_root)
+        self.cmd.build_production.assert_called_once_with(dummy_project_root, False)
+        self.cmd.build_debug.assert_called_once_with(dummy_project_root, False)
 
     def test_run_internal_with_debug_opt(self):
         self.cmd.build_debug = mock.MagicMock()
@@ -277,7 +277,7 @@ DUMMY
 
             self.cmd.run_internal()
 
-        self.cmd.build_debug.assert_called_once_with(dummy_project_root)
+        self.cmd.build_debug.assert_called_once_with(dummy_project_root, False)
 
 
 def load_tests(loader, tests, ignore):
