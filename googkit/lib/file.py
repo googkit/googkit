@@ -46,23 +46,3 @@ def copytree(src, dst, ignore=None):
             src_file = os.path.join(src_root, file_name)
             dst_file = googkit.lib.path.replace_base(src_file, src, dst)
             shutil.copy2(src_file, dst_file)
-
-
-def executable(path):
-    return os.path.isfile(path) and os.access(path, os.X_OK)
-
-
-def which(name):
-    head, tail = os.path.split(name)
-
-    if head:
-        if executable(name):
-            return name
-    else:
-        for dirname in os.environ['PATH'].split(os.pathsep):
-            dirname = dirname.strip('"')
-            path = os.path.join(dirname, name)
-            if executable(path):
-                return path
-
-    return None

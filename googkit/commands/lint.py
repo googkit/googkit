@@ -6,7 +6,6 @@ import googkit.lib.path
 from googkit.commands.command import Command
 from googkit.lib.argument_builder import ArgumentBuilder
 from googkit.lib.dirutil import working_directory
-from googkit.lib.error import GoogkitError
 
 
 class LintCommand(Command):
@@ -26,9 +25,6 @@ class LintCommand(Command):
         return paths
 
     def lint(self):
-        if googkit.lib.file.which('gjslint') is None:
-            raise GoogkitError('Required command not found: gjslint')
-
         paths = self._sources()
         args = ArgumentBuilder()
 
