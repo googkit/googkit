@@ -22,7 +22,8 @@ class TestLintCommand(unittest.TestCase):
         # It simulates the command was succeeded
         mock_popen.returncode = 0
 
-        with mock.patch('subprocess.Popen', new=MockPopen):
+        with mock.patch('subprocess.Popen', new=MockPopen), \
+                mock.patch('googkit.lib.file.which', return_value='/usr/local/bin/gjslint'):
             self.cmd.lint()
 
         call_1 = mock.call([

@@ -3,6 +3,7 @@ import shutil
 import tempfile
 import unittest
 import googkit.lib.file
+from googkit.compat.unittest import mock
 
 
 class TestFile(unittest.TestCase):
@@ -98,3 +99,48 @@ class TestFile(unittest.TestCase):
 
         shutil.rmtree(src_dir)
         shutil.rmtree(dst_dir)
+
+    def test_executable(self):
+        with mock.patch('os.path.isfile', return_value=True), \
+                mock.patch('os.access', return_value=True):
+            self.assertTrue(
+                googkit.lib.file.executable('/foo/bar'),
+                'Executable file should be executable')
+
+        with mock.patch('os.path.isfile', return_value=False):
+            self.assertFalse(
+                googkit.lib.file.executable('/foo/bar'),
+                'Non-existent file should not be executable')
+
+    def test_which(self):
+        os_pathsep = ':'
+        os_environ = {
+            'PATH': os_pathsep.join([
+                '/usr/local/bin',
+                '/usr/bin'
+            ])
+        }
+
+        def os_path_exists(path):
+            return os.path.abspath(path) in [
+                '/usr',
+                '/usr/bin/cmd0',
+                '/usr/local',
+                '/usr/local/bin',
+                '/usr/local/bin/cmd1',
+            ]
+
+        def executable(path):
+            return path in [
+                '/usr/bin/cmd0',
+                '/usr/local/bin/cmd1',
+            ]
+
+        with mock.patch('os.environ', new=os_environ), \
+                mock.patch('os.pathsep', new=os_pathsep), \
+                mock.patch('os.path.exists', side_effect=os_path_exists), \
+                mock.patch('googkit.lib.file.executable', side_effect=executable):
+            self.assertTrue(
+                googkit.lib.file.which('cmd0'))
+            self.assertFalse(
+                googkit.lib.file.which('bluerose'))
