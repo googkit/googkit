@@ -2,6 +2,13 @@ Changelog
 =========
 
 
+0.2.0
+-----
+* Imporoved a behavior of build command, #44
+* Added lint command (requires gjslint), #33
+* Added option suggestion and completion, #32
+
+
 0.1.2
 -----
 * Fixed #45, updated compiler location
