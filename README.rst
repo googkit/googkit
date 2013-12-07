@@ -13,9 +13,9 @@ Googkit
 
 Overview
 --------
-Googkit is an easy way to use Google Closure Library.
-You can setup only two commands, so start developing quickly.
-You can also do such a complicated compiling ... at one blow!
+Googkit is a tool that boosts development cycle of your web app with Google
+Closure Library. You can setup your project only two steps so start developing
+quickly. You can also do such a complicated compiling... by one command!
 
 
 Requirements
@@ -68,6 +68,7 @@ Windows
    | Variable         | Value                          |
    +==================+================================+
    | ``GOOGKIT_HOME`` | ``C:\googkit``                 |
+   +------------------+--------------------------------+
    | ``PATH``         | Append ``;%GOOGKIT_HOME%\bin`` |
    +------------------+--------------------------------+
 
