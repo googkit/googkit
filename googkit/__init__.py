@@ -8,6 +8,7 @@ from googkit.lib.command_tree import CommandTree
 from googkit.lib.environment import Environment
 from googkit.lib.error import GoogkitError
 from googkit.lib.error import InvalidOptionError
+from googkit.lib.i18n import _
 from googkit.lib.help import Help
 
 
@@ -15,7 +16,7 @@ VERSION = '0.2.0'
 
 
 def print_version():
-    print('googkit ' + VERSION)
+    print(_('googkit {version}').format(version=VERSION))
 
 
 def main():
@@ -40,9 +41,9 @@ def main():
         command = CommandClass(env)
         command.run()
     except InvalidOptionError as e:
-        logging.error('[Error] ' + str(e))
+        logging.error(_('[Error] {error}').format(error=str(e)))
         Help(tree, arg).print_help()
         sys.exit(1)
     except GoogkitError as e:
-        logging.error('[Error] ' + str(e))
+        logging.error(_('[Error] {error}').format(error=str(e)))
         sys.exit(1)

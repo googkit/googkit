@@ -3,11 +3,13 @@ from googkit.lib.error import GoogkitError
 
 
 PROJECT_CONFIG = 'googkit.cfg'
+DATA_DIR = 'googkit_data'
 USER_CONFIG = '.googkit'
-DEFAULT_CONFIG = os.path.join('googkit_data', 'default.cfg')
 SCRIPT_DIR = 'googkit'
 PLUGIN_DIR = 'plugins'
-TEMPLATE_DIR = os.path.join('googkit_data', 'template')
+LOCALE_DIR = os.path.join(DATA_DIR, 'locale')
+DEFAULT_CONFIG = os.path.join(DATA_DIR, 'default.cfg')
+TEMPLATE_DIR = os.path.join(DATA_DIR, 'template')
 
 
 def googkit_root():
@@ -80,6 +82,16 @@ def template():
         raise GoogkitError(msg)
 
     return template_dir
+
+
+def locale():
+    locale_dir = os.path.join(googkit_root(), LOCALE_DIR)
+
+    if not os.path.isdir(locale_dir):
+        msg = 'Locale directory is not found: {path}'.format(path=locale_dir)
+        raise GoogkitError(msg)
+
+    return locale_dir
 
 
 def replace_base(target, old_base, new_base):
