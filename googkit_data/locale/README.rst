@@ -2,7 +2,7 @@ Localizing Googkit
 ==================
 Googkit supports i18n.
 You can localize messages in your language with
-`gettext <https://www.gnu.org/software/gettext/>`.
+`gettext <https://www.gnu.org/software/gettext/>`_.
 
 
 Requirements
