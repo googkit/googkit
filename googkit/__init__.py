@@ -41,9 +41,9 @@ def main():
         command = CommandClass(env)
         command.run()
     except InvalidOptionError as e:
-        logging.error(_('[Error] {error}').format(error=str(e)))
+        logging.error(_('[Error] {message}').format(message=str(e)))
         Help(tree, arg).print_help()
         sys.exit(1)
     except GoogkitError as e:
-        logging.error(_('[Error] {error}').format(error=str(e)))
+        logging.error(_('[Error] {message}').format(message=str(e)))
         sys.exit(1)
