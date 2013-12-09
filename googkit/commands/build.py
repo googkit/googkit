@@ -10,6 +10,7 @@ from googkit.commands.command import Command
 from googkit.lib.argument_builder import ArgumentBuilder
 from googkit.lib.dirutil import working_directory
 from googkit.lib.error import GoogkitError
+from googkit.lib.i18n import _
 
 
 class BuildCommand(Command):
@@ -126,14 +127,15 @@ class BuildCommand(Command):
         result = builder_proc.communicate()
 
         if builder_proc.returncode != 0:
-            raise GoogkitError('Compilation failed:\n' + result[1].decode())
+            raise GoogkitError(_('Compilation failed:\n{message}').format(
+                message=result[1].decode()))
         else:
             logging.debug(result[1].decode())
 
     def build_debug(self, project_root, should_clean):
         self.setup_files(self.config.debug_dir(), should_clean)
 
-        logging.info('Building for debug...')
+        logging.info(_('Building for debug...'))
         args = self.debug_arguments(project_root)
         self._build(args, project_root)
 
@@ -146,15 +148,15 @@ class BuildCommand(Command):
                                   self.config.compiled_js() + '.map')
         self.modify_source_map(source_map, project_root)
 
-        logging.info('Done.')
+        logging.info(_('Done.'))
 
     def build_production(self, project_root, should_clean):
         self.setup_files(self.config.production_dir(), should_clean)
 
-        logging.info('Building for production...')
+        logging.info(_('Building for production...'))
         args = self.production_arguments(project_root)
         self._build(args, project_root)
-        logging.info('Done.')
+        logging.info(_('Done.'))
 
     def debug_arguments(self, project_root):
         config = self.config

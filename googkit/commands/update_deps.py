@@ -3,9 +3,10 @@ import os
 import re
 import subprocess
 import googkit.lib.path
-from googkit.lib.dirutil import working_directory
 from googkit.commands.command import Command
+from googkit.lib.dirutil import working_directory
 from googkit.lib.error import GoogkitError
+from googkit.lib.i18n import _
 
 
 class UpdateDepsCommand(Command):
@@ -62,7 +63,8 @@ class UpdateDepsCommand(Command):
         result = proc.communicate()
 
         if proc.returncode != 0:
-            raise GoogkitError('Updating dependencies failed: ' + result[1].decode())
+            raise GoogkitError(_('Updating dependencies failed: {message}').format(
+                message=result[1].decode()))
 
         logging.debug('Updated ' + deps_js)
 
@@ -91,7 +93,7 @@ class UpdateDepsCommand(Command):
                 relpath = os.path.relpath(path, testrunner_dir)
 
                 tests.append(relpath)
-                logging.debug('Found test on ' + path)
+                logging.debug(_('Found test on {path}').format(path=path))
 
         lines = []
 
@@ -107,7 +109,8 @@ class UpdateDepsCommand(Command):
             for line in lines:
                 f.write(line)
 
-        logging.debug('Updated a test runner on ' + testrunner)
+        logging.debug(_('Updated a test runner on {path}').format(
+            path=testrunner))
 
     def run_internal(self):
         project_root = googkit.lib.path.project_root(self.env.cwd)
@@ -115,4 +118,4 @@ class UpdateDepsCommand(Command):
             self.update_deps()
             self.update_testrunner()
 
-        logging.info('Updated dependencies.')
+        logging.info(_('Updated dependencies.'))

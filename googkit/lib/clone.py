@@ -3,6 +3,7 @@ import os
 import subprocess
 from googkit.compat.urllib import request
 from googkit.lib.error import GoogkitError
+from googkit.lib.i18n import _
 
 
 def run(repos, target_path):
@@ -31,7 +32,8 @@ def _pull(repos, target_path):
     result = proc.communicate()
 
     if proc.returncode != 0:
-        raise GoogkitError('Git pull failed: ' + result[1].decode())
+        raise GoogkitError(_('Git pull failed: {message}').format(
+            message=result[1].decode()))
 
     logging.debug(result[0].decode())
 
@@ -48,6 +50,7 @@ def _clone(repos, target_path):
     result = proc.communicate()
 
     if proc.returncode != 0:
-        raise GoogkitError('Git clone failed: ' + result[1].decode())
+        raise GoogkitError(_('Git clone failed: {message}').format(
+            message=result[1].decode()))
 
     logging.debug(result[0].decode())

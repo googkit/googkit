@@ -9,6 +9,7 @@ from googkit.commands.command import Command
 from googkit.compat.urllib import request
 from googkit.lib.dirutil import working_directory
 from googkit.lib.error import GoogkitError
+from googkit.lib.i18n import _
 
 
 class DownloadCommand(Command):
@@ -20,12 +21,14 @@ class DownloadCommand(Command):
         library_repos = self.config.library_repos()
         library_root = self.config.library_root()
 
-        logging.info('Downloading Closure Library...')
+        logging.info(_('Downloading Closure Library...'))
 
         try:
             googkit.lib.clone.run(library_repos, library_root)
         except GoogkitError as e:
-            raise GoogkitError('Dowloading Closure Library failed: ' + str(e))
+            raise GoogkitError(
+                _('Dowloading Closure Library failed: {message}').format(
+                    message=str(e)))
 
         logging.info('Done.')
 
@@ -34,12 +37,14 @@ class DownloadCommand(Command):
         compiler_zip = os.path.join(tmp_path, 'compiler.zip')
         compiler_zip_url = self.config.compiler_zip()
 
-        logging.info('Downloading Closure Compiler...')
+        logging.info(_('Downloading Closure Compiler...'))
 
         try:
             request.urlretrieve(compiler_zip_url, compiler_zip)
         except IOError as e:
-            raise GoogkitError('Dowloading Closure Compiler failed: ' + str(e))
+            raise GoogkitError(
+                _('Dowloading Closure Compiler failed: {message}').format(
+                    massage=str(e)))
 
         compiler_root = self.config.compiler_root()
 
@@ -50,7 +55,7 @@ class DownloadCommand(Command):
 
         shutil.rmtree(tmp_path)
 
-        logging.info('Done.')
+        logging.info(_('Done.'))
 
     def run_internal(self):
         project_root = googkit.lib.path.project_root(self.env.cwd)

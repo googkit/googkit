@@ -17,7 +17,8 @@ class InvalidOptionError(GoogkitError):
 
     def __init__(self, options):
         self._options = options
-        message = 'Invalid option: ' + ', '.join(self._options)
+        message = 'Invalid option: {options}'.format(
+            options=', '.join(self._options))
         super(InvalidOptionError, self).__init__(message)
 
     @property

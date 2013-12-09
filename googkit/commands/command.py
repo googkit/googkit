@@ -4,6 +4,7 @@ import googkit.lib.path
 from googkit.lib.config import Config
 from googkit.lib.error import GoogkitError
 from googkit.lib.error import InvalidOptionError
+from googkit.lib.i18n import _
 from googkit.lib.logutil import log_level
 
 
@@ -32,7 +33,7 @@ class Command(object):
         project_config = googkit.lib.path.project_config(self.env.cwd)
 
         if project_config is None:
-            raise GoogkitError('No config file found.')
+            raise GoogkitError(_('No config file found.'))
 
         config = Config()
         config.load(project_config, user_config, default_config)

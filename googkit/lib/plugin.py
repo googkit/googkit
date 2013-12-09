@@ -1,6 +1,7 @@
 import os
 import googkit.lib.path
 from googkit.lib.error import GoogkitError
+from googkit.lib.i18n import _
 
 
 INIT_FILE = '__init__.py'
@@ -27,6 +28,7 @@ def load(tree):
         module_name = 'plugins.{filename}.command'.format(filename=filename)
         module = __import__(module_name, fromlist=['command'])
         if not hasattr(module, 'register'):
-            raise GoogkitError('No register method found for plugin: ' + module_name)
+            raise GoogkitError(_('No register method found for plugin: {module}').format(
+                module=module_name))
 
         module.register(tree)

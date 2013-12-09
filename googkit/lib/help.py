@@ -1,3 +1,6 @@
+from googkit.lib.i18n import _
+
+
 class Help(object):
     def __init__(self, tree, argument):
         self._tree = tree
@@ -10,14 +13,14 @@ class Help(object):
         return (not commands) or (commands == self._correct_commands)
 
     def _print_usage(self):
-        commands_mark = '<commands>' if self._available_commands else ''
+        commands_mark = _('<commands>') if self._available_commands else ''
 
         if self._correct_commands:
-            print('Usage: googkit {cmd} {cmds_mark}'.format(
+            print(_('Usage: googkit {cmd} {cmds_mark}').format(
                 cmd=' '.join(self._correct_commands),
                 cmds_mark=commands_mark))
         else:
-            print('Usage: googkit {cmds_mark}'.format(
+            print(_('Usage: googkit {cmds_mark}').format(
                 cmds_mark=commands_mark))
 
     def _print_available_commands(self):
@@ -27,9 +30,9 @@ class Help(object):
         print('')
 
         if self._is_valid_commands():
-            print('Available commands:')
+            print(_('Available commands:'))
         else:
-            print('Did you mean one of these?')
+            print(_('Did you mean one of these?'))
 
         for name in self._available_commands:
             print('    ' + name)
@@ -44,7 +47,7 @@ class Help(object):
             return
 
         print('')
-        print('Available options:')
+        print(_('Available options:'))
 
         for name in supported_options:
             print('    ' + name)
@@ -52,7 +55,7 @@ class Help(object):
     def print_help(self):
         if not self._is_valid_commands():
             last_command = self._argument.commands[-1]
-            print('Invalid command: {cmd}'.format(cmd=last_command))
+            print(_('Invalid command: {cmd}').format(cmd=last_command))
             print('')
 
         self._print_usage()

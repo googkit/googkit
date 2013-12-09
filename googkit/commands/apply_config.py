@@ -3,8 +3,9 @@ import os
 import re
 import googkit.lib.path
 import googkit.compat.urllib.request
-from googkit.lib.dirutil import working_directory
 from googkit.commands.command import Command
+from googkit.lib.dirutil import working_directory
+from googkit.lib.i18n import _
 
 
 class ApplyConfigCommand(Command):
@@ -59,7 +60,7 @@ class ApplyConfigCommand(Command):
                     marker = updaters[updater_name]['marker']
                     update = updaters[updater_name]['update']
                     if line.find(marker) >= 0:
-                        msg = 'Replaced a {name} path on {path}'.format(name=updater_name, path=path)
+                        msg = _('Replaced a {name} path on {path}').format(name=updater_name, path=path)
                         logging.debug(msg)
 
                         line = '{indent}{content}{marker}\n'.format(

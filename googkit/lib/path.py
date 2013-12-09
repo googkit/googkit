@@ -69,7 +69,8 @@ def default_config():
 def plugin():
     plugin_dir = os.path.join(googkit_root(), SCRIPT_DIR, PLUGIN_DIR)
     if not os.path.isdir(plugin_dir):
-        msg = 'Plugins directory is not found: {path}'.format(path=plugin_dir)
+        msg = 'Plugins directory is not found: {path}'.format(
+            path=plugin_dir)
         raise GoogkitError(msg)
 
     return plugin_dir
@@ -78,7 +79,8 @@ def plugin():
 def template():
     template_dir = os.path.join(googkit_root(), TEMPLATE_DIR)
     if not os.path.isdir(template_dir):
-        msg = 'Template directory is not found: {path}'.format(path=template_dir)
+        msg = 'Template directory is not found: {path}'.format(
+            path=template_dir)
         raise GoogkitError(msg)
 
     return template_dir
@@ -88,7 +90,8 @@ def locale():
     locale_dir = os.path.join(googkit_root(), LOCALE_DIR)
 
     if not os.path.isdir(locale_dir):
-        msg = 'Locale directory is not found: {path}'.format(path=locale_dir)
+        msg = 'Locale directory is not found: {path}'.format(
+            path=locale_dir)
         raise GoogkitError(msg)
 
     return locale_dir
