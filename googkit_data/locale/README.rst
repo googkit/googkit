@@ -1,7 +1,8 @@
 Localizing Googkit
 ==================
 Googkit supports i18n.
-You can localize messages in your language with `gettext <http://TODO>`.
+You can localize messages in your language with
+`gettext <https://www.gnu.org/software/gettext/>`.
 
 
 Requirements
@@ -13,10 +14,12 @@ Requirements
 Steps
 -----
 
-1. Make locale directory::
+1. Make directory for i18n resource::
 
-     $ cd $GOOGKIT_HOME/googkit_data/locale
+     $ cd $GOOGKIT_HOME
+     $ cd googkit_data/locale
      $ mkdir -p ja/LC_MESSAGES
+     (replace ``ja`` with your language)
 
 
 2. Generate PO file::
@@ -30,5 +33,6 @@ Steps
 
 4. Convert PO file into MO file::
 
-     $ cd googkit_data/locale/ja/LC_MESSAGES/
-     $ msgfmt googkit.po
+     $ cd $GOOGKIT_HOME
+     $ cd googkit_data/locale/ja/LC_MESSAGES
+     $ msgfmt googkit.po -o googkit.mo
