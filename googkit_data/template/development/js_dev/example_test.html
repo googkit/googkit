@@ -20,12 +20,11 @@
       example = new foo.Example();
     }
 
-    // setUp will be executed after every tests.
+    // tearDown will be executed after every tests.
     function tearDown() {
       document.body.removeChild(document.getElementsByTagName('p')[0]);
       example = null;
     }
-
 
     function testDoSomething() {
       example.doSomething();
