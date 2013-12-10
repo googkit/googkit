@@ -176,12 +176,11 @@ Scripts that are in it will be compiled and removed in production.
 
 Debugging a Compiled Source
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Change ``is_debug_enabled`` to ``yes`` in ``googkit.cfg`` and build it::
+Use a build command with `--debug` option::
 
-  $ googkit build
+  $ googkit build --debug
 
 Then you can use debugging features in ``debug/``.
-This option makes compilation slow.
 
 
 Using Source Map

@@ -227,8 +227,5 @@ class BuildCommand(Command):
 
             if self.env.argument.option('--debug'):
                 self.build_debug(project_root, should_clean)
-                return
-
-            if self.config.is_debug_enabled():
-                self.build_debug(project_root, should_clean)
-            self.build_production(project_root, should_clean)
+            else:
+                self.build_production(project_root, should_clean)

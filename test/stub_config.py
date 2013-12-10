@@ -47,9 +47,6 @@ class StubConfig(object):
     def test_file_pattern(self):
         return StubConfig.TEST_FILE_PATTERN
 
-    def is_debug_enabled(self):
-        return True
-
     def library_root(self):
         return StubConfig.LIBRARRY_ROOT
 
@@ -202,9 +199,6 @@ class StubConfigOnStubProject(object):
 
     def test_file_pattern(self):
         return StubConfigOnStubProject.TEST_FILE_PATTERN
-
-    def is_debug_enabled(self):
-        return True
 
     def library_root(self):
         return StubConfigOnStubProject.LIBRARRY_ROOT

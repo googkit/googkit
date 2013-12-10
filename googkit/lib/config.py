@@ -42,9 +42,6 @@ class Config(object):
     def test_file_pattern(self):
         return self.parser.get('project', 'test_file_pattern')
 
-    def is_debug_enabled(self):
-        return self.parser.getboolean('project', 'is_debug_enabled')
-
     def library_root(self):
         path = self.parser.get('library', 'root')
         return os.path.normpath(path)
