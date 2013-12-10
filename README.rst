@@ -176,7 +176,7 @@ Scripts that are in it will be compiled and removed in production.
 
 Debugging a Compiled Source
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Use a build command with `--debug` option::
+Use a build command with ``--debug`` option::
 
   $ googkit build --debug
 
