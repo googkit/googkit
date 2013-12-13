@@ -1,7 +1,13 @@
+import difflib
 from googkit.lib.i18n import _
 
 
 class Help(object):
+    """A class that prints a help message."""
+
+    """A threshold of a similarity ratio for command candidates"""
+    CANDIDATE_RATIO_THRSHOLD = 0.5
+
     def __init__(self, tree, argument):
         self._tree = tree
         self._argument = argument
@@ -23,7 +29,28 @@ class Help(object):
             print(_('Usage: googkit {cmds_mark}').format(
                 cmds_mark=commands_mark))
 
-    def _print_available_commands(self):
+    @classmethod
+    def similarity(cls, src_command):
+        """Returns a function that returns a similarity ratio for the specified
+        command.
+        """
+        def ratio(command):
+            return difflib.SequenceMatcher(None, src_command, command).ratio()
+        return ratio
+
+    @classmethod
+    def candidates(cls, available_commands, src_command):
+        """Returns command candidates for the specified available commands and
+        the source command.
+        """
+        if src_command is None:
+            return available_commands
+
+        ratio = Help.similarity(src_command)
+        candidates = sorted(available_commands, key=ratio, reverse=True)
+        return [x for x in candidates if ratio(x) >= Help.CANDIDATE_RATIO_THRSHOLD]
+
+    def _print_available_commands(self, command):
         if not self._available_commands:
             return
 
@@ -31,10 +58,20 @@ class Help(object):
 
         if self._is_valid_commands():
             print(_('Available commands:'))
+            commands = self._available_commands
         else:
-            print(_('Did you mean one of these?'))
+            candidates = Help.candidates(self._available_commands, command)
+            if len(candidates) == 0:
+                print(_('Available commands:'))
+                commands = self._available_commands
+            elif len(candidates) == 1:
+                print(_('Did you mean this?'))
+                commands = candidates
+            else:
+                print(_('Did you mean one of these?'))
+                commands = candidates
 
-        for name in self._available_commands:
+        for name in commands:
             print('    ' + name)
 
     def _print_available_options(self):
@@ -53,11 +90,12 @@ class Help(object):
             print('    ' + name)
 
     def print_help(self):
+        last_command = None if not self._argument.commands else self._argument.commands[-1]
+
         if not self._is_valid_commands():
-            last_command = self._argument.commands[-1]
             print(_('Invalid command: {cmd}').format(cmd=last_command))
             print('')
 
         self._print_usage()
-        self._print_available_commands()
+        self._print_available_commands(last_command)
         self._print_available_options()

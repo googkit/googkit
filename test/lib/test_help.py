@@ -70,18 +70,31 @@ class TestHelp(unittest.TestCase):
     def test_print_available_commands(self):
         help = self.help_with_args(['0_leaf'])
         with mock.patch('sys.stdout') as mock_stdout:
-            help._print_available_commands()
+            help._print_available_commands(None)
         self.assertFalse(mock_stdout.write.called)
 
         help = self.help_with_args(['0_node'])
         with mock.patch('sys.stdout', new_callable=StubStdout) as mock_stdout:
-            help._print_available_commands()
+            help._print_available_commands(None)
         self.assertTrue(mock_stdout.getvalue().find('Available commands') >= 0)
 
         help = self.help_with_args(['0_node', 'bluerose'])
         with mock.patch('sys.stdout', new_callable=StubStdout) as mock_stdout:
-            help._print_available_commands()
+            help._print_available_commands(None)
         self.assertTrue(mock_stdout.getvalue().find('Did you mean one of these') >= 0)
+
+    def test_similarity(self):
+        func = Help.similarity('desp')
+        self.assertTrue(func('deps') >= func('build'))
+        self.assertTrue(func('') == 0)
+
+    def test_candidates(self):
+        available_commands = ['build', 'compile', 'deps', 'init', 'lint', 'setup']
+        result = Help.candidates(available_commands, 'desp')
+        self.assertEqual(result[0], 'deps')
+        result = Help.candidates(available_commands, 'int')
+        self.assertTrue('init' in result)
+        self.assertTrue('lint' in result)
 
     def test_print_available_options(self):
         help = self.help_with_args(['0_node', 'bluerose'])
