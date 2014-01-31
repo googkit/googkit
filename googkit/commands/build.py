@@ -26,11 +26,11 @@ class BuildCommand(Command):
 
         Usage::
             >>> args = BuildCommand.BuilderArguments()
-            >>> args.builder_arg('--arg1', 'ARG1')
-            >>> args.builder_arg('--arg2', 'ARG2')
-            >>> args.compiler_arg('--arg3', 'ARG3')
+            >>> args.builder_arg('--arg1', 'VAL1')
+            >>> args.builder_arg('--arg2', 'VAL2')
+            >>> args.compiler_arg('--arg3', 'VAL3')
             >>> str(args)
-            --arg1=ARG1 --arg2=ARG2 --compiler_flags=--arg3=ARG3
+            --arg1=VAL1 --arg2=VAL2 --compiler_flags=--arg3=VAL3
         """
 
         def builder_arg(self, key, value):
@@ -38,9 +38,9 @@ class BuildCommand(Command):
 
             Usage::
                 >>> args = BuildCommand.BuilderArguments()
-                >>> args.builder_arg('--arg', 'ARG')
+                >>> args.builder_arg('--arg', 'VAL')
                 >>> str(args)
-                --arg=ARG
+                --arg=VAL
             """
             self.add(key, value)
 
@@ -49,9 +49,9 @@ class BuildCommand(Command):
 
             Usage::
                 >>> args = BuildCommand.BuilderArguments()
-                >>> args.compiler_arg('--arg', 'ARG')
+                >>> args.compiler_arg('--arg', 'VAL')
                 >>> str(args)
-                --compiler_flags=--arg=ARG
+                --compiler_flags=--arg=VAL
             """
             self.add('--compiler_flags', '{0}={1}'.format(key, value))
 
