@@ -7,9 +7,6 @@ class LogLevelChanger(object):
     This class temporarily changes a log level of the specified logger in a `with` statement.
     You can get the logger by `as` clause.
 
-    :param level: Log level used in this context.
-    :param logger_name: Name of the logger will be changed the level.
-
     Usage::
         >>> logger = logging.getLogger('test')
         >>> logger.setLevel(logging.INFO)
@@ -18,6 +15,7 @@ class LogLevelChanger(object):
         ...
         >>> assert logger.level == logging.INFO
     """
+
     def __init__(self, level, logger):
         self.logger = logger
         self.level = level
@@ -37,16 +35,13 @@ def log_level(level=None, logger=None):
     This class temporarily changes a log level of the specified logger in a `with` statement.
     You can get the logger by `as` clause.
 
-    :param level: Log level used in this context (do not change the level, if None).
-    :param logger_name: Name of the logger will be changed the level (root logger, if None).
-    :returns: `LogLevelChanger` as a context manager.
-
     Usage::
         >>> with log_level(logging.DEBUG) as logger:
         ...     assert logger.level == logging.DEBUG
         ...
         >>> assert logger.level == logging.WARNING
     """
+
     if logger is not None:
         logger_ = logger
     else:

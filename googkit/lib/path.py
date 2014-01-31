@@ -13,11 +13,15 @@ TEMPLATE_DIR = os.path.join(DATA_DIR, 'template')
 
 
 def googkit_root():
+    """Returns a path for the googkit root directory.
+    """
     script_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.normpath(os.path.join(script_dir, '..', '..'))
 
 
 def project_root(cwd):
+    """Returns a path for the project root directory (googkit.cfg should be in this directory).
+    """
     current = cwd
     try:
         while not os.path.exists(os.path.join(current, PROJECT_CONFIG)):

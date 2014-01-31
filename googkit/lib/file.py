@@ -11,8 +11,7 @@ def _mkdir(src, dst):
 
 
 def copytree(src, dst, ignore=None):
-    """Same as os.shutil.copytree, but it can be used for a non-empty directory
-    as dst.
+    """Same as os.shutil.copytree, but it can be used for a non-empty directory as dst.
     All subdirectories will be merged into existing ones.
     """
     _mkdir(src, dst)

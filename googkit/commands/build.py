@@ -14,23 +14,45 @@ from googkit.lib.i18n import _
 
 
 class BuildCommand(Command):
+    """A class for build commands.
+    """
+
+    """Extension (like .html) tuple to compile.
+    """
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
     class BuilderArguments(ArgumentBuilder):
-        """Argument builder for the Closure Builder.
+        """Argument builder for Closure Builder.
 
         Usage::
             >>> args = BuildCommand.BuilderArguments()
             >>> args.builder_arg('--arg1', 'ARG1')
             >>> args.builder_arg('--arg2', 'ARG2')
             >>> args.compiler_arg('--arg3', 'ARG3')
-            >>> sorted(str(arg) for arg in args)
-            ['--arg1=ARG1', '--arg2=ARG2', '--compiler_flags=--arg3=ARG3']
+            >>> str(args)
+            --arg1=ARG1 --arg2=ARG2 --compiler_flags=--arg3=ARG3
         """
+
         def builder_arg(self, key, value):
+            """Adds an argument for Closure Builder.
+
+            Usage::
+                >>> args = BuildCommand.BuilderArguments()
+                >>> args.builder_arg('--arg', 'ARG')
+                >>> str(args)
+                --arg=ARG
+            """
             self.add(key, value)
 
         def compiler_arg(self, key, value):
+            """Adds an argument for Closure Compiler.
+
+            Usage::
+                >>> args = BuildCommand.BuilderArguments()
+                >>> args.compiler_arg('--arg', 'ARG')
+                >>> str(args)
+                --compiler_flags=--arg=ARG
+            """
             self.add('--compiler_flags', '{0}={1}'.format(key, value))
 
     @classmethod

@@ -8,6 +8,11 @@ from googkit.commands.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):
+    """Command tree class that provides a sub command mechanism.
+    """
+
+    """Default command tree.
+    """
     DEFAULT_TREE = {
         '_candidates': CandidatesCommand,
         'build': BuildCommand,
@@ -27,6 +32,13 @@ class CommandTree(object):
         self._tree = CommandTree.DEFAULT_TREE.copy()
 
     def right_commands(self, args):
+        """Returns a valid part of the specified arguments.
+
+        Usage::
+            >>> cmd_tree = CommandTree()
+            >>> cmd_tree.right_commands(['deps', 'update', 'invalid', 'invalid'])
+            ['deps', 'update']
+        """
         command_dict = self._tree
         result = []
 
@@ -46,9 +58,14 @@ class CommandTree(object):
 
     @classmethod
     def is_internal_command(cls, name):
+        """Whether the specified command is an internal command.
+        """
         return name[0] == '_'
 
     def available_commands(self, args=[]):
+        """Returns available command list.
+        Optionally you can set a sub command tree to search.
+        """
         command_dict = self._tree
 
         for arg in args:
@@ -65,6 +82,8 @@ class CommandTree(object):
         return sorted([cmd for cmd in commands if not CommandTree.is_internal_command(cmd)])
 
     def command_class(self, args):
+        """Returns a command class by the arguments.
+        """
         value = self._tree
 
         # TODO: is there a better way...?
@@ -89,6 +108,8 @@ class CommandTree(object):
         return None
 
     def register(self, names, commands):
+        """Registers a commands by each name.
+        """
         command_dict = self._tree
 
         for name in names[:-1]:

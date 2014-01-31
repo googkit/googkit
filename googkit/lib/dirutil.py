@@ -3,8 +3,6 @@ import os
 
 class CurrentDirectory(object):
     """Context manager for changing the current working directory.
-
-    :param path: Path of the working directory where move to.
     """
     def __init__(self, path):
         self._cwd = path
@@ -19,9 +17,6 @@ class CurrentDirectory(object):
 
 def working_directory(path='.'):
     """Change current working directory.
-
-    :param path: Path of the working directory where move to.
-    :returns: `CurrentDirectory` as a context manager
 
     >>> import tempfile
     >>> import os.path

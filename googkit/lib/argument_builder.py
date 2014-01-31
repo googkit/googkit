@@ -3,12 +3,13 @@ class ArgumentBuilder(object):
 
     Usage::
         >>> args = ArgumentBuilder()
-        >>> args.add('--arg1', 'ARG1')
-        >>> args.add('--arg2', 'ARG2')
-        >>> args.add('--arg3')
-        >>> sorted(str(arg) for arg in args)
-        ['--arg1=ARG1', '--arg2=ARG2', '--arg3']
+        >>> args.add('arg1')
+        >>> args.add('arg2', 'value')
+        >>> args.add('arg3', 'subkey=value')
+        >>> str(args)
+        'arg1 arg2=value arg3=subkey=value'
     """
+
     class ArgumentEntry(object):
         def __init__(self, key, value=None):
             self.key = key
@@ -27,7 +28,7 @@ class ArgumentBuilder(object):
             return hash(str(self))
 
     def __init__(self):
-        self._args = set()
+        self._args = []
 
     def __eq__(self, other):
         return self._args == other._args
@@ -39,5 +40,13 @@ class ArgumentBuilder(object):
         return iter(self._args)
 
     def add(self, key, value=None):
+        """Adds a key-value style argument to the argument list.
+
+        Usage::
+            >>> args = ArgumentBuilder()
+            >>> args.add('key1')
+            >>> args.add('key2', 'value1')
+            >>> args.add('key3', 'subkey=value')
+        """
         entry = ArgumentBuilder.ArgumentEntry(key, value)
-        self._args.add(entry)
+        self._args.append(entry)

@@ -7,6 +7,8 @@ from googkit.lib.i18n import _
 
 
 def run(repos, target_path):
+    """Clone the specified repository to the target path.
+    """
     if os.path.exists(target_path):
         _pull(repos, target_path)
     else:
