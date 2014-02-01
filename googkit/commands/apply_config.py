@@ -9,6 +9,11 @@ from googkit.lib.i18n import _
 
 
 class ApplyConfigCommand(Command):
+    """A class for commands that apply config.
+    """
+
+    """Extensions for files that include a marker to replace a line by config.
+    """
     CONFIG_TARGET_EXT = ('.html', '.xhtml', '.js', '.css')
 
     @classmethod
@@ -17,6 +22,12 @@ class ApplyConfigCommand(Command):
 
     @classmethod
     def line_indent(cls, line):
+        """Returns an indent at head of the specified line.
+
+        Usage::
+            >>> ApplyConfigCommand.line_indent('    I have 4 spaces.')
+            '    '
+        """
         indent = ''
         m = re.search(r'^(\s*)', line)
         if len(m.groups()) >= 1:
@@ -25,6 +36,8 @@ class ApplyConfigCommand(Command):
         return indent
 
     def update_base_js(self, line, dirpath):
+        """Updates a source path to closure/goog/base.js in the specified script tag.
+        """
         path = self.config.base_js()
         relpath = os.path.relpath(path, dirpath)
         href = googkit.compat.urllib.request.pathname2url(relpath)
@@ -32,6 +45,7 @@ class ApplyConfigCommand(Command):
         return '<script src="{href}"></script>'.format(href=href)
 
     def update_deps_js(self, line, dirpath):
+        # TODO: Add docstirng.
         path = self.config.deps_js()
         relpath = os.path.relpath(path, dirpath)
         src = googkit.compat.urllib.request.pathname2url(relpath)
@@ -39,6 +53,7 @@ class ApplyConfigCommand(Command):
         return '<script src="{src}"></script>'.format(src=src)
 
     def update_multitestrunner_css(self, line, dirpath):
+        # TODO: Add docstirng.
         path = self.config.multitestrunner_css()
         relpath = os.path.relpath(path, dirpath)
         href = googkit.compat.urllib.request.pathname2url(relpath)
@@ -46,6 +61,7 @@ class ApplyConfigCommand(Command):
         return '<link rel="stylesheet" href="{href}">'.format(href=href)
 
     def apply_config(self, path):
+        # TODO: Add docstirng.
         lines = []
         updaters = {
             'base.js': {'marker': '<!--@base_js@-->', 'update': self.update_base_js},
@@ -75,6 +91,7 @@ class ApplyConfigCommand(Command):
                 fp.write(line)
 
     def apply_config_all(self):
+        # TODO: Add docstirng.
         devel_dir = self.config.development_dir()
 
         # If library_root is in development_dir, we should avoid to walk into the library_root.

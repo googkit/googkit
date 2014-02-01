@@ -8,7 +8,8 @@ from googkit.commands.update_deps import UpdateDepsCommand
 
 
 class CommandTree(object):
-    """Command tree class that provides a sub command mechanism.
+    """A class for command tree that provides a sub-command mechanism.
+
     """
 
     """Default command tree.
@@ -28,16 +29,24 @@ class CommandTree(object):
         'setup': SetupCommand,
     }
 
-    def __init__(self):
-        self._tree = CommandTree.DEFAULT_TREE.copy()
+    def __init__(self, tree=None):
+        # TODO: Add docstirng.
+        if tree is None:
+            self._tree = CommandTree.DEFAULT_TREE.copy()
+        else:
+            self._tree = tree
 
     def right_commands(self, args):
-        """Returns a valid part of the specified arguments.
+        """Returns a valid command part of the specified arguments.
 
         Usage::
-            >>> cmd_tree = CommandTree()
-            >>> cmd_tree.right_commands(['deps', 'update', 'invalid', 'invalid'])
-            ['deps', 'update']
+            >>> from googkit.commands.command import Command
+            >>> stub_cmd_tree = {
+            ...     'sub_cmd': {'sub_sub_cmd': Command}
+            ...     }
+            >>> cmd_tree = CommandTree(stub_cmd_tree)
+            >>> cmd_tree.right_commands(['sub_cmd', 'sub_sub_cmd', 'invalid'])
+            ['sub_cmd', 'sub_sub_cmd']
         """
         command_dict = self._tree
         result = []
@@ -65,6 +74,18 @@ class CommandTree(object):
     def available_commands(self, args=[]):
         """Returns available command list.
         Optionally you can set a sub command tree to search.
+
+        Usage::
+            >>> from googkit.commands.command import Command
+            >>> stub_cmd_tree = {
+            ...     'sub_cmd': {
+            ...         'sub_sub_cmd1': Command,
+            ...         'sub_sub_cmd2': Command,
+            ...         }
+            ...     }
+            >>> cmd_tree = CommandTree(stub_cmd_tree)
+            >>> cmd_tree.available_commands()
+            ['sub_sub_cmd1', 'sub_sub_cmd2']
         """
         command_dict = self._tree
 
@@ -83,6 +104,15 @@ class CommandTree(object):
 
     def command_class(self, args):
         """Returns a command class by the arguments.
+
+        Usage::
+            >>> from googkit.commands.command import Command
+            >>> stub_cmd_tree = {
+            ...     'sub_cmd': {'sub_sub_cmd': Command}
+            ...     }
+            >>> cmd_tree = CommandTree(stub_cmd_tree)
+            >>> cmd_tree.command_class(['sub_cmd', 'sub_sub_cmd'])
+            Command
         """
         value = self._tree
 
@@ -109,6 +139,11 @@ class CommandTree(object):
 
     def register(self, names, commands):
         """Registers a commands by each name.
+
+        Usage::
+            >>> from googkit.commands.command import Command
+            >>> cmd_tree = CommandTree()
+            >>> cmd_tree.register(['my_cmd1', 'my_cmd2'], [Command, Command])
         """
         command_dict = self._tree
 

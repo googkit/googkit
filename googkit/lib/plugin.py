@@ -9,6 +9,8 @@ COMMAND_FILE = 'command.py'
 
 
 def load(tree):
+    """Loads googkit plugins to the specified instance of CommandTree.
+    """
     base_dir = googkit.lib.path.plugin()
 
     for filename in os.listdir(base_dir):

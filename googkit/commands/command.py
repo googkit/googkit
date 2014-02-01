@@ -9,15 +9,28 @@ from googkit.lib.logutil import log_level
 
 
 class Command(object):
+    """A base class for commands.
+    """
+
     def __init__(self, env):
+        """Create a command that depend the specified environment.
+        """
         self.env = env
 
     @classmethod
     def needs_project_config(cls):
+        """Whether this command depend to a project config file.
+        You should override to return True if this command use a project
+        config.
+        """
         return False
 
     @classmethod
     def supported_options(cls):
+        """Returns a set has supported options by this command.
+        In default, all command should support a --verbose option to display
+        verbose messages.
+        """
         return set(['--verbose'])
 
     def _validate_options(self):
@@ -48,6 +61,10 @@ class Command(object):
         os.chdir(self.env.cwd)
 
     def run(self):
+        """Runs this command.
+        Override run_internal instead of run if you want to implement a new
+        command.
+        """
         level = logging.DEBUG if self.env.argument.option('--verbose') else None
         with log_level(level):
             self._validate_options()
@@ -55,4 +72,7 @@ class Command(object):
             self.run_internal()
 
     def run_internal(self):
+        """Internal method for running command.
+        You can change a command behavior by overriding this method.
+        """
         pass

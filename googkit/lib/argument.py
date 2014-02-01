@@ -4,7 +4,9 @@ import re
 class Argument(object):
     """Argument class that has parsed commands and options.
     """
+
     def __init__(self, commands=[], options={}):
+        # TODO: Add docstirng.
         self._commands = commands
         self._options = options
 

@@ -18,6 +18,7 @@ class DownloadCommand(Command):
         return True
 
     def download_closure_library(self):
+        # TODO: Add docstirng.
         library_repos = self.config.library_repos()
         library_root = self.config.library_root()
 
@@ -33,6 +34,7 @@ class DownloadCommand(Command):
         logging.info('Done.')
 
     def download_closure_compiler(self):
+        # TODO: Add docstirng.
         tmp_path = tempfile.mkdtemp()
         compiler_zip = os.path.join(tmp_path, 'compiler.zip')
         compiler_zip_url = self.config.compiler_zip()
