@@ -28,7 +28,7 @@ def project_root(cwd):
             before = current
             current = os.path.dirname(current)
 
-            # Break if current smeems root.
+            # Break if current seems root.
             if before == current:
                 break
 
@@ -41,6 +41,9 @@ def project_root(cwd):
 
 
 def project_config(cwd):
+    """Returns a path for the googkit.cfg that is project config file.
+    Raise a GoogkitError if the project config file is not found.
+    """
     proj_root = project_root(cwd)
 
     if proj_root is None:
@@ -55,6 +58,8 @@ def project_config(cwd):
 
 
 def user_config():
+    """Returns a path for the .googkit that is user config file.
+    """
     home_dir = os.path.expanduser('~')
     user_config = os.path.join(home_dir, USER_CONFIG)
 
@@ -62,6 +67,15 @@ def user_config():
 
 
 def default_config():
+    """Returns a path for the default project config file.
+
+    Config priority is:
+    1. In project config file (PROJECT_DIR/googkit.cfg)
+    2. In user config file (~/.googkit)
+    3. In default config file (default.cfg)
+
+    Raise a GoogkitError if the default config file is not found.
+    """
     path = os.path.join(googkit_root(), DEFAULT_CONFIG)
     if not os.path.exists(path):
         msg = 'Default config file is not found: {path}'.format(path=path)
@@ -71,6 +85,9 @@ def default_config():
 
 
 def plugin():
+    """Returns a path for the plugin directory.
+    Raise a GoogkitError if the plugin directory is not found.
+    """
     plugin_dir = os.path.join(googkit_root(), SCRIPT_DIR, PLUGIN_DIR)
     if not os.path.isdir(plugin_dir):
         msg = 'Plugins directory is not found: {path}'.format(
@@ -81,6 +98,10 @@ def plugin():
 
 
 def template():
+    """Returns a path for the project template directory.
+    The template directory should be created when a project is initialised, and it should have demonstration files.
+    Raise a GoogkitError if the template directory is not found.
+    """
     template_dir = os.path.join(googkit_root(), TEMPLATE_DIR)
     if not os.path.isdir(template_dir):
         msg = 'Template directory is not found: {path}'.format(
@@ -91,6 +112,9 @@ def template():
 
 
 def locale():
+    """Returns a path for the locale directory has localized messages.
+    Raise a GoogkitError if the locale directory is not found.
+    """
     locale_dir = os.path.join(googkit_root(), LOCALE_DIR)
 
     if not os.path.isdir(locale_dir):
@@ -102,7 +126,8 @@ def locale():
 
 
 def replace_base(target, old_base, new_base):
-    """Replace a base directory in the target path with the new one."""
+    """Replace a base directory in the target path with the new one.
+    """
     prefix = os.path.commonprefix([target, old_base])
     diff = target[len(prefix) + 1:]
     return os.path.join(new_base, diff)
