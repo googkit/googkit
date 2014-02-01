@@ -30,7 +30,7 @@ class CommandTree(object):
     }
 
     def __init__(self, tree=None):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         if tree is None:
             self._tree = CommandTree.DEFAULT_TREE.copy()
         else:
@@ -116,7 +116,7 @@ class CommandTree(object):
         """
         value = self._tree
 
-        # TODO: is there a better way...?
+        # [review] - is there a better way...?
         if len(args) > 1 and args[0] == '_candidates':
             return self._tree['_candidates']
 
@@ -128,7 +128,7 @@ class CommandTree(object):
             if not isinstance(next_value, dict):
                 if depth != len(args):
                     # Extra argument found after existing commands
-                    # TODO: should raise an error?
+                    # [review] - should raise an error?
                     return None
 
                 return next_value

@@ -68,7 +68,7 @@ class BuildCommand(Command):
 
     @classmethod
     def line_indent(cls, line):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         indent = ''
         m = re.search(r'^(\s*)', line)
         if len(m.groups()) >= 1:
@@ -78,14 +78,14 @@ class BuildCommand(Command):
 
     @classmethod
     def ignore_dirs(cls, *ignore_dirs):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         def ignoref(dirpath, files):
             return [filename for filename in files
                     if (os.path.join(dirpath, filename) in ignore_dirs)]
         return ignoref
 
     def setup_files(self, target_dir, should_clean):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         config = self.config
         devel_dir = config.development_dir()
         compiled_js = config.compiled_js()
@@ -115,7 +115,7 @@ class BuildCommand(Command):
                 self.compile_resource(path, compiled_js)
 
     def compile_resource(self, path, compiled_js_path):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         lines = []
 
         with open(path) as f:
@@ -159,7 +159,7 @@ class BuildCommand(Command):
             logging.debug(result[1].decode())
 
     def build_debug(self, project_root, should_clean):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         self.setup_files(self.config.debug_dir(), should_clean)
 
         logging.info(_('Building for debug...'))
@@ -178,7 +178,7 @@ class BuildCommand(Command):
         logging.info(_('Done.'))
 
     def build_production(self, project_root, should_clean):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         self.setup_files(self.config.production_dir(), should_clean)
 
         logging.info(_('Building for production...'))
@@ -187,7 +187,7 @@ class BuildCommand(Command):
         logging.info(_('Done.'))
 
     def debug_arguments(self, project_root):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         config = self.config
         compiled_js = os.path.join(config.debug_dir(), config.compiled_js())
         source_map_path = compiled_js + '.map'
@@ -219,7 +219,7 @@ class BuildCommand(Command):
         return args
 
     def production_arguments(self, project_root):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         config = self.config
         compiled_js = os.path.join(config.production_dir(),
                                    config.compiled_js())
@@ -241,7 +241,7 @@ class BuildCommand(Command):
         return args
 
     def modify_source_map(self, source_map, project_root):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         source_root = os.path.relpath(project_root, self.config.debug_dir())
 
         with open(source_map) as source_map_file:

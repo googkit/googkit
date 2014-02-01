@@ -1,8 +1,9 @@
-.DS_Store
 *.pyc
+.DS_Store
+.coverage
+Thumbs.db
 __pycache__
 deps.js
-.coverage
 
 /build/
 /closure/

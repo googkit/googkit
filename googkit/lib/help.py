@@ -9,7 +9,7 @@ class Help(object):
     CANDIDATE_RATIO_THRSHOLD = 0.5
 
     def __init__(self, tree, argument):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         self._tree = tree
         self._argument = argument
         self._correct_commands = tree.right_commands(argument.commands)
@@ -91,7 +91,7 @@ class Help(object):
             print('    ' + name)
 
     def print_help(self):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
         last_command = None if not self._argument.commands else self._argument.commands[-1]
 
         if not self._is_valid_commands():

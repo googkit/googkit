@@ -34,4 +34,4 @@ class TestSequenceCommand(unittest.TestCase):
 
         self.assertTrue(MockFoo.return_value.run.called)
         self.assertTrue(MockBar.return_value.run.called)
-        # TODO: Is it possible to test an execution order of those commands?
+        # [review] - Is it possible to test an execution order of those commands?

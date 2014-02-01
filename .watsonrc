@@ -1,0 +1,28 @@
+# watson rc
+# watson - inline issue manager
+# [goosecode] labs
+
+
+# Directories
+[dirs]
+./googkit/
+./test/
+
+
+# Tags
+[tags]
+fix
+review
+todo
+
+
+# Ignores
+[ignore]
+*.pyc
+*.swp
+.DS_Store
+.coverage
+.git
+Thumbs.db
+__pycache__
+deps.js

@@ -48,12 +48,12 @@ def copytree(src, dst, ignore=None):
 
 
 def executable(path):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
     return os.path.isfile(path) and os.access(path, os.X_OK)
 
 
 def which(name):
-        # TODO: Add docstirng.
+        # [todo] - Add docstirng.
     head, tail = os.path.split(name)
 
     if head:
