@@ -3,11 +3,11 @@ class ArgumentBuilder(object):
 
     Usage::
         >>> args = ArgumentBuilder()
-        >>> args.add('arg1')
-        >>> args.add('arg2', 'value')
-        >>> args.add('arg3', 'subkey=value')
+        >>> args.add('--arg1')
+        >>> args.add('--arg2', 'value')
+        >>> args.add('--arg3', 'subkey=value')
         >>> str(args)
-        'arg1 arg2=value arg3=subkey=value'
+        '--arg1 --arg2=value --arg3=subkey=value'
     """
 
     class ArgumentEntry(object):
@@ -44,9 +44,9 @@ class ArgumentBuilder(object):
 
         Usage::
             >>> args = ArgumentBuilder()
-            >>> args.add('key1')
-            >>> args.add('key2', 'value1')
-            >>> args.add('key3', 'subkey=value')
+            >>> args.add('--key1')
+            >>> args.add('--key2', 'value1')
+            >>> args.add('--key3', 'subkey=value')
         """
         entry = ArgumentBuilder.ArgumentEntry(key, value)
         self._args.append(entry)

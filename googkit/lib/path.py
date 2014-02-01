@@ -20,7 +20,8 @@ def googkit_root():
 
 
 def project_root(cwd):
-    """Returns a path for the project root directory (googkit.cfg should be in this directory).
+    """Returns a path for the project root directory (googkit.cfg should be in
+    this directory).
     """
     current = cwd
     try:
@@ -99,7 +100,8 @@ def plugin():
 
 def template():
     """Returns a path for the project template directory.
-    The template directory should be created when a project is initialised, and it should have demonstration files.
+    The template directory should be created when a project is initialised,
+    and it should have demonstration files.
     Raise a GoogkitError if the template directory is not found.
     """
     template_dir = os.path.join(googkit_root(), TEMPLATE_DIR)
