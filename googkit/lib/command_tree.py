@@ -30,7 +30,7 @@ class CommandTree(object):
     }
 
     def __init__(self, tree=None):
-        # [todo] - Add docstirng.
+        # [TODO] - Add docstirng.
         if tree is None:
             self._tree = CommandTree.DEFAULT_TREE.copy()
         else:
@@ -116,7 +116,7 @@ class CommandTree(object):
         """
         value = self._tree
 
-        # [review] - is there a better way...?
+        # [REVIEW] - is there a better way...?
         if len(args) > 1 and args[0] == '_candidates':
             return self._tree['_candidates']
 

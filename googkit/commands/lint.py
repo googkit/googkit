@@ -27,7 +27,7 @@ class LintCommand(Command):
         return paths
 
     def lint(self):
-        # [todo] - Add docstirng.
+        # [TODO] - Add docstirng.
         if googkit.lib.file.which('gjslint') is None:
             raise GoogkitError(_('Required command not found: gjslint'))
 

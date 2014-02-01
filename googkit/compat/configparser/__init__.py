@@ -6,5 +6,5 @@ except ImportError:
     from ConfigParser import ConfigParser
     from ConfigParser import NoSectionError
 
-# [review] - Is there a way to import all classes?
-# [todo] - Treat ConfigParser#readfp/read_file
+# [REVIEW] - Is there a way to import all classes?
+# [TODO] - Treat ConfigParser#readfp/read_file

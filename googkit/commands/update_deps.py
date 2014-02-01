@@ -16,7 +16,7 @@ class UpdateDepsCommand(Command):
 
     @classmethod
     def line_indent(cls, line):
-        # [todo] - Add docstirng.
+        # [TODO] - Add docstirng.
         indent = ''
         m = re.search(r'^(\s*)', line)
         if len(m.groups()) >= 1:
@@ -25,7 +25,7 @@ class UpdateDepsCommand(Command):
         return indent
 
     def update_deps(self):
-        # [todo] - Add docstirng.
+        # [TODO] - Add docstirng.
         config = self.config
         js_dev_dir = config.js_dev_dir()
         deps_js = config.deps_js()
@@ -71,12 +71,12 @@ class UpdateDepsCommand(Command):
         logging.debug('Updated ' + deps_js)
 
     def update_tests(self, line, tests):
-        # [todo] - Add docstirng.
+        # [TODO] - Add docstirng.
         joined = ','.join(['\'' + test_file + '\'' for test_file in tests])
         return 'var testFiles = [{test_files}];'.format(test_files=joined)
 
     def update_testrunner(self):
-        # [todo] - Add docstirng.
+        # [TODO] - Add docstirng.
         config = self.config
         js_dev_dir = config.js_dev_dir()
         testrunner = config.testrunner()

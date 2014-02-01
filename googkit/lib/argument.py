@@ -6,7 +6,7 @@ class Argument(object):
     """
 
     def __init__(self, commands=[], options={}):
-        # [todo] - Add docstirng.
+        # [TODO] - Add docstirng.
         self._commands = commands
         self._options = options
 
