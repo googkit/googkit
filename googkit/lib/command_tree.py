@@ -9,7 +9,6 @@ from googkit.commands.update_deps import UpdateDepsCommand
 
 class CommandTree(object):
     """A class for command tree that provides a sub-command mechanism.
-
     """
 
     """Default command tree.
@@ -30,7 +29,9 @@ class CommandTree(object):
     }
 
     def __init__(self, tree=None):
-        # [TODO] - Add docstirng.
+        """Creates a command tree.
+        You can set customized command tree by first argument.
+        """
         if tree is None:
             self._tree = CommandTree.DEFAULT_TREE.copy()
         else:

@@ -48,12 +48,13 @@ def copytree(src, dst, ignore=None):
 
 
 def executable(path):
-        # [TODO] - Add docstirng.
+    """Whether a file is specified the path is executable.
+    """
     return os.path.isfile(path) and os.access(path, os.X_OK)
 
 
 def which(name):
-        # [TODO] - Add docstirng.
+    # [TODO] - Add a docstring (cocopon).
     head, tail = os.path.split(name)
 
     if head:

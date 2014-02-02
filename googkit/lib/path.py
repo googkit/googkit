@@ -44,6 +44,7 @@ def project_root(cwd):
 def project_config(cwd):
     """Returns a path for the googkit.cfg that is project config file.
     Raise a GoogkitError if the project config file is not found.
+    See also: googkit.lib.Config#load()
     """
     proj_root = project_root(cwd)
 
@@ -60,6 +61,7 @@ def project_config(cwd):
 
 def user_config():
     """Returns a path for the .googkit that is user config file.
+    See also: googkit.lib.Config#load()
     """
     home_dir = os.path.expanduser('~')
     user_config = os.path.join(home_dir, USER_CONFIG)
@@ -69,13 +71,8 @@ def user_config():
 
 def default_config():
     """Returns a path for the default project config file.
-
-    Config priority is:
-    1. In project config file (PROJECT_DIR/googkit.cfg)
-    2. In user config file (~/.googkit)
-    3. In default config file (default.cfg)
-
     Raise a GoogkitError if the default config file is not found.
+    See also: googkit.lib.Config#load()
     """
     path = os.path.join(googkit_root(), DEFAULT_CONFIG)
     if not os.path.exists(path):

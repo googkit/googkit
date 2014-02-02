@@ -3,7 +3,8 @@ class Environment(object):
     """
 
     def __init__(self, cwd, argument, tree):
-        # [TODO] - Add docstirng.
+        """Creates an environment by the cwd path, the Argument instance and the command tree.
+        """
         self.cwd = cwd
         self.argument = argument
         self.tree = tree

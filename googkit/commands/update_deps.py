@@ -14,18 +14,9 @@ class UpdateDepsCommand(Command):
     def needs_project_config(cls):
         return True
 
-    @classmethod
-    def line_indent(cls, line):
-        # [TODO] - Add docstirng.
-        indent = ''
-        m = re.search(r'^(\s*)', line)
-        if len(m.groups()) >= 1:
-            indent = m.group(1)
-
-        return indent
-
     def update_deps(self):
-        # [TODO] - Add docstirng.
+        """Updates module dependencies by using depswriter.py.
+        """
         config = self.config
         js_dev_dir = config.js_dev_dir()
         deps_js = config.deps_js()
@@ -71,12 +62,21 @@ class UpdateDepsCommand(Command):
         logging.debug('Updated ' + deps_js)
 
     def update_tests(self, line, tests):
-        # [TODO] - Add docstirng.
-        joined = ','.join(['\'' + test_file + '\'' for test_file in tests])
+        """Replace test file lists on the line by the specified scripts to unit-test.
+
+        Usage::
+            >>> cmd = UpdateDepsCommand()
+            >>> cmd.update_tests(
+            ...     'var testFiles = ["old_script.js"]',
+            ...     ['new_script1.js', 'new_script2.js'])
+            'var testFiles = [\'new_script1.js\', \'new_script2.js\'];'
+        """
+        joined = ', '.join(['\'' + test_file + '\'' for test_file in tests])
         return 'var testFiles = [{test_files}];'.format(test_files=joined)
 
     def update_testrunner(self):
-        # [TODO] - Add docstirng.
+        """Updates a test file list for the unit-test runner.
+        """
         config = self.config
         js_dev_dir = config.js_dev_dir()
         testrunner = config.testrunner()
@@ -104,7 +104,7 @@ class UpdateDepsCommand(Command):
         for line in open(testrunner):
             marker = '/*@test_files@*/'
             if line.find(marker) >= 0:
-                indent = UpdateDepsCommand.line_indent(line)
+                indent = googkit.lib.strutil.line_indent(line)
                 line = indent + self.update_tests(line, tests) + marker + '\n'
 
             lines.append(line)

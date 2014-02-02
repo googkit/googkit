@@ -1,13 +1,13 @@
 import json
 import logging
 import os
-import re
 import shutil
 import subprocess
 import googkit.lib.file
 import googkit.lib.path
+import googkit.lib.strutil
 from googkit.commands.command import Command
-from googkit.lib.argument_builder import ArgumentBuilder
+from googkit.lib.argument_builder import OptionBuilder
 from googkit.lib.dirutil import working_directory
 from googkit.lib.error import GoogkitError
 from googkit.lib.i18n import _
@@ -21,7 +21,7 @@ class BuildCommand(Command):
     """
     COMPILE_TARGET_EXT = ('.html', '.xhtml')
 
-    class BuilderArguments(ArgumentBuilder):
+    class BuilderArguments(OptionBuilder):
         """Argument builder for Closure Builder.
 
         Usage::
@@ -67,25 +67,18 @@ class BuildCommand(Command):
         return opts
 
     @classmethod
-    def line_indent(cls, line):
-        # [TODO] - Add docstirng.
-        indent = ''
-        m = re.search(r'^(\s*)', line)
-        if len(m.groups()) >= 1:
-            indent = m.group(1)
-
-        return indent
-
-    @classmethod
     def ignore_dirs(cls, *ignore_dirs):
-        # [TODO] - Add docstirng.
+        """Returns a callable ignore argument for copytree method by the specified ignore directories.
+        """
         def ignoref(dirpath, files):
             return [filename for filename in files
                     if (os.path.join(dirpath, filename) in ignore_dirs)]
         return ignoref
 
-    def setup_files(self, target_dir, should_clean):
-        # [TODO] - Add docstirng.
+    def setup_files(self, target_dir, should_clean=False):
+        """Copy project resources to the specified directory path.
+        Removes files already exist in the target directory if should_clean is True.
+        """
         config = self.config
         devel_dir = config.development_dir()
         compiled_js = config.compiled_js()
@@ -115,7 +108,9 @@ class BuildCommand(Command):
                 self.compile_resource(path, compiled_js)
 
     def compile_resource(self, path, compiled_js_path):
-        # [TODO] - Add docstirng.
+        """Converts development resources for production resources.
+        For example, paths for development resources will be replaced by paths for compiled resources.
+        """
         lines = []
 
         with open(path) as f:
@@ -128,7 +123,7 @@ class BuildCommand(Command):
 
                 # Replace deps.js by a compiled script
                 if line.find('<!--@require_main@-->') >= 0:
-                    indent = BuildCommand.line_indent(line)
+                    indent = googkit.lib.strutil.line_indent(line)
                     script = '<script src="{src}"></script>\n'.format(
                         src=compiled_js_path)
                     line = indent + script
@@ -158,8 +153,10 @@ class BuildCommand(Command):
         else:
             logging.debug(result[1].decode())
 
-    def build_debug(self, project_root, should_clean):
-        # [TODO] - Add docstirng.
+    def build_debug(self, project_root, should_clean=False):
+        """Builds resources is in the specified project root for debugging.
+        Removes old resources if should_clean is True.
+        """
         self.setup_files(self.config.debug_dir(), should_clean)
 
         logging.info(_('Building for debug...'))
@@ -177,8 +174,10 @@ class BuildCommand(Command):
 
         logging.info(_('Done.'))
 
-    def build_production(self, project_root, should_clean):
-        # [TODO] - Add docstirng.
+    def build_production(self, project_root, should_clean=False):
+        """Builds resources is in the specified project root for production.
+        Removes old resources if should_clean is True.
+        """
         self.setup_files(self.config.production_dir(), should_clean)
 
         logging.info(_('Building for production...'))
@@ -187,7 +186,8 @@ class BuildCommand(Command):
         logging.info(_('Done.'))
 
     def debug_arguments(self, project_root):
-        # [TODO] - Add docstirng.
+        """Returns an arguments for Closure Compiler to build debugging.
+        """
         config = self.config
         compiled_js = os.path.join(config.debug_dir(), config.compiled_js())
         source_map_path = compiled_js + '.map'
@@ -219,7 +219,8 @@ class BuildCommand(Command):
         return args
 
     def production_arguments(self, project_root):
-        # [TODO] - Add docstirng.
+        """Returns an arguments for Closure Compiler to build production.
+        """
         config = self.config
         compiled_js = os.path.join(config.production_dir(),
                                    config.compiled_js())
@@ -241,7 +242,10 @@ class BuildCommand(Command):
         return args
 
     def modify_source_map(self, source_map, project_root):
-        # [TODO] - Add docstirng.
+        """ Modifies library paths in the source map.
+        The library path should be a relative path from the project root.
+        If '--root' is specified as absolute path, 'sources' attribute of the source map will be absolute path and not work with http scheme.
+        """
         source_root = os.path.relpath(project_root, self.config.debug_dir())
 
         with open(source_map) as source_map_file:

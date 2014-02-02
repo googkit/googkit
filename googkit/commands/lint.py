@@ -4,7 +4,7 @@ import os.path
 import subprocess
 import googkit.lib.path
 from googkit.commands.command import Command
-from googkit.lib.argument_builder import ArgumentBuilder
+from googkit.lib.argument_builder import OptionBuilder
 from googkit.lib.dirutil import working_directory
 from googkit.lib.error import GoogkitError
 from googkit.lib.i18n import _
@@ -27,12 +27,13 @@ class LintCommand(Command):
         return paths
 
     def lint(self):
-        # [TODO] - Add docstirng.
+        """Lints project resouces by using Closure Linter.
+        """
         if googkit.lib.file.which('gjslint') is None:
             raise GoogkitError(_('Required command not found: gjslint'))
 
         paths = self._sources()
-        args = ArgumentBuilder()
+        args = OptionBuilder()
 
         flagfile = self.config.linter_flagfile()
         if os.path.exists(flagfile):

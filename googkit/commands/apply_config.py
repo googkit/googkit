@@ -20,23 +20,8 @@ class ApplyConfigCommand(Command):
     def needs_project_config(cls):
         return True
 
-    @classmethod
-    def line_indent(cls, line):
-        """Returns an indent at head of the specified line.
-
-        Usage::
-            >>> ApplyConfigCommand.line_indent('    I have 4 spaces.')
-            '    '
-        """
-        indent = ''
-        m = re.search(r'^(\s*)', line)
-        if len(m.groups()) >= 1:
-            indent = m.group(1)
-
-        return indent
-
     def update_base_js(self, line, dirpath):
-        """Updates a source path to closure/goog/base.js in the specified script tag.
+        """Updates a source path of base.js in the specified script tag.
         """
         path = self.config.base_js()
         relpath = os.path.relpath(path, dirpath)
@@ -45,7 +30,8 @@ class ApplyConfigCommand(Command):
         return '<script src="{href}"></script>'.format(href=href)
 
     def update_deps_js(self, line, dirpath):
-        # [TODO] - Add docstirng.
+        """Updates a source path of deps.js in the specified script tag.
+        """
         path = self.config.deps_js()
         relpath = os.path.relpath(path, dirpath)
         src = googkit.compat.urllib.request.pathname2url(relpath)
@@ -53,7 +39,8 @@ class ApplyConfigCommand(Command):
         return '<script src="{src}"></script>'.format(src=src)
 
     def update_multitestrunner_css(self, line, dirpath):
-        # [TODO] - Add docstirng.
+        """Updates a source path of a css for unit-test reporters in the specified link tag.
+        """
         path = self.config.multitestrunner_css()
         relpath = os.path.relpath(path, dirpath)
         href = googkit.compat.urllib.request.pathname2url(relpath)
@@ -61,7 +48,8 @@ class ApplyConfigCommand(Command):
         return '<link rel="stylesheet" href="{href}">'.format(href=href)
 
     def apply_config(self, path):
-        # [TODO] - Add docstirng.
+        """Applies configurations to a file that the specified path point.
+        """
         lines = []
         updaters = {
             'base.js': {'marker': '<!--@base_js@-->', 'update': self.update_base_js},
@@ -80,7 +68,7 @@ class ApplyConfigCommand(Command):
                         logging.debug(msg)
 
                         line = '{indent}{content}{marker}\n'.format(
-                            indent=ApplyConfigCommand.line_indent(line),
+                            indent=googkit.lib.strutil.line_indent(line),
                             content=update(line, dirpath),
                             marker=marker)
 
@@ -91,7 +79,8 @@ class ApplyConfigCommand(Command):
                 fp.write(line)
 
     def apply_config_all(self):
-        # [TODO] - Add docstirng.
+        """Applies configurations to files that is in a googkit project directory.
+        """
         devel_dir = self.config.development_dir()
 
         # If library_root is in development_dir, we should avoid to walk into the library_root.

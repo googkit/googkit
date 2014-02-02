@@ -6,7 +6,8 @@ class Argument(object):
     """
 
     def __init__(self, commands=[], options={}):
-        # [TODO] - Add docstirng.
+        """Creates a container has the sub-command list and the option dictionary.
+        """
         self._commands = commands
         self._options = options
 

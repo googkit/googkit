@@ -9,7 +9,8 @@ from googkit.lib.i18n import _
 
 class InitCommand(Command):
     def copy_template(self, dst_dir):
-        # [TODO] - Add docstirng.
+        """Copy template files (include default googkit.cfg, demonstration files) to the specified directory.
+        """
         template_dir = googkit.lib.path.template()
 
         conflicted = set(os.listdir(dst_dir)) & set(os.listdir(template_dir))

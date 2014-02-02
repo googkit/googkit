@@ -16,12 +16,14 @@ VERSION = '0.2.0'
 
 
 def print_version():
-    # [TODO] - Add docstirng.
+    """Prints a googkit version.
+    """
     print(_('googkit {version}').format(version=VERSION))
 
 
 def main():
-    # [TODO] - Add docstirng.
+    """Run googkit.
+    """
     cwd = os.getcwd()
     logging.basicConfig(level=logging.INFO, format='%(message)s')
     tree = CommandTree()
