@@ -7,6 +7,7 @@ from googkit.compat.unittest import mock
 from test.stub_config import StubConfig, StubConfigOnStubProject
 from test.stub_environment import StubEnvironment
 
+import googkit.lib.strutil
 import googkit.commands.build
 BuildCommand = googkit.commands.build.BuildCommand
 
@@ -19,11 +20,6 @@ class TestBuildCommand(unittest.TestCase):
 
     def test_needs_project_config(self):
         self.assertTrue(BuildCommand.needs_project_config())
-
-    def test_line_indent(self):
-        self.assertEqual(BuildCommand.line_indent('    '), '    ')
-        self.assertEqual(BuildCommand.line_indent('     a    '), '     ')
-        self.assertEqual(BuildCommand.line_indent('a    '), '')
 
     def test_compile_resource(self):
         tgt_path = '/tmp/foo/bar'

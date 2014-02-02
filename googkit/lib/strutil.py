@@ -1,10 +1,10 @@
 import re
 
-def line_indent(cls, line):
+def line_indent(line):
     """Returns an indent at head of the specified line.
 
     Usage::
-        >>> ApplyConfigCommand.line_indent('    I have 4 spaces.')
+        >>> line_indent('    I have 4 spaces.')
         '    '
     """
     indent = ''

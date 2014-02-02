@@ -1,9 +1,10 @@
 import unittest
 import doctest
-import googkit.lib.argument_builder
+import googkit.lib.option_builder
+
 
 def load_tests(loader, tests, ignore):
-    tests.addTests(doctest.DocTestSuite(googkit.lib.argument_builder))
+    tests.addTests(doctest.DocTestSuite(googkit.lib.option_builder))
     return tests
 
 

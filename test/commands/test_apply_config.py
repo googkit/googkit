@@ -7,6 +7,7 @@ from test.stub_stdout import StubStdout
 
 from googkit.commands.apply_config import ApplyConfigCommand
 from googkit.compat.unittest import mock
+import googkit.lib.strutil
 
 
 class TestApplyConfigCommand(unittest.TestCase):
@@ -15,11 +16,6 @@ class TestApplyConfigCommand(unittest.TestCase):
         self.cmd = ApplyConfigCommand(self.env)
 
         self.cmd.config = StubConfig()
-
-    def test_line_indent(self):
-        self.assertEqual(ApplyConfigCommand.line_indent('    '), '    ')
-        self.assertEqual(ApplyConfigCommand.line_indent('     a    '), '     ')
-        self.assertEqual(ApplyConfigCommand.line_indent('a    '), '')
 
     def test_needs_project_config(self):
         self.assertTrue(ApplyConfigCommand.needs_project_config())

@@ -4,7 +4,7 @@ import os.path
 import subprocess
 import googkit.lib.path
 from googkit.commands.command import Command
-from googkit.lib.argument_builder import OptionBuilder
+from googkit.lib.option_builder import OptionBuilder
 from googkit.lib.dirutil import working_directory
 from googkit.lib.error import GoogkitError
 from googkit.lib.i18n import _

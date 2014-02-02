@@ -19,11 +19,6 @@ class TestUpdateDepsCommand(unittest.TestCase):
     def test_needs_project_config(self):
         self.assertTrue(UpdateDepsCommand.needs_project_config())
 
-    def test_line_indent(self):
-        self.assertEqual(UpdateDepsCommand.line_indent('    '), '    ')
-        self.assertEqual(UpdateDepsCommand.line_indent('     a    '), '     ')
-        self.assertEqual(UpdateDepsCommand.line_indent('a    '), '')
-
     def test_update_deps_js(self):
         MockPopen = mock.MagicMock()
         MockPopen.return_value.returncode = 0
@@ -51,7 +46,7 @@ class TestUpdateDepsCommand(unittest.TestCase):
     def test_update_tests(self):
         self.assertEqual(
             self.cmd.update_tests('DUMMY', ['dummy1', 'dummy2']),
-            'var testFiles = [\'dummy1\',\'dummy2\'];')
+            'var testFiles = [\'dummy1\', \'dummy2\'];')
 
         self.assertEqual(
             self.cmd.update_tests('DUMMY', []),

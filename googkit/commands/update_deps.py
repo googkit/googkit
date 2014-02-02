@@ -3,6 +3,7 @@ import os
 import re
 import subprocess
 import googkit.lib.path
+import googkit.lib.strutil
 from googkit.commands.command import Command
 from googkit.lib.dirutil import working_directory
 from googkit.lib.error import GoogkitError
