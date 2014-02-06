@@ -85,7 +85,7 @@ class CommandTree(object):
             ...         }
             ...     }
             >>> cmd_tree = CommandTree(stub_cmd_tree)
-            >>> cmd_tree.available_commands()
+            >>> cmd_tree.available_commands(['sub_cmd'])
             ['sub_sub_cmd1', 'sub_sub_cmd2']
         """
         command_dict = self._tree
@@ -112,8 +112,8 @@ class CommandTree(object):
             ...     'sub_cmd': {'sub_sub_cmd': Command}
             ...     }
             >>> cmd_tree = CommandTree(stub_cmd_tree)
-            >>> cmd_tree.command_class(['sub_cmd', 'sub_sub_cmd'])
-            Command
+            >>> cmd = cmd_tree.command_class(['sub_cmd', 'sub_sub_cmd'])
+            >>> assert cmd is Command
         """
         value = self._tree
 
