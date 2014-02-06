@@ -117,7 +117,7 @@ class CommandTree(object):
         """
         value = self._tree
 
-        # [REVIEW] - is there a better way...?
+        # REVIEW: is there a better way...?
         if len(args) > 1 and args[0] == '_candidates':
             return self._tree['_candidates']
 
@@ -129,7 +129,7 @@ class CommandTree(object):
             if not isinstance(next_value, dict):
                 if depth != len(args):
                     # Extra argument found after existing commands
-                    # [review] - should raise an error?
+                    # REVIEW: should raise an error?
                     return None
 
                 return next_value
