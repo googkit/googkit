@@ -9,6 +9,11 @@
 ./test/
 
 
+# Tag format
+[tag_format]
+TAG: COMMENT
+
+
 # Tags
 [tags]
 fix

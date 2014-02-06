@@ -54,7 +54,7 @@ def executable(path):
 
 
 def which(name):
-    # [TODO] - Add a docstring (cocopon).
+    # TODO: Add a docstring (cocopon).
     head, tail = os.path.split(name)
 
     if head:
