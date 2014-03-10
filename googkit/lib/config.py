@@ -51,12 +51,18 @@ class Config(object):
         path = self.parser.get('project', 'production')
         return os.path.normpath(path)
 
-    def compiled_js(self):
-        """Returns a file name for the compiled script.
-        This config is a "compiled_js" option is in the "project" section.
+    def compiled_js_ext(self):
+        """Returns a file extension for the compiled script.
+        This config is a "compiled_js_ext" option is in the "project" section.
         """
-        path = self.parser.get('project', 'compiled_js')
-        return os.path.normpath(path)
+        return self.parser.get('project', 'compiled_js_ext')
+
+    def no_built_js_pattern(self):
+        """Returns a file name pattern of HTML requiring no JavaScript.
+        This config is a "no_built_js_pattern" option is in the "project"
+        section.
+        """
+        return self.parser.get('project', 'no_built_js_pattern')
 
     def test_file_pattern(self):
         """Returns a regular expression for the unit-test file pattern.
