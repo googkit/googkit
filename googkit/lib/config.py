@@ -57,13 +57,6 @@ class Config(object):
         """
         return self.parser.get('project', 'compiled_js_ext')
 
-    def no_built_js_pattern(self):
-        """Returns a file name pattern of HTML requiring no JavaScript.
-        This config is a "no_built_js_pattern" option is in the "project"
-        section.
-        """
-        return self.parser.get('project', 'no_built_js_pattern')
-
     def test_file_pattern(self):
         """Returns a regular expression for the unit-test file pattern.
         This config is a "test_file_pattern" option is in the "project" section.
@@ -87,50 +80,50 @@ class Config(object):
     def closurebuilder(self):
         """Returns a path for the closurebuilder.py.
         """
-        dir = self.library_root()
-        return os.path.join(dir, 'closure', 'bin', 'build', 'closurebuilder.py')
+        dirpath = self.library_root()
+        return os.path.join(dirpath, 'closure', 'bin', 'build', 'closurebuilder.py')
 
     def depswriter(self):
         """Returns a path for the depswriter.py.
         """
-        dir = self.library_root()
-        return os.path.join(dir, 'closure', 'bin', 'build', 'depswriter.py')
+        dirpath = self.library_root()
+        return os.path.join(dirpath, 'closure', 'bin', 'build', 'depswriter.py')
 
     def base_js(self):
         """Returns a path for the base.js.
         """
-        dir = self.library_root()
-        return os.path.join(dir, 'closure', 'goog', 'base.js')
+        dirpath = self.library_root()
+        return os.path.join(dirpath, 'closure', 'goog', 'base.js')
 
     def multitestrunner_css(self):
         """Returns a path for the multitestrunner.css.
         """
-        dir = self.library_root()
-        return os.path.join(dir, 'closure', 'goog', 'css', 'multitestrunner.css')
+        dirpath = self.library_root()
+        return os.path.join(dirpath, 'closure', 'goog', 'css', 'multitestrunner.css')
 
     def js_dev_dir(self):
         """Returns a directory path for javascript resources on development.
         """
-        dir = self.development_dir()
-        return os.path.join(dir, 'js_dev')
+        dirpath = self.development_dir()
+        return os.path.join(dirpath, 'js_dev')
 
     def deps_js(self):
         """Returns a path for the deps.js.
         """
-        dir = self.js_dev_dir()
-        return os.path.join(dir, 'deps.js')
+        dirpath = self.js_dev_dir()
+        return os.path.join(dirpath, 'deps.js')
 
     def testrunner(self):
         """Returns a path for the unit-test runner.
         """
-        dir = self.development_dir()
-        return os.path.join(dir, 'all_tests.html')
+        dirpath = self.development_dir()
+        return os.path.join(dirpath, 'all_tests.html')
 
     def compiler(self):
         """Returns a path for the compiler.jar (part of Closure Compiler).
         """
-        dir = self.compiler_root()
-        return os.path.join(dir, 'compiler.jar')
+        dirpath = self.compiler_root()
+        return os.path.join(dirpath, 'compiler.jar')
 
     def compilation_level(self):
         """Returns a compilation level for Closure Compiler.

@@ -171,12 +171,9 @@ class BuildCommand(Command):
         """
         config = self.config
         devel_dir = config.development_dir()
-        no_built_js_pattern = re.compile(config.no_built_js_pattern())
 
         html = glob.glob(os.path.join(devel_dir, '**', '*.html'))
         htm = glob.glob(os.path.join(devel_dir, '**', '*.htm'))
-        html_requiring_js = filter(
-            lambda filename: not re.match(no_built_js_pattern, filename), html + htm)
         return html_requiring_js
 
     def build_debug(self, html_path, project_root, should_clean=False):
