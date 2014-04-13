@@ -86,7 +86,6 @@ class BuildCommand(Command):
         """
         config = self.config
         devel_dir = config.development_dir()
-        compiled_js = config.compiled_js()
 
         # Avoid to copy unnecessary files for production
         ignores = (
@@ -112,14 +111,14 @@ class BuildCommand(Command):
 
                 self.compile_resource(path)
 
-    def compile_resource(self, path):
+    def compile_resource(self, html_path):
         """Converts development resources for production resources.
         For example, paths for development resources will be replaced by paths
         for compiled resources.
         """
         lines = []
 
-        with open(path) as f:
+        with open(html_path) as f:
             for line in f:
                 # Remove lines that requires unneeded scripts
                 if line.find('<!--@base_js@-->') >= 0:
@@ -131,21 +130,24 @@ class BuildCommand(Command):
                 if line.find('<!--@require_main@-->') >= 0:
                     indent = googkit.lib.strutil.line_indent(line)
                     script = '<script src="{src}"></script>\n'.format(
-                        src=compiled_js_path)
+                        src=self.compiled_js_path(html_path))
                     line = indent + script
 
                 lines.append(line)
 
-        with open(path, 'w') as f:
+        with open(html_path, 'w') as f:
             for line in lines:
                 f.write(line)
 
-    def namespace_from_filename(self, path):
+    def namespace_from_filename(self, html_path):
         """Returns a namespace key for main scripts by path of HTML.
         For example, returns `googkit.hoge` if the path is `hoge.html`
         """
-        filename = os.path.split(os.path.basename(filename))[0]
+        filename = os.path.split(os.path.basename(html_path))[0]
         return 'googkit_{0}'.format(filename)
+
+    def compiled_js_path(self, html_path):
+        return self.config.compiled_js_ext().replace('%s', html_path)
 
     def _build(self, builder_args, project_root):
         builder = self.config.closurebuilder()
@@ -174,7 +176,7 @@ class BuildCommand(Command):
 
         html = glob.glob(os.path.join(devel_dir, '**', '*.html'))
         htm = glob.glob(os.path.join(devel_dir, '**', '*.htm'))
-        return html_requiring_js
+        return html + htm
 
     def build_debug(self, html_path, project_root, should_clean=False):
         """Builds resources is in the specified project root for debugging.
@@ -191,9 +193,10 @@ class BuildCommand(Command):
         # doesn't support this attribute.
         # So set 'sourceRoot' to 'project_root' directory manually until
         # Closure Compiler supports this feature.
+        compiled_js_path = self.compiled_js_path(html_path)
         source_map = os.path.join(project_root,
                                   config.debug_dir(),
-                                  config.compiled_js() + '.map')
+                                  compiled_js_path + '.map')
         self.modify_source_map(source_map, project_root)
 
         logging.info(_('Done.'))
@@ -217,7 +220,7 @@ class BuildCommand(Command):
         config = self.config
         html_relpath = os.path.relpath(html_path, config.development_dir())
         debug_html_path = os.path.join(config.debug_dir(), html_relpath)
-        compiled_js_path = config.compiled_js_ext().replace('%s', debug_html_path)
+        compiled_js_path = self.compiled_js_path(html_path)
         source_map_path = compiled_js_path + '.map'
         source_map = os.path.basename(source_map_path)
 
