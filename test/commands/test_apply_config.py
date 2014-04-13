@@ -24,7 +24,7 @@ class TestApplyConfigCommand(unittest.TestCase):
         self.cmd.config = mock.MagicMock()
         self.cmd.config.base_js.return_value = '/dummy'
 
-        line = '<script src="remove me"></script>'
+        line = '<script src="change me"></script>'
         expected = '<script src="."></script>'
         self.assertEqual(self.cmd.update_base_js(line, '/dummy'), expected)
 
@@ -32,7 +32,7 @@ class TestApplyConfigCommand(unittest.TestCase):
         self.cmd.config = mock.MagicMock()
         self.cmd.config.deps_js.return_value = '/dummy'
 
-        line = '<script src="remove me"></script>'
+        line = '<script src="change me"></script>'
         expected = '<script src="."></script>'
 
         self.assertEqual(self.cmd.update_deps_js(line, '/dummy'), expected)
@@ -41,7 +41,7 @@ class TestApplyConfigCommand(unittest.TestCase):
         self.cmd.config = mock.MagicMock()
         self.cmd.config.multitestrunner_css.return_value = '/dummy'
 
-        line = '<link rel="stylesheet" href="remove me">'
+        line = '<link rel="stylesheet" href="change me">'
         expected = '<link rel="stylesheet" href=".">'
 
         self.assertEqual(self.cmd.update_multitestrunner_css(line, '/dummy'), expected)
