@@ -21,8 +21,10 @@ class BuildCommand(Command):
     """
 
     """Extension (like .html) tuple to compile.
+    HTML: .html .htm
+    XHTML: .xml .xhtml .xht
     """
-    COMPILE_TARGET_EXT = ('.html', '.xhtml')
+    HTML_LIKE_EXT = ('.xml', '.xhtml', '.xht', '.htm', '.html')
 
     class BuilderArguments(OptionBuilder):
         """Argument builder for Closure Builder.
@@ -103,13 +105,13 @@ class BuildCommand(Command):
             ignore=BuildCommand.ignore_dirs(*ignores))
 
         for root, dirs, files in os.walk(target_dir):
-            for file in files:
-                path = os.path.join(root, file)
-                (base, ext) = os.path.splitext(path)
-                if ext not in BuildCommand.COMPILE_TARGET_EXT:
+            for filename in files:
+                html_path = os.path.join(root, filename)
+                (base, ext) = os.path.splitext(html_path)
+                if ext not in BuildCommand.HTML_LIKE_EXT:
                     continue
 
-                self.compile_resource(path)
+                self.compile_resource(html_path)
 
     def compile_resource(self, html_path):
         """Converts development resources for production resources.
@@ -129,8 +131,9 @@ class BuildCommand(Command):
                 # Replace deps.js by a compiled script
                 if line.find('<!--@require_main@-->') >= 0:
                     indent = googkit.lib.strutil.line_indent(line)
-                    script = '<script src="{src}"></script>\n'.format(
-                        src=self.compiled_js_path(html_path))
+                    compiled_js_path = os.path.relpath(
+                        self.compiled_js_path(html_path), os.path.dirname(html_path))
+                    script = '<script src="{src}"></script>\n'.format(src=compiled_js_path)
                     line = indent + script
 
                 lines.append(line)
@@ -139,15 +142,19 @@ class BuildCommand(Command):
             for line in lines:
                 f.write(line)
 
-    def namespace_from_filename(self, html_path):
-        """Returns a namespace key for main scripts by path of HTML.
-        For example, returns `googkit.hoge` if the path is `hoge.html`
+    def namespace_by_html(self, html_path):
+        """Returns a namespace key for main scripts by a path of the HTML.
+        For example, returns `googkit.hoge` if the path is `hoge.html`.
         """
-        filename = os.path.split(os.path.basename(html_path))[0]
+        filename = os.path.splitext(os.path.basename(html_path))[0]
         return 'googkit_{0}'.format(filename)
 
     def compiled_js_path(self, html_path):
-        return self.config.compiled_js_ext().replace('%s', html_path)
+        """Returns a compiled js path by a path of the HTML.
+        For example, returns `foo/bar.min.js` if the path is `foo/bar.html`.
+        """
+        ext_pattern = self.config.compiled_js_ext()
+        return ext_pattern.replace('%s', os.path.splitext(html_path)[0])
 
     def _build(self, builder_args, project_root):
         builder = self.config.closurebuilder()
@@ -174,9 +181,12 @@ class BuildCommand(Command):
         config = self.config
         devel_dir = config.development_dir()
 
-        html = glob.glob(os.path.join(devel_dir, '**', '*.html'))
-        htm = glob.glob(os.path.join(devel_dir, '**', '*.htm'))
-        return html + htm
+        html_glob = os.path.join(devel_dir, '*.html')
+        htm_glob = os.path.join(devel_dir, '*.htm')
+        html_list = glob.glob(html_glob) + glob.glob(htm_glob)
+        testrunner = config.testrunner()
+
+        return filter(lambda path: path != testrunner, html_list)
 
     def build_debug(self, html_path, project_root, should_clean=False):
         """Builds resources is in the specified project root for debugging.
@@ -193,11 +203,12 @@ class BuildCommand(Command):
         # doesn't support this attribute.
         # So set 'sourceRoot' to 'project_root' directory manually until
         # Closure Compiler supports this feature.
-        compiled_js_path = self.compiled_js_path(html_path)
-        source_map = os.path.join(project_root,
-                                  config.debug_dir(),
-                                  compiled_js_path + '.map')
-        self.modify_source_map(source_map, project_root)
+        html_relpath = os.path.relpath(html_path, config.development_dir())
+        debug_html_path = os.path.join(config.debug_dir(), html_relpath)
+        compiled_js_path = self.compiled_js_path(debug_html_path)
+        source_map_path = compiled_js_path + '.map'
+
+        self.modify_source_map(source_map_path, project_root)
 
         logging.info(_('Done.'))
 
@@ -220,7 +231,7 @@ class BuildCommand(Command):
         config = self.config
         html_relpath = os.path.relpath(html_path, config.development_dir())
         debug_html_path = os.path.join(config.debug_dir(), html_relpath)
-        compiled_js_path = self.compiled_js_path(html_path)
+        compiled_js_path = self.compiled_js_path(debug_html_path)
         source_map_path = compiled_js_path + '.map'
         source_map = os.path.basename(source_map_path)
 
@@ -235,7 +246,7 @@ class BuildCommand(Command):
         args = BuildCommand.BuilderArguments()
         args.builder_arg('--root', lib_path)
         args.builder_arg('--root', config.js_dev_dir())
-        args.builder_arg('--namespace', 'main')
+        args.builder_arg('--namespace', self.namespace_by_html(html_path))
         args.builder_arg('--output_mode', 'compiled')
         args.builder_arg('--output_file', compiled_js_path)
         args.builder_arg('--compiler_jar', config.compiler())
@@ -256,13 +267,13 @@ class BuildCommand(Command):
         config = self.config
         html_relpath = os.path.relpath(html_path, config.development_dir())
         production_html_path = os.path.join(config.production_dir(), html_relpath)
-        compiled_js_path = config.compiled_js_ext().replace('%s', production_html_path)
+        compiled_js_path = self.compiled_js_path(production_html_path)
         lib_path = os.path.relpath(config.library_root(), project_root)
 
         args = BuildCommand.BuilderArguments()
         args.builder_arg('--root', lib_path)
         args.builder_arg('--root', config.js_dev_dir())
-        args.builder_arg('--namespace', 'main')
+        args.builder_arg('--namespace', self.namespace_by_html(html_path))
         args.builder_arg('--output_mode', 'compiled')
         args.builder_arg('--output_file', compiled_js_path)
         args.builder_arg('--compiler_jar', config.compiler())

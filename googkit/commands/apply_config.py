@@ -33,12 +33,12 @@ class ApplyConfigCommand(Command):
         return True
 
     @classmethod
-    def get_namespace_by_html(cls, path):
+    def namespace_by_html(cls, path):
         """Returns a namespace from the path to the html.
         Namespace for the documents should be declared as ``googkit_{filename of the document}``.
 
         Usage::
-            >>> ApplyConfigCommand.get_namespace_by_html('index.html')
+            >>> ApplyConfigCommand.namespace_by_html('index.html')
             "googkit_index"
         """
         basename = os.path.splitext(os.path.basename(path))[0]
@@ -46,11 +46,11 @@ class ApplyConfigCommand(Command):
         return namespace
 
     @classmethod
-    def get_namespace_by_main(cls, path):
+    def namespace_by_js(cls, path):
         """Returns a namespace from the path to the main script.
 
         Usage::
-            >>> ApplyConfigCommand.get_namespace_by_main('googkit_index.js')
+            >>> ApplyConfigCommand.namespace_by_js('googkit_index.js')
             "googkit_index"
         """
         return os.path.splitext(os.path.basename(path))[0]
@@ -92,14 +92,14 @@ class ApplyConfigCommand(Command):
         """Returns an updated line that marked by ``<!--@require_main@-->``.
         The line is contained in the file specified the path.
         """
-        namespace = self.get_namespace_by_html(path)
+        namespace = self.namespace_by_html(path)
         return '<script> goog.require(\'{namespace}\'); </script>'.format(namespace=namespace)
 
     def update_provide_main(self, line, path):
         """Returns an updated line that marked by ``/*@provide_main@*/``.
         The line is contained in the file specified the path.
         """
-        namespace = self.get_namespace_by_main(path)
+        namespace = self.namespace_by_js(path)
         return 'goog.provide(\'{namespace}\');'.format(namespace=namespace)
 
     def apply_config(self, path):
@@ -193,7 +193,7 @@ class ApplyConfigCommand(Command):
             if os.path.abspath(html_path) == os.path.abspath(config.testrunner()):
                 continue
 
-            basename = self.get_namespace_by_html(html_path) + '.js'
+            basename = self.namespace_by_html(html_path) + '.js'
             script_path = os.path.join(config.js_dev_dir(), basename)
 
             if os.path.exists(script_path):
