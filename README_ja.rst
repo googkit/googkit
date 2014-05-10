@@ -42,12 +42,12 @@ LinuxまたはOS X
 
 2. お好みの場所に移動する::
 
-     $ mv googkit /usr/local
+     $ mv googkit /opt
 
 
 3. 環境変数の ``PATH`` に追加する::
 
-     export GOOGKIT_HOME=/usr/local/googkit
+     export GOOGKIT_HOME=/opt/googkit
      export PATH=$PATH:$GOOGKIT_HOME/bin
 
 

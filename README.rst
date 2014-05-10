@@ -42,12 +42,12 @@ Linux or OS X
 
 2. Put it into a preferred place::
 
-     $ mv googkit /usr/local
+     $ mv googkit /opt
 
 
 3. Add environment variables::
 
-     export GOOGKIT_HOME=/usr/local/googkit
+     export GOOGKIT_HOME=/opt/googkit
      export PATH=$PATH:$GOOGKIT_HOME/bin
 
 
