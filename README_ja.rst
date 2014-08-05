@@ -2,11 +2,11 @@ Googkit
 =======
 
 
-.. image:: https://pypip.in/v/googkit/badge.png
+.. image:: https://pypip.in/version/googkit/badge.svg
    :target: https://crate.io/packages/googkit
 
-.. image:: https://secure.travis-ci.org/googkit/googkit.png?branch=master
-   :target: http://travis-ci.org/googkit/googkit
+.. image:: https://travis-ci.org/googkit/googkit.svg?branch=master
+    :target: https://travis-ci.org/googkit/googkit
 
 
 
