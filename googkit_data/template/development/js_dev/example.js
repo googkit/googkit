@@ -2,6 +2,7 @@ goog.provide('foo.Example');
 
 goog.require('goog.array');
 goog.require('goog.dom');
+goog.require('goog.dom.classes');
 
 
 /**
