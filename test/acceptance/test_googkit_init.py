@@ -1,5 +1,5 @@
 import unittest
-from unittest import mock
+import mock
 import test
 
 import shutil
