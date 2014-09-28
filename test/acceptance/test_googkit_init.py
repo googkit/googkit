@@ -4,10 +4,10 @@ import test
 
 import shutil
 from pathlib import Path
+
 from test.asserting.file_assertion import FileAssertion
 import test.cwd
 
-import googkit
 
 FIXTURE_PATH = Path('test', 'acceptance', 'fixture', 'init')
 SAMPLE_PROJECT_NAME = 'sample_project'
@@ -40,6 +40,8 @@ class AcceptanceTestGoogkitInit(FileAssertion, unittest.TestCase):
         # is on the sample project root directory.
         with test.cwd.chdir(SAMPLE_PROJECT_PATH), \
                 mock.patch('sys.argv', argv):
+
+            import googkit
             googkit.main()
 
         googkit_cfg_path = Path(SAMPLE_PROJECT_PATH, 'googkit.cfg')
