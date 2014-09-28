@@ -43,6 +43,18 @@ def data_files(data_dirs):
     return result
 
 
+def load_requires_from_file(filepath):
+    return [pkg_name.rstrip('\r\n') for pkg_name in open(filepath).readlines()]
+
+
+def install_requires():
+    return load_requires_from_file('requirements.txt')
+
+
+def test_requires():
+    return load_requires_from_file('test-requirements.txt')
+
+
 setup(
     name='googkit',
     version=googkit.VERSION,
@@ -65,12 +77,8 @@ setup(
             'googkit=googkit:main'
         ]
     },
-    install_requires=[
-        'closure_linter'
-    ],
-    dependency_links=[
-        'http://closure-linter.googlecode.com/files/closure_linter-2.3.11.tar.gz',
-    ],
+    install_requires=install_requires(),
+    tests_require=test_requires(),
     zip_safe=False,
     data_files=data_files([
         'etc',
