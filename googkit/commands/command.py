@@ -16,6 +16,7 @@ class Command(object):
         """Create a command that depend the specified environment.
         """
         self.env = env
+        self.config = None
 
     @classmethod
     def needs_project_config(cls):
@@ -54,9 +55,8 @@ class Command(object):
 
     def _setup(self):
         if self.__class__.needs_project_config():
-            self.config = self._load_config()
-        else:
-            self.config = None
+            if self.config is None:
+                self.config = self._load_config()
 
         os.chdir(self.env.cwd)
 

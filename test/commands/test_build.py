@@ -35,7 +35,7 @@ DUMMY
         # Expected data will be given by open.write()
         expected = '''\
 DUMMY
-  <script src="REQUIRE_MAIN"></script>
+  <script src="bar.JS"></script>
    <!--@dummy_marker@-->'''
 
         # Use mock_open
@@ -50,7 +50,7 @@ DUMMY
         # Switch to the mock_open from the original open
         with mock.patch('os.sep', new='/'), \
                 mock.patch('googkit.commands.build.open', mock_open, create=True):
-            self.cmd.compile_resource(tgt_path, 'REQUIRE_MAIN')
+            self.cmd.compile_resource(tgt_path)
 
         # Expected the target file was opened twice for reading and writing
         mock_open.assert_any_call(tgt_path)
@@ -77,27 +77,27 @@ DUMMY
             ignore='IGNORE')
 
         self.cmd.compile_resource.assert_any_call(
-            os.path.join(StubConfigOnStubProject.PRODUCTION_DIR, 'index.html'),
-            StubConfigOnStubProject.COMPILED_JS)
+            os.path.join(StubConfigOnStubProject.PRODUCTION_DIR, 'index.html'))
 
     def test_debug_arguments(self):
         expected = BuildCommand.BuilderArguments()
         expected.builder_arg('--root',
                              os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
         expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
-        expected.builder_arg('--namespace', 'main')
+        expected.builder_arg('--namespace', 'googkit_dummy')
         expected.builder_arg('--output_mode', 'compiled')
-        expected.builder_arg('--output_file',
-                             os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--output_file', 'dummy.JS')
         expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
         expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
         expected.compiler_arg('--source_map_format', 'V3')
-        expected.compiler_arg('--create_source_map',
-                              os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'))
-        expected.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path=StubConfig.COMPILED_JS + '.map'))
+        expected.compiler_arg('--create_source_map', 'dummy.JS.map')
+        expected.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path='dummy.JS.map'))
+
+        self.cmd.compiled_js_path = mock.MagicMock()
+        self.cmd.compiled_js_path.side_effect = lambda _: 'dummy.JS'
 
         with mock.patch('os.path.exists', return_value=False):
-            args = self.cmd.debug_arguments(StubConfig.PROJECT_DIR)
+            args = self.cmd.debug_arguments('dummy.html', StubConfig.PROJECT_DIR)
         self.assertEqual(args, expected)
 
     def test_production_arguments(self):
@@ -105,16 +105,18 @@ DUMMY
         expected.builder_arg('--root',
                              os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
         expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
-        expected.builder_arg('--namespace', 'main')
+        expected.builder_arg('--namespace', 'googkit_dummy')
         expected.builder_arg('--output_mode', 'compiled')
-        expected.builder_arg('--output_file',
-                             os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--output_file', 'dummy.js')
         expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
         expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
         expected.compiler_arg('--define', 'goog.DEBUG=false')
 
+        self.cmd.compiled_js_path = mock.MagicMock()
+        self.cmd.compiled_js_path.side_effect = lambda _: 'dummy.js'
+
         with mock.patch('os.path.exists', return_value=False):
-            args = self.cmd.production_arguments(StubConfig.PROJECT_DIR)
+            args = self.cmd.production_arguments('dummy.html', StubConfig.PROJECT_DIR)
         self.assertEqual(args, expected)
 
     def test_debug_arguments_with_flagfile(self):
@@ -122,20 +124,22 @@ DUMMY
         expected.builder_arg('--root',
                              os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
         expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
-        expected.builder_arg('--namespace', 'main')
+        expected.builder_arg('--namespace', 'googkit_dummy')
         expected.builder_arg('--output_mode', 'compiled')
-        expected.builder_arg('--output_file',
-                             os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--output_file', 'dummy.js')
         expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
         expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
         expected.compiler_arg('--source_map_format', 'V3')
-        expected.compiler_arg('--create_source_map',
-                              os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'))
-        expected.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path=StubConfig.COMPILED_JS + '.map'))
+        expected.compiler_arg('--create_source_map', 'dummy.js.map')
+        expected.compiler_arg('--output_wrapper', '"%output%//# sourceMappingURL={path}"'.format(path='dummy.js.map'))
         expected.compiler_arg('--flagfile', StubConfig.COMPILER_FLAGFILE_FOR_DEBUG)
 
+        self.cmd.compiled_js_path = mock.MagicMock()
+        self.cmd.compiled_js_path.side_effect = lambda _: 'dummy.js'
+
         with mock.patch('os.path.exists', return_value=True):
-            args = self.cmd.debug_arguments(StubConfig.PROJECT_DIR)
+            args = self.cmd.debug_arguments('dummy.html', StubConfig.PROJECT_DIR)
+
         self.assertEqual(args, expected)
 
     def test_production_arguments_with_flagfile(self):
@@ -143,17 +147,19 @@ DUMMY
         expected.builder_arg('--root',
                              os.path.relpath(StubConfig.LIBRARRY_ROOT, StubConfig.PROJECT_DIR))
         expected.builder_arg('--root', StubConfig.JS_DEV_DIR)
-        expected.builder_arg('--namespace', 'main')
+        expected.builder_arg('--namespace', 'googkit_dummy')
         expected.builder_arg('--output_mode', 'compiled')
-        expected.builder_arg('--output_file',
-                             os.path.join(StubConfig.PRODUCTION_DIR, StubConfig.COMPILED_JS))
+        expected.builder_arg('--output_file', 'dummy.JS')
         expected.builder_arg('--compiler_jar', StubConfig.COMPILER)
         expected.compiler_arg('--compilation_level', 'COMPILATION_LEVEL')
         expected.compiler_arg('--define', 'goog.DEBUG=false')
         expected.compiler_arg('--flagfile', StubConfig.COMPILER_FLAGFILE)
 
+        self.cmd.compiled_js_path = mock.MagicMock()
+        self.cmd.compiled_js_path.side_effect = lambda _: 'dummy.JS'
+
         with mock.patch('os.path.exists', return_value=True):
-            args = self.cmd.production_arguments(StubConfig.PROJECT_DIR)
+            args = self.cmd.production_arguments('dummy.html', StubConfig.PROJECT_DIR)
         self.assertEqual(args, expected)
 
 
@@ -180,6 +186,8 @@ DUMMY
         self.cmd.setup_files = mock.MagicMock()
         self.cmd.debug_arguments = mock.MagicMock()
         self.cmd.debug_arguments.return_value = ['ARG']
+        self.cmd.compiled_js_path = mock.MagicMock()
+        self.cmd.compiled_js_path.return_value = 'dummy.JS'
         self.cmd.modify_source_map = mock.MagicMock()
 
         MockPopen = mock.MagicMock()
@@ -188,7 +196,7 @@ DUMMY
         mock_popen.returncode = 0
 
         with mock.patch('subprocess.Popen', new=MockPopen):
-            self.cmd.build_debug(StubConfig.PROJECT_DIR, False)
+            self.cmd.build_debug('dummy.html', StubConfig.PROJECT_DIR, False)
 
         self.cmd.setup_files.assert_called_once_with(StubConfig.DEBUG_DIR, False)
         MockPopen.assert_called_once_with(
@@ -197,7 +205,7 @@ DUMMY
             stderr=subprocess.PIPE)
 
         self.cmd.modify_source_map.assert_called_once_with(
-            os.path.join(StubConfig.DEBUG_DIR, StubConfig.COMPILED_JS + '.map'),
+            'dummy.JS.map',
             StubConfig.PROJECT_DIR)
 
     def test_modify_source_map(self):
@@ -229,6 +237,8 @@ DUMMY
     def test_run_internal(self):
         self.cmd.build_debug = mock.MagicMock()
         self.cmd.build_production = mock.MagicMock()
+        self.cmd.html_requiring_js = mock.MagicMock()
+        self.cmd.html_requiring_js.side_effect = lambda: ['dummy.html']
         self.env.argument = mock.MagicMock()
         self.env.argument.option.return_value = False
         dummy_project_root = os.path.normcase('/dir1/dir2')
@@ -238,11 +248,14 @@ DUMMY
 
             self.cmd.run_internal()
 
-        self.cmd.build_production.assert_called_once_with(dummy_project_root, False)
+        self.cmd.build_production.assert_called_once_with(
+            'dummy.html', dummy_project_root, False)
 
     def test_run_internal_with_debug_opt(self):
         self.cmd.build_debug = mock.MagicMock()
         self.cmd.build_production = mock.MagicMock()
+        self.cmd.html_requiring_js = mock.MagicMock()
+        self.cmd.html_requiring_js.side_effect = lambda: ['dummy.html']
         self.env.argument = mock.MagicMock()
         self.env.argument.option.side_effect = lambda opt: opt == '--debug'
         dummy_project_root = os.path.normcase('/dir1/dir2')
@@ -252,7 +265,7 @@ DUMMY
 
             self.cmd.run_internal()
 
-        self.cmd.build_debug.assert_called_once_with(dummy_project_root, False)
+        self.cmd.build_debug.assert_called_once_with('dummy.html', dummy_project_root, False)
 
 
 def load_tests(loader, tests, ignore):

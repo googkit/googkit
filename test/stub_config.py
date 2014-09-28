@@ -41,8 +41,8 @@ class StubConfig(object):
     def production_dir(self):
         return StubConfig.PRODUCTION_DIR
 
-    def compiled_js(self):
-        return StubConfig.COMPILED_JS
+    def compiled_js_ext(self):
+        return StubConfig.COMPILED_JS_EXT
 
     def test_file_pattern(self):
         return StubConfig.TEST_FILE_PATTERN
@@ -138,7 +138,7 @@ StubConfig.COMPILER = os.path.join(
     StubConfig.COMPILER_ROOT, 'compiler.jar')
 
 StubConfig.TEST_FILE_PATTERN = '_TEST\.(HTML|XHTML)$'
-StubConfig.COMPILED_JS = 'SCRIPT.MIN.JS'
+StubConfig.COMPILED_JS_EXT = '%s.JS'
 StubConfig.COMPILATION_LEVEL = 'COMPILATION_LEVEL'
 StubConfig.LIBRARY_GIT_REPOS = 'LIBRARY_GIT_REPOS'
 StubConfig.COMPILER_LATEST_ZIP = 'COMPILER_LATEST_ZIP'
@@ -194,8 +194,8 @@ class StubConfigOnStubProject(object):
     def production_dir(self):
         return StubConfigOnStubProject.PRODUCTION_DIR
 
-    def compiled_js(self):
-        return StubConfigOnStubProject.COMPILED_JS
+    def compiled_js_ext(self):
+        return StubConfigOnStubProject.COMPILED_JS_EXT
 
     def test_file_pattern(self):
         return StubConfigOnStubProject.TEST_FILE_PATTERN
@@ -291,7 +291,7 @@ StubConfigOnStubProject.DEPSWRITER = os.path.join(
 StubConfigOnStubProject.COMPILER = os.path.join(
     StubConfigOnStubProject.COMPILER_ROOT, 'compiler.jar')
 
-StubConfigOnStubProject.COMPILED_JS = 'script.min.js'
+StubConfigOnStubProject.COMPILED_JS_EXT = '%s.min.js'
 StubConfigOnStubProject.TEST_FILE_PATTERN = '_test\.(html|xhtml)$'
 StubConfigOnStubProject.COMPILATION_LEVEL = 'COMPILATION_LEVEL'
 StubConfigOnStubProject.LIBRARY_GIT_REPOS = 'LIBRARY_GIT_REPOS'

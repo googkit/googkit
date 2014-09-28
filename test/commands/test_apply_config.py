@@ -22,29 +22,29 @@ class TestApplyConfigCommand(unittest.TestCase):
 
     def test_update_base_js(self):
         self.cmd.config = mock.MagicMock()
-        self.cmd.config.base_js.return_value = '/dummy'
+        self.cmd.config.base_js.return_value = 'dummy.js'
 
-        line = '<script src="remove me"></script>'
-        expected = '<script src="."></script>'
-        self.assertEqual(self.cmd.update_base_js(line, '/dummy'), expected)
+        line = '<script src="change me"></script>'
+        expected = '<script src="dummy.js"></script>'
+        self.assertEqual(self.cmd.update_base_js(line, 'dummy.html'), expected)
 
     def test_update_deps_js(self):
         self.cmd.config = mock.MagicMock()
-        self.cmd.config.deps_js.return_value = '/dummy'
+        self.cmd.config.deps_js.return_value = 'dummy.js'
 
-        line = '<script src="remove me"></script>'
-        expected = '<script src="."></script>'
+        line = '<script src="change me"></script>'
+        expected = '<script src="dummy.js"></script>'
 
-        self.assertEqual(self.cmd.update_deps_js(line, '/dummy'), expected)
+        self.assertEqual(self.cmd.update_deps_js(line, 'dummy.html'), expected)
 
     def test_multitestrunner_css(self):
         self.cmd.config = mock.MagicMock()
-        self.cmd.config.multitestrunner_css.return_value = '/dummy'
+        self.cmd.config.multitestrunner_css.return_value = 'dummy.css'
 
-        line = '<link rel="stylesheet" href="remove me">'
-        expected = '<link rel="stylesheet" href=".">'
+        line = '<link rel="stylesheet" href="change me">'
+        expected = '<link rel="stylesheet" href="dummy.css">'
 
-        self.assertEqual(self.cmd.update_multitestrunner_css(line, '/dummy'), expected)
+        self.assertEqual(self.cmd.update_multitestrunner_css(line, 'dummy.html'), expected)
 
     def test_apply_config(self):
         # Expected following directory structure:
@@ -109,9 +109,9 @@ MULTI_TEST_RUNNER_CSS<!--@multitestrunner_css@-->
             [mock.call(line + '\n',) for line in expected.split('\n')])
 
         # Expect updaters was called when for each marker was found
-        self.cmd.update_multitestrunner_css.assert_called_once_with('<!--@multitestrunner_css@-->\n', StubConfig.DEVELOPMENT_DIR)
-        self.cmd.update_base_js.assert_called_once_with(' <!--@base_js@-->\n', StubConfig.DEVELOPMENT_DIR)
-        self.cmd.update_deps_js.assert_called_once_with('  <!--@deps_js@-->\n', StubConfig.DEVELOPMENT_DIR)
+        self.cmd.update_multitestrunner_css.assert_called_once_with('<!--@multitestrunner_css@-->\n', tgt_path)
+        self.cmd.update_base_js.assert_called_once_with(' <!--@base_js@-->\n', tgt_path)
+        self.cmd.update_deps_js.assert_called_once_with('  <!--@deps_js@-->\n', tgt_path)
 
     def test_apply_config_all(self):
         self.cmd.apply_config = mock.MagicMock()
