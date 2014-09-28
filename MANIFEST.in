@@ -2,4 +2,7 @@ include CHANGES.txt
 include LICENSE.txt
 include README.rst
 include README_ja.rst
+include requirements.txt
+include dev-requirements.txt
+include test-requirements.txt
 recursive-include googkit_data *

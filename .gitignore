@@ -12,3 +12,4 @@ deps.js
 /dist/
 /googkit.egg-info/
 /production/
+/.tox/
