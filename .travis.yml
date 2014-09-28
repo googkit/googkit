@@ -4,5 +4,6 @@ notifications:
 python:
   - "2.7"
   - "3.3"
+  - "3.4"
 # command to run tests
-script: python -m unittest discover
+script: py.test test
