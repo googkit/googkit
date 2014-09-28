@@ -1,6 +1,5 @@
 import unittest
 import mock
-import test
 
 import shutil
 from pathlib import Path

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All JsUnit Tests</title>
+  <link rel="stylesheet" type="text/css" href="../closure/library/closure/goog/css/multitestrunner.css"><!--@multitestrunner_css@-->
+</head>
+<body>
+  <div id="runner"></div>
+  <script type="text/javascript" src="../closure/library/closure/goog/base.js"></script><!--@base_js@-->
+  <script type="text/javascript"> goog.require('goog.testing.MultiTestRunner'); </script>
+  <script type="text/javascript">
+    var testFiles = ['js_dev/example_test.html'];/*@test_files@*/
+    var testRunner = new goog.testing.MultiTestRunner();
+    testRunner.addTests(testFiles);
+    testRunner.render(document.getElementById('runner'));
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Closure Unit Tests - foo.Example</title>
+  <script type="text/javascript" src="../../closure/library/closure/goog/base.js"></script><!--@base_js@-->
+  <script type="text/javascript" src="deps.js"></script><!--@deps_js@-->
+  <script type="text/javascript"> goog.require('goog.testing.jsunit'); </script>
+</head>
+<body>
+  <script type="text/javascript">
+    // TODO: Import modules for the test
+    goog.require('foo.Example');
+  </script>
+  <script type="text/javascript">
+    var example;
+
+    // setUp will be executed before every tests.
+    function setUp() {
+      example = new foo.Example();
+    }
+
+    // tearDown will be executed after every tests.
+    function tearDown() {
+      document.body.removeChild(document.getElementsByTagName('p')[0]);
+      example = null;
+    }
+
+    function testDoSomething() {
+      example.doSomething();
+
+      assertEquals(document.getElementsByTagName('p').length, 1);
+    }
+  </script>
+</body>
+</html>

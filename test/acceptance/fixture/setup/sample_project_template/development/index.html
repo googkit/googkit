@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Googkit</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+  <div class="succeeded">
+    <h1>It works!</h1>
+    <p class="welcome">Welcome to Closure!</p>
+    <p>Next step:</p>
+    <ol>
+      <li>Read <a href="http://docs.closure-library.googlecode.com/git/index.html" target="_blank">Closure Library API Documentation</a></li>
+      <li>Develop the web app</li>
+      <li><code>googkit build</code></li>
+      <li>Share your web app with the world!</li>
+    </ol>
+  </div>
+  <div class="failed">
+    <h1>It doesn't work...</h1>
+    <p>Try to execute <code>googkit setup</code> first.</p>
+  </div>
+
+  <script src="../closure/library/closure/goog/base.js"></script><!--@base_js@-->
+  <script src="js_dev/deps.js"></script><!--@deps_js@-->
+  <script> goog.require('googkit_index'); </script><!--@require_main@-->
+</body>
+</html>
